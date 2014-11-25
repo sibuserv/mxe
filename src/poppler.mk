@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 6040e46b5f27e2562227232ba956c815cc2878e2
 $(PKG)_SUBDIR   := poppler-$($(PKG)_VERSION)
 $(PKG)_FILE     := poppler-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := http://poppler.freedesktop.org/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc glib cairo libpng lcms jpeg tiff freetype zlib curl qt
+$(PKG)_DEPS     := gcc glib cairo libpng lcms jpeg tiff freetype zlib curl qt5
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://poppler.freedesktop.org/' | \
@@ -31,7 +31,7 @@ define $(PKG)_BUILD
         --disable-shared \
         --enable-static \
         --enable-xpdf-headers \
-        --enable-poppler-qt4 \
+        --enable-poppler-qt5 \
         --enable-zlib \
         --enable-cms=lcms2 \
         --enable-libcurl \
