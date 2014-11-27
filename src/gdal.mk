@@ -11,7 +11,7 @@ $(PKG)_URL      := http://download.osgeo.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FIL
 $(PKG)_URL_2    := ftp://ftp.remotesensing.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc proj zlib libpng libxml2 tiff libgeotiff jpeg jasper \
                    giflib expat sqlite curl geos postgresql gta hdf5 \
-                   json-c netcdf
+                   json-c
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://trac.osgeo.org/gdal/wiki/DownloadSource' | \
@@ -93,7 +93,7 @@ endef
 
 define $(PKG)_BUILD_i686-w64-mingw32
     $($(PKG)_CONFIGURE) \
-        --with-netcdf='$(PREFIX)/$(TARGET)' \
+        --without-netcdf \
         LIBS="-ljpeg -lsecur32 -lportablexdr `'$(TARGET)-pkg-config' --libs openssl libtiff-4`"
     $($(PKG)_MAKE)
 endef
