@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 5c666531f7d487075fd692d89f1e05036306192a
 $(PKG)_SUBDIR   := OpenSceneGraph-$($(PKG)_VERSION)
 $(PKG)_FILE     := OpenSceneGraph-$($(PKG)_VERSION).zip
 $(PKG)_URL      := http://www.openscenegraph.org/downloads/developer_releases/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc boost curl dcmtk ffmpeg freetype gdal giflib gta jasper jpeg libpng openal openexr poppler qt5 tiff xine-lib zlib
+$(PKG)_DEPS     := gcc boost curl dcmtk ffmpeg freetype gdal giflib gta jasper jpeg libpng openal openexr qt5 tiff xine-lib zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://www.openscenegraph.org/downloads/developer_releases/?C=M;O=D' | \
@@ -28,7 +28,6 @@ define $(PKG)_BUILD
         -DDYNAMIC_OPENTHREADS=OFF \
         -DDYNAMIC_OPENSCENEGRAPH=OFF \
         -DBUILD_OSG_APPLICATIONS=OFF \
-        -DPOPPLER_HAS_CAIRO_EXITCODE=0 \
         -DDESIRED_QT_VERSION=5 \
         -DCMAKE_MODULE_PATH='$(PREFIX)/$(TARGET)/qt5' \
         -D_OPENTHREADS_ATOMIC_USE_GCC_BUILTINS_EXITCODE=1 \
