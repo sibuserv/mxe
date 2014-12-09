@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 5c666531f7d487075fd692d89f1e05036306192a
 $(PKG)_SUBDIR   := OpenSceneGraph-$($(PKG)_VERSION)
 $(PKG)_FILE     := OpenSceneGraph-$($(PKG)_VERSION).zip
 $(PKG)_URL      := http://www.openscenegraph.org/downloads/developer_releases/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc boost curl freetype gdal giflib gta jpeg libpng openal openexr qt5 tiff xine-lib zlib
+$(PKG)_DEPS     := gcc boost curl freetype gdal giflib jpeg libpng openal openexr qt5 tiff xine-lib zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://www.openscenegraph.org/downloads/developer_releases/?C=M;O=D' | \
