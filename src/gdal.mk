@@ -86,13 +86,13 @@ endef
 
 define $(PKG)_BUILD_x86_64-w64-mingw32
     $($(PKG)_CONFIGURE) \
-        LIBS="-ljpeg -lsecur32 `'$(TARGET)-pkg-config' --libs openssl libtiff-4`"
+        LIBS="-ljpeg -lsecur32 `'$(TARGET)-pkg-config' --libs libtiff-4`"
     $($(PKG)_MAKE)
 endef
 
 define $(PKG)_BUILD_i686-w64-mingw32
     $($(PKG)_CONFIGURE) \
         --without-netcdf \
-        LIBS="-ljpeg -lsecur32 -lportablexdr `'$(TARGET)-pkg-config' --libs openssl libtiff-4`"
+        LIBS="-ljpeg -lsecur32 -lportablexdr `'$(TARGET)-pkg-config' --libs libtiff-4`"
     $($(PKG)_MAKE)
 endef
