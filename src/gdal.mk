@@ -26,7 +26,6 @@ define $(PKG)_CONFIGURE
         --with-bsb \
         --with-grib \
         --with-ogr \
-        --with-pam \
         --without-threads \
         --with-armadillo='$(PREFIX)/$(TARGET)' \
         --with-libz='$(PREFIX)/$(TARGET)' \
@@ -37,6 +36,7 @@ define $(PKG)_CONFIGURE
         --with-gif='$(PREFIX)/$(TARGET)' \
         --with-expat='$(PREFIX)/$(TARGET)' \
         --with-libjson-c=internal \
+        --without-pam \
         --without-gta \
         --without-pg \
         --without-sqlite3 \
