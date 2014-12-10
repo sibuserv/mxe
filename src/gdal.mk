@@ -24,7 +24,6 @@ define $(PKG)_CONFIGURE
     cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --with-bsb \
-        --with-ogr \
         --without-threads \
         --with-armadillo='$(PREFIX)/$(TARGET)' \
         --with-libz='$(PREFIX)/$(TARGET)' \
@@ -35,6 +34,7 @@ define $(PKG)_CONFIGURE
         --with-gif='$(PREFIX)/$(TARGET)' \
         --with-expat='$(PREFIX)/$(TARGET)' \
         --with-libjson-c=internal \
+        --without-ogr \
         --without-grib \
         --without-pam \
         --without-gta \
