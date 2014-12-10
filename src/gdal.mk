@@ -23,7 +23,6 @@ define $(PKG)_CONFIGURE
     # The option '--without-threads' means native win32 threading without pthread.
     cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
-        --with-bsb \
         --without-threads \
         --with-armadillo='$(PREFIX)/$(TARGET)' \
         --with-libz='$(PREFIX)/$(TARGET)' \
@@ -34,6 +33,7 @@ define $(PKG)_CONFIGURE
         --with-gif='$(PREFIX)/$(TARGET)' \
         --with-expat='$(PREFIX)/$(TARGET)' \
         --with-libjson-c=internal \
+        --without-bsb \
         --without-ogr \
         --without-grib \
         --without-pam \
