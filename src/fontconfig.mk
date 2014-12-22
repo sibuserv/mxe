@@ -18,7 +18,12 @@ endef
 
 define $(PKG)_BUILD
     cd '$(1)' && autoreconf -fi
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --with-arch='$(TARGET)' \
         --with-expat='$(PREFIX)/$(TARGET)' \
