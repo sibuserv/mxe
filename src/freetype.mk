@@ -21,7 +21,12 @@ define $(PKG)_BUILD
     # alias harfbuzz to handle linking circularity
     $(if $(BUILD_STATIC),\
         ln -sf libharfbuzz.a '$(PREFIX)/$(TARGET)/lib/libharfbuzz_too.a',)
-    cd '$(1)' && GNUMAKE=$(MAKE) ./configure \
+    cd '$(1)' && GNUMAKE=$(MAKE) \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         LIBPNG_CFLAGS="`$(TARGET)-pkg-config libpng --cflags`" \
         LIBPNG_LDFLAGS="`$(TARGET)-pkg-config libpng --libs`" \
