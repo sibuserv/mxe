@@ -20,7 +20,12 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         --host='$(TARGET)' \
         --prefix='$(PREFIX)/$(TARGET)'
     $(MAKE) -C '$(1)' -f Makefile.mxe -j '$(JOBS)' \
