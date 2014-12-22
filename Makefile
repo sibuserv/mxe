@@ -67,8 +67,8 @@ MXE_CONFIGURE_OPTS = \
         --disable-static --enable-shared )
 
 CPPFLAGS := -D_FORTIFY_SOURCE=2
-CFLAGS   := -s -O2 -Os -fdata-sections -ffunction-sections
-CXXFLAGS := -s -O2 -Os -fdata-sections -ffunction-sections -fPIC -std=c++11
+CFLAGS   := -s -O2 -Os -fdata-sections -ffunction-sections -std=c11   $(CPPFLAGS)
+CXXFLAGS := -s -O2 -Os -fdata-sections -ffunction-sections -std=c++11 $(CPPFLAGS)
 LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
 
 # Append these to the "make" and "make install" steps of autotools packages
