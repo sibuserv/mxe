@@ -19,7 +19,12 @@ endef
 define $(PKG)_BUILD
     $(SED) -i 's,libpng12,libpng,g'                          '$(1)/configure'
     $(SED) -i 's,^\(Libs:.*\),\1 @CAIRO_NONPKGCONFIG_LIBS@,' '$(1)/src/cairo.pc.in'
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --disable-lto \
         --disable-gtk-doc \
