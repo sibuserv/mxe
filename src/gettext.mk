@@ -20,7 +20,12 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)/gettext-runtime' && ./configure \
+    cd '$(1)/gettext-runtime' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --enable-threads=win32 \
         --without-libexpat-prefix \
@@ -31,7 +36,12 @@ endef
 
 define $(PKG)_BUILD_$(BUILD)
     mkdir '$(1).build'
-    cd    '$(1).build' && '$(1)/configure' \
+    cd    '$(1).build' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    '$(1)/configure' \
         --prefix='$(PREFIX)/$(TARGET)'
     $(MAKE) -C '$(1).build' -j '$(JOBS)' man1_MANS=
     $(MAKE) -C '$(1).build' -j 1 install man1_MANS=
