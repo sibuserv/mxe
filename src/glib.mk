@@ -24,7 +24,12 @@ define $(PKG)_NATIVE_BUILD
     cd '$(1).native' && $(call UNPACK_PKG_ARCHIVE,libiconv)
     $(foreach PKG_PATCH,$(sort $(wildcard $(TOP_DIR)/src/libiconv-*.patch)),
         (cd '$(1).native/$(libiconv_SUBDIR)' && $(PATCH) -p1 -u) < $(PKG_PATCH))
-    cd '$(1).native/$(libiconv_SUBDIR)' && ./configure \
+    cd '$(1).native/$(libiconv_SUBDIR)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         --disable-shared \
         --disable-nls
     $(MAKE) -C '$(1).native/$(libiconv_SUBDIR)' -j '$(JOBS)'
@@ -36,7 +41,12 @@ define $(PKG)_NATIVE_BUILD
     $(MAKE) -C '$(1).native/$(zlib_SUBDIR)' -j '$(JOBS)'
 
     # native build for glib-genmarshal, without gettext
-    cd '$(1).native' && ./configure \
+    cd '$(1).native' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         --disable-shared \
         --prefix='$(PREFIX)/$(TARGET)' \
         --enable-regex \
@@ -85,7 +95,12 @@ define $(PKG)_BUILD
         $($(PKG)_NATIVE_BUILD))
 
     # cross build
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --with-threads=win32 \
         --with-pcre=system \
