@@ -20,7 +20,12 @@ endef
 
 define $(PKG)_BUILD
     $(SED) -i 's,`uname`,MinGW,g' '$(1)/xml2-config.in'
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --without-debug \
         --without-python \
