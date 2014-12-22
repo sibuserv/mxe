@@ -18,7 +18,12 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && CHOST='$(TARGET)' ./configure \
+    cd '$(1)' && CHOST='$(TARGET)' \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         --prefix='$(PREFIX)/$(TARGET)' \
         --static
     $(MAKE) -C '$(1)' -j '$(JOBS)' install
