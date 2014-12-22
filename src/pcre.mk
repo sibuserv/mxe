@@ -18,7 +18,12 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD_SHARED
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --enable-pcre16 \
         --enable-utf \
