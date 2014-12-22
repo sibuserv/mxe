@@ -20,6 +20,10 @@ endef
 define $(PKG)_BUILD
     # ICU is buggy. See #653. TODO: reenable it some time in the future.
     cd '$(1)' && \
+        CPPFLAGS="$(CPPFLAGS)" \
+        CFLAGS="$(CFLAGS)" \
+        CXXFLAGS="$(CXXFLAGS)" \
+        LDFLAGS="$(LDFLAGS)" \
         OPENSSL_LIBS="`'$(TARGET)-pkg-config' --libs-only-l openssl`" \
         PSQL_LIBS="-lpq -lsecur32 `'$(TARGET)-pkg-config' --libs-only-l openssl` -lws2_32" \
         SYBASE_LIBS="-lsybdb `'$(TARGET)-pkg-config' --libs-only-l gnutls` -liconv -lws2_32" \
