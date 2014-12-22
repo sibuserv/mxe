@@ -67,9 +67,9 @@ MXE_CONFIGURE_OPTS = \
         --disable-static --enable-shared )
 
 CPPFLAGS := -D_FORTIFY_SOURCE=2
-CFLAGS   := -fdata-sections -ffunction-sections
-CXXFLAGS := -fdata-sections -ffunction-sections
-LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all
+CFLAGS   := -s -O2 -Os -fdata-sections -ffunction-sections
+CXXFLAGS := -s -O2 -Os -fdata-sections -ffunction-sections -fPIC -std=c++11
+LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
 
 # Append these to the "make" and "make install" steps of autotools packages
 # in order to neither build nor install unwanted binaries, manpages,
