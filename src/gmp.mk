@@ -20,7 +20,12 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && CC_FOR_BUILD=gcc ./configure \
+    cd '$(1)' && CC_FOR_BUILD=gcc \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --enable-cxx \
         --without-readline
@@ -40,7 +45,12 @@ endef
 
 define $(PKG)_BUILD_$(BUILD)
     mkdir '$(1).build'
-    cd    '$(1).build' && '$(1)/configure' \
+    cd    '$(1).build' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    '$(1)/configure' \
         --prefix='$(PREFIX)/$(TARGET)' \
         --disable-shared
     $(MAKE) -C '$(1).build' -j '$(JOBS)' man1_MANS=
