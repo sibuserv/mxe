@@ -23,7 +23,12 @@ define $(PKG)_BUILD
     cd '$(1)' && autoconf
     cp -Rp '$(1)' '$(1).native'
     # Since we build only client libary, use bogus tzdata to satisfy configure.
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --disable-rpath \
         --without-tcl \
@@ -52,7 +57,12 @@ define $(PKG)_BUILD
     $(INSTALL) -m644 '$(1)'/src/include/libpq/*        '$(PREFIX)/$(TARGET)/include/libpq/'
     # Build a native pg_config.
     $(SED) -i 's,-DVAL_,-D_DISABLED_VAL_,g' '$(1).native'/src/bin/pg_config/Makefile
-    cd '$(1).native' && ./configure \
+    cd '$(1).native' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         --prefix='$(PREFIX)/$(TARGET)' \
         --disable-shared \
         --disable-rpath \
