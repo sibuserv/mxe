@@ -21,11 +21,21 @@ endef
 
 define $(PKG)_BUILD_COMMON
     cd '$(1)/source' && autoreconf -fi
-    mkdir '$(1).native' && cd '$(1).native' && '$(1)/source/configure' \
+    mkdir '$(1).native' && cd '$(1).native' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    '$(1)/source/configure' \
         CC=gcc CXX=g++
     $(MAKE) -C '$(1).native' -j '$(JOBS)'
 
-    mkdir '$(1).cross' && cd '$(1).cross' && '$(1)/source/configure' \
+    mkdir '$(1).cross' && cd '$(1).cross' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    '$(1)/source/configure' \
         $(MXE_CONFIGURE_OPTS) \
         --with-cross-build='$(1).native' \
         CFLAGS=-DU_USING_ICU_NAMESPACE=0 \
