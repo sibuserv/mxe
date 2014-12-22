@@ -24,7 +24,12 @@ define $(PKG)_BUILD
     $(SED) -i 's/libopts_cv_with_libregex=no/libopts_cv_with_libregex=yes/g;' '$(1)/configure'
     # AI_ADDRCONFIG referenced by src/serv.c but not provided by mingw.
     # Value taken from http://msdn.microsoft.com/en-us/library/windows/desktop/ms737530%28v=vs.85%29.aspx
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --disable-rpath \
         --disable-nls \
