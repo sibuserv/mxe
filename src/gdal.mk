@@ -31,7 +31,7 @@ define $(PKG)_CONFIGURE
     ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --without-threads \
-        --with-armadillo='$(PREFIX)/$(TARGET)' \
+        --with-static-proj4='$(PREFIX)/$(TARGET)' \
         --with-libz='$(PREFIX)/$(TARGET)' \
         --with-png='$(PREFIX)/$(TARGET)' \
         --with-libtiff='$(PREFIX)/$(TARGET)' \
