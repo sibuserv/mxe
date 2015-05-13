@@ -34,8 +34,8 @@ define $(PKG)_BUILD
         --host='$(TARGET)' \
         --build='$(BUILD)' \
         --prefix='$(PREFIX)/$(TARGET)' \
-        --disable-shared \
-        --enable-static \
+        --enable-shared \
+        --disable-static \
         --disable-gles1 \
         --disable-gles2 \
         --disable-libxml2 \
@@ -50,7 +50,6 @@ define $(PKG)_BUILD
         --disable-libass \
         --disable-mod \
         --disable-mad \
-        --disable-shared \
         --disable-vorbis \
         --disable-dvbpsi \
         --disable-dvdread \
