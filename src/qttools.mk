@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 346f0c000203623559a24e75a7808390721f35bb
 $(PKG)_SUBDIR    = $(subst qtbase,qttools,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qttools,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qttools,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase qtactiveqt qtdeclarative
+$(PKG)_DEPS     := gcc qtbase
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)
