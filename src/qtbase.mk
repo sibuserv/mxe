@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 3703c6a584193e759f5b9cbf0ea6022d685ab827
 $(PKG)_SUBDIR   := $(PKG)-opensource-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-opensource-src-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := http://download.qt.io/official_releases/qt/5.4/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc postgresql freetds openssl harfbuzz zlib libpng jpeg sqlite pcre fontconfig freetype dbus icu4c
+$(PKG)_DEPS     := gcc openssl zlib libpng jpeg sqlite fontconfig freetype dbus icu4c
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- http://download.qt-project.org/official_releases/qt/5.4/ | \
@@ -24,8 +24,6 @@ define $(PKG)_BUILD
         CXXFLAGS="$(CXXFLAGS) $(CPPFLAGS)" \
         LDFLAGS="$(LDFLAGS)" \
         OPENSSL_LIBS="`'$(TARGET)-pkg-config' --libs-only-l openssl`" \
-        PSQL_LIBS="-lpq -lsecur32 `'$(TARGET)-pkg-config' --libs-only-l openssl` -lws2_32" \
-        SYBASE_LIBS="-lsybdb `'$(TARGET)-pkg-config' --libs-only-l gnutls` -liconv -lws2_32" \
         ./configure \
             -opensource \
             -confirm-license \
@@ -46,16 +44,12 @@ define $(PKG)_BUILD
             -no-sql-mysql \
             -plugin-sql-sqlite \
             -plugin-sql-odbc \
-            -plugin-sql-psql \
-            -plugin-sql-tds -D Q_USE_SYBASE \
             -system-zlib \
             -system-libpng \
             -system-libjpeg \
             -system-sqlite \
             -fontconfig \
             -system-freetype \
-            -system-harfbuzz \
-            -system-pcre \
             -openssl-linked \
             -dbus-linked \
             -v
