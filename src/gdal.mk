@@ -9,8 +9,7 @@ $(PKG)_SUBDIR   := gdal-$($(PKG)_VERSION)
 $(PKG)_FILE     := gdal-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := http://download.osgeo.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_URL_2    := ftp://ftp.remotesensing.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc proj zlib libpng libxml2 tiff jpeg \
-                   giflib expat curl
+$(PKG)_DEPS     := gcc proj zlib libpng tiff jpeg giflib expat
 
 CXXFLAGS := -s -Os -fdata-sections -ffunction-sections -mno-ms-bitfields $(CPPFLAGS)
 
@@ -40,6 +39,8 @@ define $(PKG)_CONFIGURE
         --with-expat='$(PREFIX)/$(TARGET)' \
         --with-libjson-c=internal \
         --with-geotiff=internal \
+        --without-curl \
+        --without-xml2 \
         --without-geos \
         --without-bsb \
         --without-ogr \
