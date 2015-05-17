@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 5c666531f7d487075fd692d89f1e05036306192a
 $(PKG)_SUBDIR   := OpenSceneGraph-$($(PKG)_VERSION)
 $(PKG)_FILE     := OpenSceneGraph-$($(PKG)_VERSION).zip
 $(PKG)_URL      := http://www.openscenegraph.org/downloads/developer_releases/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc boost curl freetype gdal giflib jpeg libpng openal tiff zlib
+$(PKG)_DEPS     := gcc freetype gdal giflib jpeg libpng tiff zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://www.openscenegraph.org/downloads/developer_releases/?C=M;O=D' | \
@@ -19,23 +19,18 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-#        -DDESIRED_QT_VERSION=5
-#        -DCMAKE_MODULE_PATH='$(PREFIX)/$(TARGET)/qt5'
     mkdir '$(1).build'
     cd '$(1).build' && cmake '$(1)' \
         -DCMAKE_TOOLCHAIN_FILE='$(CMAKE_TOOLCHAIN_FILE)' \
-        -DCMAKE_CXX_FLAGS='-D__STDC_CONSTANT_MACROS -fpermissive' \
         -DCMAKE_HAVE_PTHREAD_H=OFF \
         -DPKG_CONFIG_EXECUTABLE='$(PREFIX)/bin/$(TARGET)-pkg-config' \
         -DDYNAMIC_OPENTHREADS=OFF \
         -DDYNAMIC_OPENSCENEGRAPH=OFF \
         -DBUILD_OSG_APPLICATIONS=OFF \
-        -DPOPPLER_HAS_CAIRO_EXITCODE=0 \
         -DOSG_USE_QT=OFF \
         -D_OPENTHREADS_ATOMIC_USE_GCC_BUILTINS_EXITCODE=1 \
         -D_OPENTHREADS_ATOMIC_USE_WIN32_INTERLOCKED=1 \
-        -DCMAKE_C_FLAGS="$(CFLAGS) $(CPPFLAGS)" \
-        -DCMAKE_CXX_FLAGS="$(CXXFLAGS) $(CPPFLAGS)" \
+        -DCMAKE_CXX_FLAGS="$(CXXFLAGS) -D__STDC_CONSTANT_MACROS -fpermissive" \
         -DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS)" \
         -DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS)"
     $(MAKE) -C '$(1).build' -j '$(JOBS)' install VERBOSE=1
