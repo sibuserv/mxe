@@ -35,9 +35,7 @@ define $(PKG)_BUILD
             -release \
             -static \
             -prefix '$(PREFIX)/$(TARGET)/qt5' \
-            -no-icu \
             -opengl desktop \
-            -no-glib \
             -accessibility \
             -nomake examples \
             -nomake tests \
@@ -52,6 +50,8 @@ define $(PKG)_BUILD
             -system-freetype \
             -openssl-linked \
             -dbus-linked \
+            -no-icu \
+            -no-glib \
             -v
 
     # invoke qmake with removed debug options as a workaround for
