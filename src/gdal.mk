@@ -11,7 +11,7 @@ $(PKG)_URL      := http://download.osgeo.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FIL
 $(PKG)_URL_2    := ftp://ftp.remotesensing.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc proj zlib libpng tiff jpeg giflib expat
 
-CXXFLAGS := -s -Os -fdata-sections -ffunction-sections -mno-ms-bitfields $(CPPFLAGS)
+CXXFLAGS := -Os -fdata-sections -ffunction-sections $(CPPFLAGS)
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://trac.osgeo.org/gdal/wiki/DownloadSource' | \
