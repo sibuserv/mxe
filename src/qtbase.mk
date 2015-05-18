@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 3703c6a584193e759f5b9cbf0ea6022d685ab827
 $(PKG)_SUBDIR   := $(PKG)-opensource-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-opensource-src-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := http://download.qt.io/official_releases/qt/5.4/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc openssl zlib libpng jpeg sqlite fontconfig freetype dbus icu4c
+$(PKG)_DEPS     := gcc zlib libpng jpeg fontconfig freetype
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- http://download.qt-project.org/official_releases/qt/5.4/ | \
@@ -20,10 +20,9 @@ endef
 define $(PKG)_BUILD
     # ICU is buggy. See #653. TODO: reenable it some time in the future.
     cd '$(1)' && \
-        CFLAGS="$(CFLAGS) $(CPPFLAGS)" \
-        CXXFLAGS="$(CXXFLAGS) $(CPPFLAGS)" \
+        CFLAGS="$(CFLAGS)" \
+        CXXFLAGS="$(CXXFLAGS)" \
         LDFLAGS="$(LDFLAGS)" \
-        OPENSSL_LIBS="`'$(TARGET)-pkg-config' --libs-only-l openssl`" \
         ./configure \
             -opensource \
             -confirm-license \
@@ -35,23 +34,27 @@ define $(PKG)_BUILD
             -release \
             -static \
             -prefix '$(PREFIX)/$(TARGET)/qt5' \
-            -opengl desktop \
             -accessibility \
             -nomake examples \
             -nomake tests \
-            -no-sql-mysql \
-            -plugin-sql-sqlite \
-            -plugin-sql-odbc \
             -system-zlib \
             -system-libpng \
             -system-libjpeg \
-            -system-sqlite \
-            -fontconfig \
             -system-freetype \
-            -openssl-linked \
-            -dbus-linked \
-            -no-icu \
+            -fontconfig \
+            -opengl desktop \
+            -no-sql-sqlite \
+            -no-sql-sqlite2 \
+            -no-sql-mysql \
+            -no-sql-psql \
+            -no-sql-odbc \
+            -no-sql-tds \
+            -no-sql-oci \
+            -no-sql-db2 \
+            -no-sql-ibase \
+            -no-openssl \
             -no-glib \
+            -no-icu \
             -v
 
     # invoke qmake with removed debug options as a workaround for
