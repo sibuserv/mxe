@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM  = $(qtbase_CHECKSUM)
 $(PKG)_SUBDIR    = $(qtbase_SUBDIR)
 $(PKG)_FILE      = $(qtbase_FILE)
 $(PKG)_URL       = $(qtbase_URL)
-$(PKG)_DEPS     := qtbase qttools qtserialport qtscript qtwebsockets
+$(PKG)_DEPS     := qtbase qttools qtserialport qtscript qtwebsockets qtconnectivity
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)
