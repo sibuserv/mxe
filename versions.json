@@ -139,6 +139,7 @@
     "libepoxy": "1.2",
     "libevent": "2.0.21",
     "libf2c": "1",
+    "libfcgi": "2.4.0",
     "libffi": "3.2.1",
     "libftdi": "0.20",
     "libftdi1": "1.2",
