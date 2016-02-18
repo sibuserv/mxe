@@ -3,10 +3,6 @@
 
 PKG             := qt5
 $(PKG)_VERSION   = $(qtbase_VERSION)
-$(PKG)_CHECKSUM  = $(qtbase_CHECKSUM)
-$(PKG)_SUBDIR    = $(qtbase_SUBDIR)
-$(PKG)_FILE      = $(qtbase_FILE)
-$(PKG)_URL       = $(qtbase_URL)
 $(PKG)_DEPS     := qtbase qttools qtserialport qtscript qtwebsockets qtconnectivity
 
 define $(PKG)_UPDATE
