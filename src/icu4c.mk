@@ -3,9 +3,9 @@
 
 PKG             := icu4c
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 54.1
+$(PKG)_VERSION  := 56.1
 $(PKG)_MAJOR    := $(word 1,$(subst ., ,$($(PKG)_VERSION)))
-$(PKG)_CHECKSUM := 8c752490bbf31cea26e20246430cee67d48abe34
+$(PKG)_CHECKSUM := 3a64e9105c734dcf631c0b3ed60404531bce6c0f5a64bfe1a6402a4cc2314816
 $(PKG)_SUBDIR   := icu
 $(PKG)_FILE     := $(PKG)-$(subst .,_,$($(PKG)_VERSION))-src.tgz
 $(PKG)_URL      := http://download.icu-project.org/files/$(PKG)/$($(PKG)_VERSION)/$($(PKG)_FILE)
@@ -27,7 +27,7 @@ define $(PKG)_BUILD_COMMON
     CXXFLAGS="$(CXXFLAGS)" \
     LDFLAGS="$(LDFLAGS)" \
     '$(1)/source/configure' \
-        CC=gcc CXX=g++
+        CC=$(BUILD_CC) CXX=$(BUILD_CXX)
     $(MAKE) -C '$(1).native' -j '$(JOBS)'
 
     mkdir '$(1).cross' && cd '$(1).cross' && \

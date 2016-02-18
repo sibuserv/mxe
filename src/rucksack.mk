@@ -4,7 +4,7 @@
 PKG             := rucksack
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 3.1.0
-$(PKG)_CHECKSUM := 77b0d5d1cb4417496835df811eef5ae1a7d14487
+$(PKG)_CHECKSUM := dcdaab57b06fdeb9be63ed0f2c2de78d0b1e79f7a896bb1e76561216a4458e3b
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://github.com/andrewrk/rucksack/archive/$($(PKG)_VERSION).tar.gz
@@ -20,7 +20,15 @@ define $(PKG)_BUILD
     mkdir '$(1)/build'
     cd '$(1)/build' && cmake .. -DCMAKE_TOOLCHAIN_FILE='$(CMAKE_TOOLCHAIN_FILE)'
 
-    $(MAKE) -C '$(1)/build' -j '$(JOBS)' install VERBOSE=1
+    $(MAKE) -C '$(1)/build' -j '$(JOBS)' \
+        rucksack_static \
+        rucksackspritesheet_static \
+        VERBOSE=1
+
+    $(INSTALL) -d '$(PREFIX)/$(TARGET)/include/rucksack'
+    $(INSTALL) -m644 '$(1)/src/rucksack.h'    '$(PREFIX)/$(TARGET)/include/rucksack'
+    $(INSTALL) -m644 '$(1)/src/spritesheet.h' '$(PREFIX)/$(TARGET)/include/rucksack'
+    $(INSTALL) -m644 '$(1)/build/lib'*.a      '$(PREFIX)/$(TARGET)/lib/'
 
     '$(TARGET)-gcc' \
         -W -Wall -Werror -ansi -pedantic -std=c99 \

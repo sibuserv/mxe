@@ -4,11 +4,12 @@
 PKG             := sox
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 14.4.2
-$(PKG)_CHECKSUM := f69f38f8a7ad6a88ecab3862d74db4edcd796695
+$(PKG)_CHECKSUM := b45f598643ffbd8e363ff24d61166ccec4836fea6d3888881b8df53e3bb55f6c
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/project/$(PKG)/$(PKG)/$($(PKG)_VERSION)/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc file flac lame libgomp libmad libpng libsndfile libltdl opencore-amr opus twolame vorbis wavpack
+$(PKG)_DEPS     := gcc file flac lame libltdl libmad libpng libsndfile \
+                   opencore-amr opus twolame vorbis wavpack
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://sourceforge.net/projects/sox/files/sox/' | \

@@ -3,19 +3,15 @@
 
 PKG             := glfw3
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 3.1
-$(PKG)_CHECKSUM := 32f2dcc188694fb5823e24cc65c8f69f32f58bb1
+$(PKG)_VERSION  := 3.1.2
+$(PKG)_CHECKSUM := 6ac642087682aaf7f8397761a41a99042b2c656498217a1c63ba9706d1eef122
 $(PKG)_SUBDIR   := glfw-$($(PKG)_VERSION)
-$(PKG)_FILE     := glfw-$($(PKG)_VERSION).tar.gz
-$(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/project/glfw/glfw/$($(PKG)_VERSION)/$($(PKG)_FILE)
+$(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
+$(PKG)_URL      := https://github.com/glfw/glfw/archive/$($(PKG)_VERSION).tar.gz
 $(PKG)_DEPS     := gcc
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://sourceforge.net/projects/glfw/files/glfw/' | \
-    $(SED) -n 's,.*/\([0-9][^"]*\)/".*,\1,p' | \
-    grep '^3\.' | \
-    $(SORT) -V | \
-    tail -1
+    $(call MXE_GET_GITHUB_TAGS, glfw/glfw)
 endef
 
 define $(PKG)_BUILD

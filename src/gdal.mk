@@ -3,15 +3,15 @@
 
 PKG             := gdal
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.11.2
-$(PKG)_CHECKSUM := 6f3ccbe5643805784812072a33c25be0bbff00db
+$(PKG)_VERSION  := 2.0.1
+$(PKG)_CHECKSUM := b55f794768e104a2fd0304eaa61bb8bda3dc7c4e14f2c9d0913baca3e55b83ab
 $(PKG)_SUBDIR   := gdal-$($(PKG)_VERSION)
 $(PKG)_FILE     := gdal-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := http://download.osgeo.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_URL_2    := ftp://ftp.remotesensing.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc proj zlib libpng tiff jpeg giflib expat
 
-CXXFLAGS := -Os -fdata-sections -ffunction-sections $(CPPFLAGS)
+CXXFLAGS := -Os -fdata-sections -ffunction-sections $(CPPFLAGS) -D_WIN32_WINNT=0x0600
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://trac.osgeo.org/gdal/wiki/DownloadSource' | \
@@ -19,9 +19,10 @@ define $(PKG)_UPDATE
     head -1
 endef
 
-define $(PKG)_CONFIGURE
-    cd '$(1)' && autoreconf -fi
-    # The option '--without-threads' means native win32 threading without pthread.
+define $(PKG)_BUILD
+    cd '$(1)' && autoreconf -fi -I ./m4
+    # The option '--with-threads=no' means native win32 threading without pthread.
+    # mysql uses threading from Vista onwards - '-D_WIN32_WINNT=0x0600'
     cd '$(1)' && \
     CPPFLAGS="$(CPPFLAGS)" \
     CFLAGS="$(CFLAGS)" \
@@ -29,7 +30,6 @@ define $(PKG)_CONFIGURE
     LDFLAGS="$(LDFLAGS)" \
     ./configure \
         $(MXE_CONFIGURE_OPTS) \
-        --without-threads \
         --with-static-proj4='$(PREFIX)/$(TARGET)' \
         --with-libz='$(PREFIX)/$(TARGET)' \
         --with-png='$(PREFIX)/$(TARGET)' \
@@ -39,6 +39,8 @@ define $(PKG)_CONFIGURE
         --with-expat='$(PREFIX)/$(TARGET)' \
         --with-libjson-c=internal \
         --with-geotiff=internal \
+        --without-threads \
+        --without-openjpeg \
         --without-curl \
         --without-xml2 \
         --without-geos \
@@ -69,6 +71,7 @@ define $(PKG)_CONFIGURE
         --without-msg \
         --without-oci \
         --without-mysql \
+        --without-netcdf \
         --without-ingres \
         --without-dods-root \
         --without-dwgdirect \
@@ -78,10 +81,10 @@ define $(PKG)_CONFIGURE
         --without-perl \
         --without-php \
         --without-ruby \
-        --without-python
-endef
+        --without-python \
+        --without-armadillo \
+        LIBS="-ljpeg -lsecur32 -lportablexdr `'$(TARGET)-pkg-config' --libs openssl libtiff-4`"
 
-define $(PKG)_MAKE
     $(MAKE) -C '$(1)'       -j '$(JOBS)' lib-target
     $(MAKE) -C '$(1)'       -j '$(JOBS)' install-lib
     $(MAKE) -C '$(1)/port'  -j '$(JOBS)' install
@@ -91,17 +94,4 @@ define $(PKG)_MAKE
     $(MAKE) -C '$(1)/ogr'   -j '$(JOBS)' install OGR_ENABLED=
     $(MAKE) -C '$(1)/apps'  -j '$(JOBS)' install
     ln -sf '$(PREFIX)/$(TARGET)/bin/gdal-config' '$(PREFIX)/bin/$(TARGET)-gdal-config'
-endef
-
-define $(PKG)_BUILD_x86_64-w64-mingw32
-    $($(PKG)_CONFIGURE) \
-        LIBS="-ljpeg -lsecur32 `'$(TARGET)-pkg-config' --libs libtiff-4`"
-    $($(PKG)_MAKE)
-endef
-
-define $(PKG)_BUILD_i686-w64-mingw32
-    $($(PKG)_CONFIGURE) \
-        --without-netcdf \
-        LIBS="-ljpeg -lsecur32 `'$(TARGET)-pkg-config' --libs libtiff-4`"
-    $($(PKG)_MAKE)
 endef

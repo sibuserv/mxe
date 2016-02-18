@@ -4,11 +4,11 @@
 PKG             := devil
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 1.7.8
-$(PKG)_CHECKSUM := bc27e3e830ba666a3af03548789700d10561fcb1
+$(PKG)_CHECKSUM := 682ffa3fc894686156337b8ce473c954bf3f4fb0f3ecac159c73db632d28a8fd
 $(PKG)_SUBDIR   := devil-$($(PKG)_VERSION)
 $(PKG)_FILE     := DevIL-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/project/openil/DevIL/$($(PKG)_VERSION)/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc freeglut zlib openexr jpeg jasper lcms libmng libpng tiff sdl
+$(PKG)_DEPS     := gcc freeglut jasper jpeg lcms libmng libpng openexr sdl tiff zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://sourceforge.net/p/openil/svn/HEAD/tree/tags/' | \
@@ -18,12 +18,12 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    $(SED) -i 's,__declspec(dllimport),,' '$(1)/include/IL/il.h'
+    # autotools files in tarball are ancient (2009) so regenerate
+    $(if $(BUILD_STATIC), \
+        $(SED) -i 's/__declspec(dllimport)//' '$(1)/include/IL/il.h', \
+        cd '$(1)' && $(LIBTOOLIZE) && autoreconf -fi)
     cd '$(1)' && ./configure \
-        --host='$(TARGET)' \
-        --build="`config.guess`" \
-        --disable-shared \
-        --prefix='$(PREFIX)/$(TARGET)' \
+        $(MXE_CONFIGURE_OPTS) \
         --enable-ILU \
         --enable-ILUT \
         --disable-allegro \
@@ -40,7 +40,3 @@ define $(PKG)_BUILD
         --without-examples
     $(MAKE) -C '$(1)' -j '$(JOBS)' install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS= INFO_DEPS=
 endef
-
-$(PKG)_BUILD_x86_64-w64-mingw32 =
-
-$(PKG)_BUILD_SHARED =

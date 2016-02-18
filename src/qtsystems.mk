@@ -2,9 +2,8 @@
 # See index.html for further information.
 PKG             := qtsystems
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 32e6573
-$(PKG)_VERSION  := 37b614a
-$(PKG)_CHECKSUM := eba4177015dc02fb438dd28a8d2b80650d805048
+$(PKG)_VERSION  := 4e3a7ed
+$(PKG)_CHECKSUM := 4aceb62b7e3135a1f29a31d71467d1c519ee25c36e1aa0b96b72540af5b198e3
 $(PKG)_SUBDIR   := qtproject-$(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://github.com/qtproject/qtsystems/tarball/$($(PKG)_VERSION)/$($(PKG)_FILE)

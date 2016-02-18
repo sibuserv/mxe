@@ -4,11 +4,11 @@
 PKG             := qtwebkit
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION   = $(qtbase_VERSION)
-$(PKG)_CHECKSUM := 402cd585ed7fea63b338fa6f89aec8b21db3564a
+$(PKG)_CHECKSUM := 77583f9dbd3e6ad874386df71b165dc3ce88efdabbc6e5d97a959ee2187d6d69
 $(PKG)_SUBDIR    = $(subst qtbase,qtwebkit,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtwebkit,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtwebkit,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase qtmultimedia qtquick1
+$(PKG)_DEPS     := gcc qtbase qtmultimedia qtquick1 sqlite
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)

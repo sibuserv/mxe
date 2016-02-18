@@ -3,17 +3,18 @@
 
 PKG             := qtbase
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 5.4.2
-$(PKG)_CHECKSUM := 3703c6a584193e759f5b9cbf0ea6022d685ab827
+$(PKG)_VERSION  := 5.5.1
+$(PKG)_CHECKSUM := dfa4e8a4d7e4c6b69285e7e8833eeecd819987e1bdbe5baa6b6facd4420de916
 $(PKG)_SUBDIR   := $(PKG)-opensource-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-opensource-src-$($(PKG)_VERSION).tar.xz
-$(PKG)_URL      := http://download.qt.io/official_releases/qt/5.4/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
+$(PKG)_URL      := http://download.qt.io/official_releases/qt/5.5/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc zlib libpng jpeg fontconfig freetype
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- http://download.qt-project.org/official_releases/qt/5.4/ | \
+    $(WGET) -q -O- http://download.qt-project.org/official_releases/qt/5.5/ | \
     $(SED) -n 's,.*href="\(5\.[0-9]\.[^/]*\)/".*,\1,p' | \
     grep -iv -- '-rc' | \
+    sort |
     tail -1
 endef
 
@@ -72,11 +73,22 @@ define $(PKG)_BUILD
     # build test the manual way
     mkdir '$(1)/test-$(PKG)-pkgconfig'
     '$(PREFIX)/$(TARGET)/qt5/bin/uic' -o '$(1)/test-$(PKG)-pkgconfig/ui_qt-test.h' '$(TOP_DIR)/src/qt-test.ui'
+    '$(PREFIX)/$(TARGET)/qt5/bin/moc' \
+        -o '$(1)/test-$(PKG)-pkgconfig/moc_qt-test.cpp' \
+        -I'$(1)/test-$(PKG)-pkgconfig' \
+        '$(TOP_DIR)/src/qt-test.hpp'
+    '$(PREFIX)/$(TARGET)/qt5/bin/rcc' -name qt-test -o '$(1)/test-$(PKG)-pkgconfig/qrc_qt-test.cpp' '$(TOP_DIR)/src/qt-test.qrc'
     '$(TARGET)-g++' \
         -W -Wall -Werror -std=c++0x -pedantic \
-        '$(TOP_DIR)/src/qt-test.cpp' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)-pkgconfig.exe' \
+        '$(TOP_DIR)/src/qt-test.cpp' \
+        '$(1)/test-$(PKG)-pkgconfig/moc_qt-test.cpp' \
+        '$(1)/test-$(PKG)-pkgconfig/qrc_qt-test.cpp' \
+        -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)-pkgconfig.exe' \
         -I'$(1)/test-$(PKG)-pkgconfig' \
         `'$(TARGET)-pkg-config' Qt5Widgets --cflags --libs`
+
+    # setup cmake toolchain
+    echo 'set(CMAKE_SYSTEM_PREFIX_PATH "$(PREFIX)/$(TARGET)/qt5" ${CMAKE_SYSTEM_PREFIX_PATH})' > '$(CMAKE_TOOLCHAIN_DIR)/$(PKG).cmake'
 
     # batch file to run test programs
     (printf 'set PATH=..\\lib;..\\qt5\\bin;..\\qt5\\lib;%%PATH%%\r\n'; \

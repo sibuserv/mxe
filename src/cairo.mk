@@ -3,12 +3,12 @@
 
 PKG             := cairo
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.14.2
-$(PKG)_CHECKSUM := c8da68aa66ca0855b5d0ff552766d3e8679e1d24
+$(PKG)_VERSION  := 1.14.6
+$(PKG)_CHECKSUM := 613cb38447b76a93ff7235e17acd55a78b52ea84a9df128c3f2257f8eaa7b252
 $(PKG)_SUBDIR   := cairo-$($(PKG)_VERSION)
 $(PKG)_FILE     := cairo-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := http://cairographics.org/releases/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc fontconfig freetype-bootstrap libpng lzo pixman zlib
+$(PKG)_DEPS     := gcc fontconfig freetype-bootstrap glib libpng lzo pixman zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://cairographics.org/releases/?C=M;O=D' | \

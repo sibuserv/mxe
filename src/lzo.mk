@@ -3,8 +3,8 @@
 
 PKG             := lzo
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 2.08
-$(PKG)_CHECKSUM := 64c3e44843a44ffc4533aa89e41516f42bfefa76
+$(PKG)_VERSION  := 2.09
+$(PKG)_CHECKSUM := f294a7ced313063c057c504257f437c8335c41bfeed23531ee4e6a2b87bcb34c
 $(PKG)_SUBDIR   := lzo-$($(PKG)_VERSION)
 $(PKG)_FILE     := lzo-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := http://www.oberhumer.com/opensource/lzo/download/$($(PKG)_FILE)

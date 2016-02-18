@@ -3,12 +3,12 @@
 
 PKG             := harfbuzz
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 0.9.41
-$(PKG)_CHECKSUM := a77d5d061e91322c1196ab23afeeb8c7e4bf62bb
+$(PKG)_VERSION  := 1.1.2
+$(PKG)_CHECKSUM := 4a2c5790bd3db7c3ca8c02e4858f2fd592df7932c1d2fa9f6b99acbce0f8461f
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := http://www.freedesktop.org/software/$(PKG)/release/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc glib cairo freetype-bootstrap icu4c
+$(PKG)_DEPS     := gcc cairo freetype-bootstrap glib icu4c
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://cgit.freedesktop.org/harfbuzz/refs/tags' | \
@@ -18,6 +18,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
+    # mman-win32 is only a partial implementation
     cd '$(1)' && \
     CPPFLAGS="$(CPPFLAGS)" \
     CFLAGS="$(CFLAGS)" \
@@ -25,6 +26,7 @@ define $(PKG)_BUILD
     LDFLAGS="$(LDFLAGS)" \
     ./configure \
         $(MXE_CONFIGURE_OPTS) \
+        ac_cv_header_sys_mman_h=no \
         LIBS='-lstdc++'
     $(MAKE) -C '$(1)' -j '$(JOBS)' install
 endef
