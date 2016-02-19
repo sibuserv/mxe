@@ -35,15 +35,17 @@ define $(PKG)_BUILD
             -release \
             -static \
             -prefix '$(PREFIX)/$(TARGET)/qt5' \
+            -no-icu \
+            -opengl desktop \
+            -no-glib \
             -accessibility \
             -nomake examples \
             -nomake tests \
             -system-zlib \
             -system-libpng \
             -system-libjpeg \
-            -system-freetype \
             -fontconfig \
-            -opengl desktop \
+            -system-freetype \
             -no-sql-sqlite \
             -no-sql-sqlite2 \
             -no-sql-mysql \
@@ -54,8 +56,6 @@ define $(PKG)_BUILD
             -no-sql-db2 \
             -no-sql-ibase \
             -no-openssl \
-            -no-glib \
-            -no-icu \
             -v
 
     # invoke qmake with removed debug options as a workaround for
