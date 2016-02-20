@@ -4,7 +4,3 @@
 PKG             := qt5
 $(PKG)_VERSION   = $(qtbase_VERSION)
 $(PKG)_DEPS     := qtbase qttools qtserialport qtscript qtwebsockets qtconnectivity
-
-define $(PKG)_UPDATE
-    echo $(qtbase_VERSION)
-endef
