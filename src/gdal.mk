@@ -41,11 +41,11 @@ define $(PKG)_BUILD
         --with-geotiff=internal \
         --with-threads=no \
         --with-openjpeg=no \
+        --with-ogr \
         --with-curl=no \
         --with-xml2=no \
         --with-geos=no \
         --with-bsb=no \
-        --with-ogr=no \
         --with-grib=no \
         --with-pam=no \
         --with-gta=no \
