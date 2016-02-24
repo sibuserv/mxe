@@ -83,7 +83,7 @@ define $(PKG)_BUILD
         --without-ruby \
         --without-python \
         --without-armadillo \
-        LIBS="-ljpeg -lsecur32 -lportablexdr `'$(TARGET)-pkg-config' --libs openssl libtiff-4`"
+        LIBS="-ljpeg -lsecur32 `'$(TARGET)-pkg-config' --libs openssl libtiff-4`"
 
     $(MAKE) -C '$(1)'       -j '$(JOBS)' lib-target
     $(MAKE) -C '$(1)'       -j '$(JOBS)' install-lib
