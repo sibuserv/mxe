@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 5c727d84755da276adf8c4a4a3a8ba9c9570fc4b4969f06f1d2e9f89b1e30
 $(PKG)_SUBDIR   := OpenSceneGraph-$($(PKG)_VERSION)
 $(PKG)_FILE     := OpenSceneGraph-$($(PKG)_VERSION).zip
 $(PKG)_URL      := http://trac.openscenegraph.org/downloads/developer_releases/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc freetype gdal giflib jpeg libpng tiff zlib
+$(PKG)_DEPS     := gcc freetype gdal giflib jpeg libpng tiff zlib openthreads
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://trac.openscenegraph.org/downloads/developer_releases/?C=M;O=D' | \
@@ -24,8 +24,8 @@ define $(PKG)_BUILD
         -DCMAKE_TOOLCHAIN_FILE='$(CMAKE_TOOLCHAIN_FILE)' \
         -DCMAKE_HAVE_PTHREAD_H=OFF \
         -DPKG_CONFIG_EXECUTABLE='$(PREFIX)/bin/$(TARGET)-pkg-config' \
-        -DDYNAMIC_OPENTHREADS=$(CMAKE_SHARED_BOOL) \
-        -DDYNAMIC_OPENSCENEGRAPH=$(CMAKE_SHARED_BOOL) \
+        -DDYNAMIC_OPENTHREADS=OFF \
+        -DDYNAMIC_OPENSCENEGRAPH=OFF \
         -DBUILD_OSG_APPLICATIONS=OFF \
         -DOSG_USE_QT=OFF \
         -D_OPENTHREADS_ATOMIC_USE_GCC_BUILTINS_EXITCODE=1 \
