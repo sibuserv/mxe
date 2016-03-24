@@ -3,4 +3,4 @@
 
 PKG             := qt5
 $(PKG)_VERSION   = $(qtbase_VERSION)
-$(PKG)_DEPS     := qtbase qttools qtserialport qtscript qtwebsockets qtconnectivity
+$(PKG)_DEPS     := qtbase qtconnectivity qtscript qtserialport qttools qtwebsockets
