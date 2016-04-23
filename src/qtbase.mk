@@ -26,6 +26,7 @@ define $(PKG)_BUILD
         LDFLAGS="$(LDFLAGS)" \
         ./configure \
             -opensource \
+            -c++std c++11 \
             -confirm-license \
             -xplatform win32-g++ \
             -device-option CROSS_COMPILE=${TARGET}- \

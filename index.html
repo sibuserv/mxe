@@ -572,6 +572,10 @@ USE_OSGPLUGIN(&lt;plugin2&gt;)
         <td></td>
     </tr>
     <tr>
+        <td><a href="https://www.gnu.org/software/tar/">GNU Tar</a></td>
+        <td></td>
+    </tr>
+    <tr>
         <td><a href="http://freedesktop.org/wiki/Software/intltool/">Intltool</a></td>
         <td>≥ 0.40</td>
     </tr>
@@ -778,8 +782,8 @@ USE_OSGPLUGIN(&lt;plugin2&gt;)
     <!-- http://www.macports.org/ports.php -->
     <pre>sudo port install \
     autoconf automake bison coreutils flex gettext \
-    gdk-pixbuf2 glib2 gsed intltool libffi libtool \
-    openssl p5-xml-parser p7zip scons wget xz</pre>
+    gdk-pixbuf2 glib2 gnutar gsed intltool libffi libtool \
+    openssl p5-xml-parser p7zip pkgconfig scons wget xz</pre>
 
     <h5 id="requirements-macos-method-2">Method 2 - Rudix</h5>
     <p>
@@ -789,7 +793,7 @@ USE_OSGPLUGIN(&lt;plugin2&gt;)
     <!-- http://rudix.org/packages/index.html -->
     <pre>sudo rudix install \
     autoconf automake coreutils gettext glib intltool \
-    libtool p7zip scons sed wget xz</pre>
+    libtool p7zip scons sed tar wget xz</pre>
     <p>
     Note: <b>gdk-pixbuf2</b> is not installed in method 2,
     so you can not build <b>gtk3</b>. Other packages may be
@@ -804,7 +808,7 @@ USE_OSGPLUGIN(&lt;plugin2&gt;)
     <!-- http://braumeister.org/ -->
     <pre>brew install \
     autoconf automake coreutils gdk-pixbuf gettext \
-    gnu-sed intltool libtool p7zip wget xz</pre>
+    gnu-sed gnu-tar intltool libtool p7zip wget xz</pre>
     <p>
     Some formulae are
     <a href="https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/FAQ.md#what-does-keg-only-mean"><code>keg-only</code></a>
@@ -1418,6 +1422,10 @@ local-pkg-list: $(LOCAL_PKG_LIST)</pre>
         <td class="website"><a href="https://www.gnu.org/software/gnutls/">GnuTLS</a></td>
     </tr>
     <tr>
+        <td class="package">googletest</td>
+        <td class="website"><a href="https://github.com/google/googletest">Google Test</a></td>
+    </tr>
+    <tr>
         <td class="package">graphicsmagick</td>
         <td class="website"><a href="http://www.graphicsmagick.org/">GraphicsMagick</a></td>
     </tr>
@@ -1878,6 +1886,10 @@ local-pkg-list: $(LOCAL_PKG_LIST)</pre>
         <td class="website"><a href="https://download.libsodium.org/doc/">libsodium</a></td>
     </tr>
     <tr>
+        <td class="package">libsoup</td>
+        <td class="website"><a href="https://github.com/GNOME/libsoup">libsoup</a></td>
+    </tr>
+    <tr>
         <td class="package">libssh2</td>
         <td class="website"><a href="http://www.libssh2.org">libssh2</a></td>
     </tr>
@@ -1904,6 +1916,10 @@ local-pkg-list: $(LOCAL_PKG_LIST)</pre>
     <tr>
         <td class="package">libusb1</td>
         <td class="website"><a href="http://libusb.org/">LibUsb-1.0</a></td>
+    </tr>
+    <tr>
+        <td class="package">libuv</td>
+        <td class="website"><a href="http://libuv.org/">libuv</a></td>
     </tr>
     <tr>
         <td class="package">libvpx</td>
@@ -2243,7 +2259,7 @@ local-pkg-list: $(LOCAL_PKG_LIST)</pre>
     </tr>
     <tr>
         <td class="package">protobuf</td>
-        <td class="website"><a href="http://code.google.com/p/protobuf/">protobuf</a></td>
+        <td class="website"><a href="https://github.com/google/protobuf">protobuf</a></td>
     </tr>
     <tr>
         <td class="package">pthreads</td>
@@ -4172,6 +4188,37 @@ endef</pre>
     </li>
     </ul>
 
+    <h3>Related articles</h3>
+
+    <ul>
+    <li>
+        <a href="http://www.valdyas.org/fading/index.cgi/hacking/krita/mxe_krita.html">Cross-compiling Krita using MXE</a>
+        <br>
+        Experience report of the
+        <a href="https://krita.org/">Krita project</a>
+    </li>
+    <li>
+        <a href="http://thebeezspeaks.blogspot.com/2009/04/cross-compilers-new-wave.html">Cross compilers, the new wave</a>
+        <br>
+        Appeared on
+        <a href="http://lxer.com/module/newswire/view/118868">LXer</a>
+        and
+        <a href="http://www.linuxtoday.com/developer/2009041501335RVSWDV">Linux Today</a>
+    </li>
+    <li>
+        <a href="http://www.mingw.org/wiki/LinuxCrossMinGW">MinGW cross compiler for Linux build environment</a>
+        <br>
+        Official tutorial of the
+        <a href="http://www.mingw.org/">MinGW project</a>
+    </li>
+    <li>
+        <a href="http://wiki.wxwidgets.org/Cross-Compiling_Under_Linux#Cross-compiling_under_Linux_for_MS_Windows">Cross-compiling under Linux for MS Windows</a>
+        <br>
+        Old tutorial provided by the
+        <a href="http://www.wxwidgets.org/">wxWidgets project</a>
+    </li>
+    </ul>
+
     <h3>Related projects</h3>
 
     <ul>
@@ -4228,36 +4275,6 @@ endef</pre>
         Creates binary packages, runs on both Linux and Windows
     </li>
     </ul>
-
-    <h3>Related articles</h3>
-
-    <ul>
-    <li>
-        <a href="http://thebeezspeaks.blogspot.com/2009/04/cross-compilers-new-wave.html">Cross compilers, the new wave</a>
-        <br>
-        Appeared on
-        <a href="http://lxer.com/module/newswire/view/118868">LXer</a>
-        and
-        <a href="http://www.linuxtoday.com/developer/2009041501335RVSWDV">Linux Today</a>
-    </li>
-    <li>
-        <a href="http://wiki.njh.eu/Cross_Compiling_for_Win32">Cross Compiling for Win32</a>
-        <br>
-        Overview of win32 cross compiling
-    </li>
-    <li>
-        <a href="http://www.mingw.org/wiki/LinuxCrossMinGW">MinGW cross compiler for Linux build environment</a>
-        <br>
-        Official tutorial of the
-        <a href="http://www.mingw.org/">MinGW project</a>
-    </li>
-    <li>
-        <a href="http://wiki.wxwidgets.org/Cross-Compiling_Under_Linux#Cross-compiling_under_Linux_for_MS_Windows">Cross-compiling under Linux for MS Windows</a>
-        <br>
-        Old tutorial provided by the
-        <a href="http://www.wxwidgets.org/">wxWidgets project</a>
-    </li>
-    </ul>
 </div>
 
 <div class="section">
@@ -4305,6 +4322,9 @@ endef</pre>
     </li>
     <li>
         <a href="http://ifwiki.org/index.php/Hugor">Hugor</a>
+    </li>
+    <li>
+        <a href="https://krita.org/">Krita</a>
     </li>
     <li>
         <a href="http://lightspark.github.com/">Lightspark</a>
