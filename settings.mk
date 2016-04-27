@@ -15,6 +15,7 @@
 #MXE_TARGETS :=  i686-w64-mingw32.static i686-w64-mingw32.shared  x86_64-w64-mingw32.static x86_64-w64-mingw32.shared
 MXE_TARGETS := x86_64-w64-mingw32.static i686-w64-mingw32.static
 MXE_GCC_THREADS := posix
+MXE_PLUGIN_DIRS += plugins/gcc5
 
 # This variable controls the download mirror for SourceForge,
 # when it is used. Enabling the value below means auto.

@@ -90,7 +90,6 @@ CPPFLAGS := -D_FORTIFY_SOURCE=2
 CFLAGS   := -s -Os -fdata-sections -ffunction-sections -fPIC -std=c11   $(CPPFLAGS)
 CXXFLAGS := -s -Os -fdata-sections -ffunction-sections -fPIC -std=c++11 $(CPPFLAGS)
 LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
-MXE_PLUGIN_DIRS += plugins/gcc5
 
 # Append these to the "make" and "make install" steps of autotools packages
 # in order to neither build nor install unwanted binaries, manpages,
