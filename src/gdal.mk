@@ -11,8 +11,6 @@ $(PKG)_URL      := http://download.osgeo.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FIL
 $(PKG)_URL_2    := ftp://ftp.remotesensing.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc proj zlib libpng tiff jpeg giflib expat
 
-CXXFLAGS := -Os -fdata-sections -ffunction-sections $(CPPFLAGS) -D_WIN32_WINNT=0x0600
-
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://trac.osgeo.org/gdal/wiki/DownloadSource' | \
     $(SED) -n 's,.*gdal-\([0-9][^>]*\)\.tar.*,\1,p' | \
@@ -26,7 +24,7 @@ define $(PKG)_BUILD
     cd '$(1)' && \
     CPPFLAGS="$(CPPFLAGS)" \
     CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS) -D_WIN32_WINNT=0x0600" \
     LDFLAGS="$(LDFLAGS)" \
     ./configure \
         $(MXE_CONFIGURE_OPTS) \
