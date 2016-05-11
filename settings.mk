@@ -17,6 +17,12 @@ MXE_TARGETS := x86_64-w64-mingw32.static i686-w64-mingw32.static
 MXE_GCC_THREADS := posix
 MXE_PLUGIN_DIRS += plugins/gcc6
 
+# Special flags for compiler.
+CPPFLAGS := -D_FORTIFY_SOURCE=2
+CFLAGS   := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS)
+CXXFLAGS := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS)
+LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
+
 # This variable controls the download mirror for SourceForge,
 # when it is used. Enabling the value below means auto.
 #SOURCEFORGE_MIRROR := downloads.sourceforge.net

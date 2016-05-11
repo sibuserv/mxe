@@ -86,11 +86,6 @@ MXE_CONFIGURE_OPTS = \
 MXE_GCC_THREADS = \
     $(if $(findstring posix,$(TARGET)),posix,win32)
 
-CPPFLAGS := -D_FORTIFY_SOURCE=2
-CFLAGS   := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS)
-CXXFLAGS := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS)
-LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
-
 # Append these to the "make" and "make install" steps of autotools packages
 # in order to neither build nor install unwanted binaries, manpages,
 # infopages and API documentation (reduces build time and disk space usage).
