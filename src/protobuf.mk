@@ -24,7 +24,12 @@ define $(PKG)_BUILD
     cp '$(1)/src/protoc' '$(PREFIX)/bin/$(TARGET)-protoc'
     $(MAKE) -C '$(1)' -j 1 distclean
 # Second step: Build for target system.
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --with-zlib \
         --with-protoc='$(PREFIX)/bin/$(TARGET)-protoc'
