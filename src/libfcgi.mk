@@ -4,7 +4,7 @@
 PKG             := libfcgi
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 2.4.0
-$(PKG)_CHECKSUM := 940ac5e857d63756726068ac3043319289d886c9
+$(PKG)_CHECKSUM := c21f553f41141a847b2f1a568ec99a3068262821e4e30bc9d4b5d9091aa0b5f7
 $(PKG)_SUBDIR   := libfcgi-$($(PKG)_VERSION).orig
 $(PKG)_FILE     := libfcgi_$($(PKG)_VERSION).orig.tar.gz
 $(PKG)_URL      := http://ftp.debian.org/debian/pool/main/libf/$(PKG)/$($(PKG)_FILE)
