@@ -4,7 +4,7 @@
 PKG             := vlc
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 2.2.1
-$(PKG)_CHECKSUM := ee8535c5966217bc2069a74c1d4e8c32609656e9
+$(PKG)_CHECKSUM := 543d9d7e378ec0fa1ee2e7f7f5acf8c456c7d0ecc32037171523197ef3cf1fcb
 $(PKG)_SUBDIR   := vlc-$($(PKG)_VERSION)
 $(PKG)_FILE     := vlc-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := http://download.videolan.org/pub/videolan/vlc/$($(PKG)_VERSION)/$($(PKG)_FILE)
