@@ -3,11 +3,11 @@
 
 PKG             := qtbase
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 5.6.0
-$(PKG)_CHECKSUM := 6efa8a5c559e92b2e526d48034e858023d5fd3c39115ac1bfd3bb65834dbd67a
+$(PKG)_VERSION  := 5.7.0
+$(PKG)_CHECKSUM := 3e7b6d123cab23a587ccbc45173296b33786faa409dba0494e4658fda3ede646
 $(PKG)_SUBDIR   := $(PKG)-opensource-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-opensource-src-$($(PKG)_VERSION).tar.xz
-$(PKG)_URL      := http://download.qt.io/official_releases/qt/5.6/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
+$(PKG)_URL      := http://download.qt.io/official_releases/qt/5.7/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc zlib libpng jpeg fontconfig freetype
 
 define $(PKG)_UPDATE
