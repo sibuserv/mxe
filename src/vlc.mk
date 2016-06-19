@@ -98,5 +98,5 @@ define $(PKG)_BUILD
         --disable-x264 \
         --disable-schroedinger \
         --disable-a52
-    $(MAKE) -C '$(1)' -j '$(JOBS)' install
+    $(MAKE) -C '$(1)' -j '$(JOBS)' install -i
 endef
