@@ -17,9 +17,8 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    mkdir '$(1)/build'
-    cd '$(1)/build' && cmake .. \
-        -DCMAKE_TOOLCHAIN_FILE='$(CMAKE_TOOLCHAIN_FILE)' \
+    mkdir '$(1).build'
+    cd    '$(1).build' && $(TARGET)-cmake '$(1)' \
         -DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
         -DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS)" \
         -DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS)" \
@@ -28,7 +27,8 @@ define $(PKG)_BUILD
         -DFREEGLUT_REPLACE_GLUT=ON \
         -DFREEGLUT_BUILD_STATIC_LIBS=$(if $(BUILD_STATIC),true,false) \
         -DFREEGLUT_BUILD_SHARED_LIBS=$(if $(BUILD_STATIC),false,true)
-    $(MAKE) -C '$(1)/build' -j '$(JOBS)' install
+    $(MAKE) -C '$(1).build' -j '$(JOBS)'
+    $(MAKE) -C '$(1).build' -j 1 install
 
     '$(TARGET)-gcc' \
         -W -Wall -Werror -ansi -pedantic \
