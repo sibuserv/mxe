@@ -30,7 +30,7 @@ LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
 # The three lines below makes `make` build these "local
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
-LOCAL_PKG_LIST := freeglut qt5 qwt protobuf libjpeg-turbo openscenegraph
+LOCAL_PKG_LIST := freeglut sdl2 qt5 qwt protobuf libjpeg-turbo openscenegraph boost
 .DEFAULT local-pkg-list:
 local-pkg-list: $(LOCAL_PKG_LIST)
 
