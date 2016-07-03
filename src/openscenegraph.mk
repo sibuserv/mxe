@@ -20,8 +20,7 @@ endef
 
 define $(PKG)_BUILD
     mkdir '$(1).build'
-    cd '$(1).build' && cmake '$(1)' \
-        -DCMAKE_TOOLCHAIN_FILE='$(CMAKE_TOOLCHAIN_FILE)' \
+    cd '$(1).build' && $(TARGET)-cmake '$(1)' \
         -DCMAKE_HAVE_PTHREAD_H=OFF \
         -DPKG_CONFIG_EXECUTABLE='$(PREFIX)/bin/$(TARGET)-pkg-config' \
         -DDYNAMIC_OPENTHREADS=OFF \
@@ -30,8 +29,6 @@ define $(PKG)_BUILD
         -DOSG_USE_QT=OFF \
         -D_OPENTHREADS_ATOMIC_USE_GCC_BUILTINS_EXITCODE=1 \
         -D_OPENTHREADS_ATOMIC_USE_WIN32_INTERLOCKED=1 \
-        -DCMAKE_CXX_FLAGS="$(CXXFLAGS) -D__STDC_CONSTANT_MACROS -fpermissive" \
-        -DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS)" \
-        -DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS)"
+        -DCMAKE_CXX_FLAGS="$(CXXFLAGS) -D__STDC_CONSTANT_MACROS -fpermissive"
     $(MAKE) -C '$(1).build' -j '$(JOBS)' install VERBOSE=1
 endef
