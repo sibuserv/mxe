@@ -22,11 +22,7 @@ define $(PKG)_BUILD
         -DCMAKE_TOOLCHAIN_FILE='$(CMAKE_TOOLCHAIN_FILE)' \
         -DLIBTYPE=$(if $(BUILD_SHARED),SHARED,STATIC) \
         -DALSOFT_EXAMPLES=FALSE \
-        -DALSOFT_UTILS=FALSE \
-        -DCMAKE_C_FLAGS="$(CFLAGS) $(CPPFLAGS)" \
-        -DCMAKE_CXX_FLAGS="$(CXXFLAGS) $(CPPFLAGS)" \
-        -DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS)" \
-        -DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS)"
+        -DALSOFT_UTILS=FALSE
     $(MAKE) -C '$(1)/build' -j '$(JOBS)' install
 
     '$(TARGET)-gcc' \
