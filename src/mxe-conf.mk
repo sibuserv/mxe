@@ -35,6 +35,10 @@ define $(PKG)_BUILD
      echo 'set(CMAKE_CXX_COMPILER $(PREFIX)/bin/$(TARGET)-g++)'; \
      echo 'set(CMAKE_Fortran_COMPILER $(PREFIX)/bin/$(TARGET)-gfortran)'; \
      echo 'set(CMAKE_RC_COMPILER $(PREFIX)/bin/$(TARGET)-windres)'; \
+     echo 'set(CMAKE_C_FLAGS "$(CFLAGS)" CACHE STRING "" FORCE)'; \
+     echo 'set(CMAKE_CXX_FLAGS "$(CXXFLAGS)" CACHE STRING "" FORCE)'; \
+     echo 'set(CMAKE_SHARED_LINKER_FLAGS "$(LDFLAGS)" CACHE STRING "" FORCE)'; \
+     echo 'set(CMAKE_EXE_LINKER_FLAGS "$(LDFLAGS)" CACHE STRING "" FORCE)'; \
      echo 'set(CMAKE_MODULE_PATH "$(PREFIX)/share/cmake/modules" $${CMAKE_MODULE_PATH}) # For mxe FindPackage scripts'; \
      echo 'set(CMAKE_INSTALL_PREFIX $(PREFIX)/$(TARGET) CACHE PATH "Installation Prefix")'; \
      echo 'set(CMAKE_BUILD_TYPE Release CACHE STRING "Debug|Release|RelWithDebInfo|MinSizeRel")'; \
