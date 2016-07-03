@@ -30,12 +30,7 @@ define $(PKG)_BUILD
 
     # cross-build, see b2 options at:
     # http://www.boost.org/build/doc/html/bbv2/overview/invocation.html
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./tools/build/b2 \
+    cd '$(1)' && ./tools/build/b2 \
         -a \
         -q \
         -j '$(JOBS)' \
@@ -51,7 +46,8 @@ define $(PKG)_BUILD
         threading=multi \
         variant=release \
         toolset=gcc-mxe \
-        cxxflags=$(if $(findstring posix,$(MXE_GCC_THREADS)),-std=gnu++11,-std=gnu++98) \
+        cflags="$(CFLAGS)" \
+        cxxflags="$(CXXFLAGS)" \
         --layout=tagged \
         --disable-icu \
         --without-mpi \
