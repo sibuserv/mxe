@@ -19,9 +19,6 @@ endef
 define $(PKG)_BUILD
     mkdir '$(1).build'
     cd    '$(1).build' && $(TARGET)-cmake '$(1)' \
-        -DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-        -DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS)" \
-        -DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS)" \
         -DFREEGLUT_GLES=OFF \
         -DFREEGLUT_BUILD_DEMOS=OFF \
         -DFREEGLUT_REPLACE_GLUT=ON \
