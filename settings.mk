@@ -19,8 +19,8 @@ MXE_PLUGIN_DIRS += plugins/gcc6
 
 # Special flags for compiler.
 CPPFLAGS := -D_FORTIFY_SOURCE=2
-CFLAGS   := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS)
-CXXFLAGS := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS)
+CFLAGS   := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS) -static-libgcc
+CXXFLAGS := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS) -static-libgcc -static-libstdc++
 LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
 
 # This variable controls the download mirror for SourceForge,
