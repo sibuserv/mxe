@@ -426,7 +426,12 @@ define PKG_RULE
 download-$(1): $(addprefix download-,$($(1)_DEPS)) download-only-$(1)
 
 .PHONY: download-only-$(1)
-download-only-$(1):
+# Packages can share a source archive to build different sets of features
+# or dependencies (see bfd/binutils openscenegraph/openthreads qwt/qwt_qt4).
+# Use a double-colon rule to allow multiple definitions:
+# https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html
+download-only-$(1): download-only-$($(1)_FILE)
+download-only-$($(1)_FILE)::
 	$(and $($(1)_URL),
 	@[ -d '$(LOG_DIR)/$(TIMESTAMP)' ] || mkdir -p '$(LOG_DIR)/$(TIMESTAMP)'
 	@if ! $(call CHECK_PKG_ARCHIVE,$(1)); then \
@@ -508,6 +513,9 @@ $(PREFIX)/$(3)/installed/$(1): $(PKG_MAKEFILES) \
 
 
 .PHONY: build-only-$(1)_$(3)
+# target-specific variables provide an extra level of scoping so that named
+# variables can be used in package build rules:
+# https://www.gnu.org/software/make/manual/html_node/Target_002dspecific.html
 build-only-$(1)_$(3): PKG = $(1)
 build-only-$(1)_$(3): TARGET = $(3)
 build-only-$(1)_$(3): BUILD_$(if $(findstring shared,$(3)),SHARED,STATIC) = TRUE
