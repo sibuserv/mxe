@@ -24,7 +24,12 @@ define $(PKG)_BUILD
         ln -sf '$(PREFIX)/$(BUILD)/bin/yasm' '$(PREFIX)/bin/$(TARGET)-yasm')
 
     # yasm is always static
-    cd '$(1)' && '$(1)/configure' \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --disable-nls \
         --disable-python
