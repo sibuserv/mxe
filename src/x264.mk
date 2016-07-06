@@ -19,7 +19,12 @@ endef
 
 define $(PKG)_BUILD
     $(SED) -i 's,yasm,$(TARGET)-yasm,g' '$(1)/configure'
-    cd '$(1)' && ./configure \
+    cd '$(1)' && \
+    CPPFLAGS="$(CPPFLAGS)" \
+    CFLAGS="$(CFLAGS)" \
+    CXXFLAGS="$(CXXFLAGS)" \
+    LDFLAGS="$(LDFLAGS)" \
+    ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --cross-prefix='$(TARGET)'- \
         --enable-win32thread \
