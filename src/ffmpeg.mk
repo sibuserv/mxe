@@ -9,9 +9,7 @@ $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := http://www.ffmpeg.org/releases/$($(PKG)_FILE)
 $(PKG)_URL_2    := http://launchpad.net/ffmpeg/$(call SHORT_PKG_VERSION,$(PKG))/$($(PKG)_VERSION)/+download/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc bzip2 gnutls lame libass libbluray libbs2b libcaca \
-                   libvpx opencore-amr opus sdl speex theora vidstab \
-                   vo-amrwbenc vorbis x264 xvidcore yasm zlib
+$(PKG)_DEPS     := gcc bzip2 x264 yasm zlib
 
 # DO NOT ADD fdk-aac OR openssl SUPPORT.
 # Although they are free softwares, their licenses are not compatible with
@@ -52,23 +50,23 @@ define $(PKG)_BUILD
         --enable-version3 \
         --extra-libs='-mconsole' \
         --enable-avisynth \
-        --enable-gnutls \
-        --enable-libass \
-        --enable-libbluray \
-        --enable-libbs2b \
-        --enable-libcaca \
-        --enable-libmp3lame \
-        --enable-libopencore-amrnb \
-        --enable-libopencore-amrwb \
-        --enable-libopus \
-        --enable-libspeex \
-        --enable-libtheora \
-        --enable-libvidstab \
-        --enable-libvo-amrwbenc \
-        --enable-libvorbis \
-        --enable-libvpx \
+        --disable-gnutls \
+        --disable-libass \
+        --disable-libbluray \
+        --disable-libbs2b \
+        --disable-libcaca \
+        --disable-libmp3lame \
+        --disable-libopencore-amrnb \
+        --disable-libopencore-amrwb \
+        --disable-libopus \
+        --disable-libspeex \
+        --disable-libtheora \
+        --disable-libvidstab \
+        --disable-libvo-amrwbenc \
+        --disable-libvorbis \
+        --disable-libvpx \
         --enable-libx264 \
-        --enable-libxvid
+        --disable-libxvid
     $(MAKE) -C '$(1)' -j '$(JOBS)'
     $(MAKE) -C '$(1)' -j 1 install
 endef
