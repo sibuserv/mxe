@@ -50,7 +50,6 @@ define $(PKG)_BUILD
         --enable-version3 \
         --extra-libs='-mconsole' \
         --enable-avisynth \
-        --disable-gnutls \
         --disable-libass \
         --disable-libbluray \
         --disable-libbs2b \
