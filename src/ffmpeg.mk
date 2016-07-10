@@ -66,7 +66,15 @@ define $(PKG)_BUILD
         --disable-libvorbis \
         --disable-libvpx \
         --disable-libx264 \
-        --disable-libxvid
+        --disable-libxvid \
+        --disable-programs \
+        --disable-sdl \
+        --disable-iconv \
+        --disable-openssl \
+        --disable-gnutls \
+        --disable-schannel \
+        --disable-securetransport
+
     $(MAKE) -C '$(1)' -j '$(JOBS)'
     $(MAKE) -C '$(1)' -j 1 install
 endef
