@@ -1,5 +1,4 @@
-# This file is part of MXE.
-# See index.html for further information.
+# This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := cloog
 $(PKG)_IGNORE   :=
@@ -15,6 +14,7 @@ $(PKG)_DEPS     := gcc gmp isl
 $(PKG)_DEPS_$(BUILD) := gmp isl
 
 # stick to tested versions from gcc
+# after gcc4 series, switch to normal updates and bundled isl
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'ftp://gcc.gnu.org/pub/gcc/infrastructure/' | \
     $(SED) -n 's,.*cloog-\([0-9][^>]*\)\.tar.*,\1,p' | \

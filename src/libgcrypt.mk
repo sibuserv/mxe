@@ -1,10 +1,9 @@
-# This file is part of MXE.
-# See index.html for further information.
+# This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := libgcrypt
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.7.1
-$(PKG)_CHECKSUM := 450d9cfcbf1611c64dbe3bd04b627b83379ef89f11406d94c8bba305e36d7a95
+$(PKG)_VERSION  := 1.7.3
+$(PKG)_CHECKSUM := ddac6111077d0a1612247587be238c5294dd0ee4d76dc7ba783cc55fb0337071
 $(PKG)_SUBDIR   := libgcrypt-$($(PKG)_VERSION)
 $(PKG)_FILE     := libgcrypt-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := http://mirrors.dotsrc.org/gcrypt/libgcrypt/$($(PKG)_FILE)
@@ -35,7 +34,7 @@ define $(PKG)_MAKE
 
     '$(TARGET)-gcc' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(2).c' -o '$(PREFIX)/$(TARGET)/bin/test-libgcrypt.exe' \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libgcrypt.exe' \
         `$(TARGET)-libgcrypt-config --cflags --libs`
 endef
 

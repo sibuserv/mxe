@@ -1,8 +1,7 @@
 #!/usr/bin/env lua
 
 --[[
-This file is part of MXE.
-See index.html for further information.
+This file is part of MXE. See LICENSE.md for licensing information.
 
 build-pkg, Build binary packages from MXE packages
 Instructions: http://pkg.mxe.cc
@@ -461,7 +460,7 @@ local function gitCheckout(new_branch, deps, item2index, pass_of_deps)
 end
 
 local function gitAdd()
-    os.execute(GIT .. 'add --all .')
+    os.execute(GIT .. 'add --all --force .')
 end
 
 -- return two lists of filepaths under ./usr/
@@ -644,10 +643,13 @@ local function comparePasses(item, new_files, prev_file2item, prev_files)
         end
         files_set[file] = true
     end
-    for _, file in ipairs(prev_files) do
-        if not files_set[file] then
-            log('Item %s installs a file on first pass only: %s',
-                item, file)
+    if prev_files then
+        -- prev_files is nil, if the first pass failed
+        for _, file in ipairs(prev_files) do
+            if not files_set[file] then
+                log('Item %s installs a file on first pass only: %s',
+                    item, file)
+            end
         end
     end
     -- TODO compare contents of files (nm for binaries)
@@ -973,7 +975,7 @@ local function makeDebs(items, item2deps, item2ver, item2files)
 end
 
 local function getMxeVersion()
-    local index_html = io.open 'index.html'
+    local index_html = io.open 'docs/index.html'
     local text = index_html:read('*all')
     index_html:close()
     return text:match('Release ([^<]+)')
@@ -1023,19 +1025,15 @@ local function makeMxeSourcePackage()
     -- dependencies
     local deps = {}
     local files = {
-        'CNAME',
         'LICENSE.md',
         'Makefile',
         'patch.mk',
         'README.md',
-        'assets',
-        'doc',
+        'docs',
         'ext',
-        'index.html',
         'src',
         'plugins',
         'tools',
-        'versions.json',
     }
     local d1 = "MXE source"
     local d2 = MXE_SOURCE_DESCRIPTION2

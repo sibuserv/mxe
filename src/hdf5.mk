@@ -1,5 +1,4 @@
-# This file is part of MXE.
-# See index.html for further information.
+# This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := hdf5
 $(PKG)_IGNORE   :=
@@ -67,7 +66,7 @@ define $(PKG)_BUILD
     ## test hdf5
     '$(TARGET)-g++' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(2).cpp' -o '$(PREFIX)/$(TARGET)/bin/test-hdf5.exe' \
+        '$(PWD)/src/$(PKG)-test.cpp' -o '$(PREFIX)/$(TARGET)/bin/test-hdf5.exe' \
         -lhdf5_hl -lhdf5 -lz
 
     # test cmake can find hdf5

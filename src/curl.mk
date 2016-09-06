@@ -1,10 +1,9 @@
-# This file is part of MXE.
-# See index.html for further information.
+# This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := curl
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 7.49.1
-$(PKG)_CHECKSUM := 540dd7e2017293ac13c925951a8e3187382b6fe7be045d5806912aae3c1f7c0c
+$(PKG)_VERSION  := 7.50.1
+$(PKG)_CHECKSUM := b2b176f3ef39d945d31e68e788be8564a7e16478af1dfe732462a300c7c58361
 $(PKG)_SUBDIR   := curl-$($(PKG)_VERSION)
 $(PKG)_FILE     := curl-$($(PKG)_VERSION).tar.lzma
 $(PKG)_URL      := http://curl.haxx.se/download/$($(PKG)_FILE)
@@ -35,6 +34,6 @@ define $(PKG)_BUILD
 
     '$(TARGET)-gcc' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(2).c' -o '$(PREFIX)/$(TARGET)/bin/test-curl.exe' \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-curl.exe' \
         `'$(TARGET)-pkg-config' libcurl --cflags --libs`
 endef
