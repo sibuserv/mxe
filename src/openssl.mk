@@ -18,7 +18,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && CC='$(TARGET)-gcc' \
+    cd '$(1)' && CC='$(TARGET)-gcc' RC='$(TARGET)-windres' \
     CPPFLAGS="$(CPPFLAGS)" \
     CFLAGS="$(CFLAGS)" \
     CXXFLAGS="$(CXXFLAGS)" \
