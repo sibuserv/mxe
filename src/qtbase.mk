@@ -57,6 +57,7 @@ define $(PKG)_BUILD
             -no-sql-oci \
             -no-sql-db2 \
             -no-sql-ibase \
+            -no-pch \
             -v \
             $($(PKG)_CONFIGURE_OPTS)
 
