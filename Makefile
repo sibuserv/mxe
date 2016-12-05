@@ -230,29 +230,30 @@ ESCAPE_PKG = \
 
 BACKUP_DOWNLOAD = \
     (echo "MXE Warning! Downloading $(1) from backup." >&2 && \
-    ($(WGET) -O- $(PKG_MIRROR)/`$(call ESCAPE_PKG,$(1))` || \
-    $(WGET) -O- $(PKG_CDN)/`$(call ESCAPE_PKG,$(1))`))
+    ($(WGET) -O '$(PKG_DIR)/.tmp-$($(1)_FILE)' $(PKG_MIRROR)/`$(call ESCAPE_PKG,$(1))` || \
+    $(WGET) -O '$(PKG_DIR)/.tmp-$($(1)_FILE)' $(PKG_CDN)/`$(call ESCAPE_PKG,$(1))`))
 
 DOWNLOAD_PKG_ARCHIVE = \
     $(if $($(1)_SOURCE_TREE),\
         true\
     $(else),\
         mkdir -p '$(PKG_DIR)' && ( \
-            $(WGET) -T 30 -t 3 -O- '$($(1)_URL)' \
+            $(WGET) -T 30 -t 3 -O '$(PKG_DIR)/.tmp-$($(1)_FILE)' '$($(1)_URL)' \
             $(if $($(1)_URL_2), \
                 || (echo "MXE Warning! Downloading $(1) from second URL." >&2 && \
-                    $(WGET) -T 30 -t 3 -O- '$($(1)_URL_2)')) \
+                    $(WGET) -T 30 -t 3 -O '$(PKG_DIR)/.tmp-$($(1)_FILE)' '$($(1)_URL_2)')) \
             $(if $(MXE_NO_BACKUP_DL),, \
                 || $(BACKUP_DOWNLOAD)) \
-        ) \
+        ) && cat '$(PKG_DIR)/.tmp-$($(1)_FILE)' \
         $(if $($(1)_FIX_GZIP), \
             | gzip -d | gzip -9n, \
             ) \
-        > '$(PKG_DIR)/$($(1)_FILE)' || \
+        > '$(PKG_DIR)/$($(1)_FILE)' && \
+        rm '$(PKG_DIR)/.tmp-$($(1)_FILE)' || \
         ( echo; \
           echo 'Download failed!'; \
           echo; \
-          rm -f '$(PKG_DIR)/$($(1)_FILE)'; )\
+          rm -f '$(PKG_DIR)/$($(1)_FILE)' '$(PKG_DIR)/.tmp-$($(1)_FILE)'; )\
     )
 
 # open issue from 2002:
@@ -759,13 +760,13 @@ cleanup-style:
 
 .PHONY: cleanup-deps-style
 cleanup-deps-style:
-	@grep '(PKG)_DEPS.*\\' '$(TOP_DIR)'/src/*.mk > $(TOP_DIR)/tmp-$@-pre
+	@grep '(PKG)_DEPS.*\\' $(foreach 1,$(PKGS),$(PKG_MAKEFILES)) > $(TOP_DIR)/tmp-$@-pre
 	@$(foreach PKG,$(PKGS), \
 	    $(if $(call lne,$(sort $(filter-out gcc,$($(PKG)_DEPS))),$(filter-out gcc,$($(PKG)_DEPS))), \
 	        $(info [cleanup] $(PKG)) \
-	        $(SED) -i 's/^\([^ ]*_DEPS *:=\).*/\1 '"$(strip $(filter gcc,$($(PKG)_DEPS)) $(sort $(filter-out gcc,$($(PKG)_DEPS))))"'/' '$(TOP_DIR)/src/$(PKG).mk'; \
+	        $(SED) -i 's/^\([^ ]*_DEPS *:=\)[^$$]*$$/\1 '"$(strip $(filter gcc,$($(PKG)_DEPS)) $(sort $(filter-out gcc,$($(PKG)_DEPS))))"'/' '$(call PKG_MAKEFILES,$(PKG))'; \
 	    ))
-	@grep '(PKG)_DEPS.*\\' '$(TOP_DIR)'/src/*.mk > $(TOP_DIR)/tmp-$@-post
+	@grep '(PKG)_DEPS.*\\' $(foreach 1,$(PKGS),$(PKG_MAKEFILES)) > $(TOP_DIR)/tmp-$@-post
 	@diff -u $(TOP_DIR)/tmp-$@-pre $(TOP_DIR)/tmp-$@-post >/dev/null \
 	     || echo '*** Multi-line deps are mangled ***' && comm -3 tmp-$@-pre tmp-$@-post
 	@rm -f $(TOP_DIR)/tmp-$@-*
@@ -864,7 +865,7 @@ docs/build-matrix.html: $(foreach 1,$(PKGS),$(PKG_MAKEFILES))
 	@echo '</html>'                         >> $@
 
 .PHONY: docs/versions.json
-docs/versions.json: $(foreach PKG,$(PKGS), $(TOP_DIR)/src/$(PKG).mk)
+docs/versions.json: $(foreach 1,$(PKGS),$(PKG_MAKEFILES))
 	@echo '{'                         > $@
 	@{$(foreach PKG,$(PKGS),          \
 	    echo '    "$(PKG)":           \
