@@ -38,7 +38,7 @@ define $(PKG)_BUILD
         --with-geotiff=internal \
         --with-threads=no \
         --with-openjpeg=no \
-        --with-ogr \
+        --with-ogr=no \
         --with-curl=no \
         --with-xml2=no \
         --with-geos=no \
