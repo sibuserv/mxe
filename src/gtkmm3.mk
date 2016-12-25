@@ -1,6 +1,8 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := gtkmm3
+$(PKG)_WEBSITE  := http://www.gtkmm.org/
+$(PKG)_DESCR    := GTKMM
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 3.14.0
 $(PKG)_CHECKSUM := d9f528a62c6ec226fa08287c45c7465b2dce5aae5068e9ac48d30a64a378e48b
@@ -28,7 +30,7 @@ define $(PKG)_BUILD
     $(MAKE) -C '$(1)' -j 1 install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS= doc_install='# DISABLED: doc-install.pl'
 
     '$(TARGET)-g++' \
-        -W -Wall -Werror -pedantic -std=c++0x \
+        -W -Wall -Wno-deprecated-declarations -Werror -pedantic -std=c++11 \
         '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-gtkmm3.exe' \
         `'$(TARGET)-pkg-config' gtkmm-3.0 --cflags --libs`
 endef

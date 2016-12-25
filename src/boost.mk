@@ -1,6 +1,8 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := boost
+$(PKG)_WEBSITE  := http://www.boost.org/
+$(PKG)_DESCR    := Boost C++ Library
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 1.62.0
 $(PKG)_CHECKSUM := 36c96b0f6155c98404091d8ceb48319a28279ca0333fba1ad8611eb90afb2ca0
