@@ -2,6 +2,8 @@
 # See index.html for further information.
 
 PKG             := vlc
+$(PKG)_WEBSITE  := http://www.videolan.org/vlc/
+$(PKG)_DESCR    := VLC
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 2.2.1
 $(PKG)_CHECKSUM := 543d9d7e378ec0fa1ee2e7f7f5acf8c456c7d0ecc32037171523197ef3cf1fcb

@@ -2,6 +2,8 @@
 # See index.html for further information.
 
 PKG             := libfcgi
+$(PKG)_WEBSITE  := https://github.com/FastCGI-Archives
+$(PKG)_DESCR    := libfcgi
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 2.4.0
 $(PKG)_CHECKSUM := c21f553f41141a847b2f1a568ec99a3068262821e4e30bc9d4b5d9091aa0b5f7
