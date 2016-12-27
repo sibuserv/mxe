@@ -28,6 +28,7 @@ define $(PKG)_BUILD
         OPENSSL_LIBS="`'$(TARGET)-pkg-config' --libs-only-l openssl`" \
         ./configure \
             -opensource \
+            -c++std c++11 \
             -confirm-license \
             -xplatform win32-g++ \
             -device-option CROSS_COMPILE=${TARGET}- \
@@ -48,6 +49,7 @@ define $(PKG)_BUILD
             -system-libjpeg \
             -fontconfig \
             -system-freetype \
+            -no-harfbuzz \
             -openssl-linked \
             -no-sql-sqlite \
             -no-sql-sqlite2 \
