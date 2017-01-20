@@ -21,15 +21,15 @@ endef
 
 define $(PKG)_BUILD
     mkdir '$(1).build'
-    cd '$(1).build' && $(TARGET)-cmake '$(1)' \
+    cd '$(1).build' && '$(TARGET)-cmake' '$(1)' \
+        -DCMAKE_CXX_FLAGS="$(CXXFLAGS) -D__STDC_CONSTANT_MACROS" \
         -DCMAKE_HAVE_PTHREAD_H=OFF \
         -DPKG_CONFIG_EXECUTABLE='$(PREFIX)/bin/$(TARGET)-pkg-config' \
         -DDYNAMIC_OPENTHREADS=OFF \
         -DDYNAMIC_OPENSCENEGRAPH=OFF \
         -DBUILD_OSG_APPLICATIONS=OFF \
-        -DOSG_USE_QT=OFF \
         -D_OPENTHREADS_ATOMIC_USE_GCC_BUILTINS_EXITCODE=1 \
         -D_OPENTHREADS_ATOMIC_USE_WIN32_INTERLOCKED=1 \
-        -DCMAKE_CXX_FLAGS="$(CXXFLAGS) -D__STDC_CONSTANT_MACROS -fpermissive"
+        -DOSG_USE_QT=OFF
     $(MAKE) -C '$(1).build' -j '$(JOBS)' install VERBOSE=1
 endef
