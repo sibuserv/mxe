@@ -4,8 +4,8 @@ PKG             := boost
 $(PKG)_WEBSITE  := http://www.boost.org/
 $(PKG)_DESCR    := Boost C++ Library
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.62.0
-$(PKG)_CHECKSUM := 36c96b0f6155c98404091d8ceb48319a28279ca0333fba1ad8611eb90afb2ca0
+$(PKG)_VERSION  := 1.63.0
+$(PKG)_CHECKSUM := beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0
 $(PKG)_SUBDIR   := boost_$(subst .,_,$($(PKG)_VERSION))
 $(PKG)_FILE     := boost_$(subst .,_,$($(PKG)_VERSION)).tar.bz2
 $(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/project/boost/boost/$($(PKG)_VERSION)/$($(PKG)_FILE)
@@ -48,7 +48,7 @@ define $(PKG)_BUILD
         variant=release \
         toolset=gcc-mxe \
         cflags="$(CFLAGS)" \
-        cxxflags="$(CXXFLAGS)" \
+        cxxflags="$(CXXFLAGS) -std=gnu++11" \
         --layout=tagged \
         --disable-icu \
         --without-mpi \
