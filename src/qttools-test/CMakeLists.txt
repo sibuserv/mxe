@@ -22,6 +22,8 @@ target_link_libraries(
     jpeg
     png
     winmm
+    dwmapi
+    uxtheme
     ws2_32
     z
 )
