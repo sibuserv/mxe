@@ -48,7 +48,7 @@ define $(PKG)_BUILD
         variant=release \
         toolset=gcc-mxe \
         cflags="$(CFLAGS)" \
-        cxxflags="$(CXXFLAGS) -std=gnu++11" \
+        cxxflags="$(CXXFLAGS)" \
         --layout=tagged \
         --disable-icu \
         --without-mpi \
