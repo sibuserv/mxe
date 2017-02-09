@@ -26,6 +26,9 @@ define $(PKG)_BUILD
         CXXFLAGS="$(CXXFLAGS)" \
         LDFLAGS="$(LDFLAGS)" \
         OPENSSL_LIBS="`'$(TARGET)-pkg-config' --libs-only-l openssl`" \
+        PKG_CONFIG="${TARGET}-pkg-config" \
+        PKG_CONFIG_SYSROOT_DIR="/" \
+        PKG_CONFIG_LIBDIR="$(PREFIX)/$(TARGET)/lib/pc" \
         ./configure \
             -opensource \
             -c++std c++11 \
