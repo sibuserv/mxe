@@ -1,9 +1,9 @@
 # This is a template of configuration file for MXE. See
-# index.html for more extensive documentations.
+# docs/index.html for more extensive documentations.
 
 # This variable controls the number of compilation processes
 # within one package ("intra-package parallelism").
-#JOBS := 4
+#JOBS :=
 
 # This variable controls where intermediate files are created
 # this is necessary when compiling inside a virtualbox shared
@@ -12,16 +12,20 @@
 #MXE_TMP := /tmp
 
 # This variable controls the targets that will build.
-#MXE_TARGETS :=  i686-w64-mingw32.static i686-w64-mingw32.shared  x86_64-w64-mingw32.static x86_64-w64-mingw32.shared
+#MXE_TARGETS := i686-w64-mingw32.static i686-w64-mingw32.shared x86_64-w64-mingw32.static x86_64-w64-mingw32.shared
 MXE_TARGETS := x86_64-w64-mingw32.static i686-w64-mingw32.static
 MXE_GCC_THREADS := posix
-MXE_PLUGIN_DIRS += plugins/gcc6
 
 # Special flags for compiler.
 CPPFLAGS := -D_FORTIFY_SOURCE=2
 CFLAGS   := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS) -static-libgcc
 CXXFLAGS := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS) -static-libgcc -static-libstdc++
 LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
+
+# This variable controls which plugins are in use.
+# See plugins/README.md for further information.
+#override MXE_PLUGIN_DIRS += plugins/apps plugins/native
+MXE_PLUGIN_DIRS += plugins/gcc6
 
 # This variable controls the download mirror for SourceForge,
 # when it is used. Enabling the value below means auto.
