@@ -141,6 +141,7 @@ MXE_DISABLE_DOCS = \
     dist_man8_MANS= \
     dist_man9_MANS= \
     notrans_dist_man_MANS= \
+    MANLINKS= \
     info_TEXINFOS= \
     doc_DATA= \
     dist_doc_DATA= \
