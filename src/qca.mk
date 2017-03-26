@@ -15,7 +15,15 @@ define $(PKG)_BUILD
         -DBUILD_TOOLS=OFF \
         -DUSE_RELATIVE_PATHS=OFF \
         -DBUILD_PLUGINS="auto" \
+        -DINSTAL_PKGCONFIG=ON \
         -DQCA_MAN_INSTALL_DIR="$(BUILD_DIR)/null"
     $(MAKE) -C '$(BUILD_DIR)' -j $(JOBS)
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install
+
+    # compile test
+    '$(TARGET)-g++' \
+        -W -Wall -Werror \
+        '$(SOURCE_DIR)/examples/base64test/base64test.cpp' \
+        -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
+        `'$(TARGET)-pkg-config' qca2-qt5 --cflags --libs`
 endef
