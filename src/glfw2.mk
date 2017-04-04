@@ -8,11 +8,11 @@ $(PKG)_VERSION  := 2.7.9
 $(PKG)_CHECKSUM := b7276dcadc85a07077834d1043f11ffd6a3a379647bb94361b4abc3ffca75e7d
 $(PKG)_SUBDIR   := glfw-$($(PKG)_VERSION)
 $(PKG)_FILE     := glfw-$($(PKG)_VERSION).tar.gz
-$(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/project/glfw/glfw/$($(PKG)_VERSION)/$($(PKG)_FILE)
+$(PKG)_URL      := https://$(SOURCEFORGE_MIRROR)/project/glfw/glfw/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://sourceforge.net/projects/glfw/files/glfw/' | \
+    $(WGET) -q -O- 'https://sourceforge.net/projects/glfw/files/glfw/' | \
     $(SED) -n 's,.*/\([0-9][^"]*\)/".*,\1,p' | \
     grep '^2\.' | \
     $(SORT) -V | \
