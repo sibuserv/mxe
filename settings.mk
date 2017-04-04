@@ -12,7 +12,7 @@
 #MXE_TMP := /tmp
 
 # This variable controls the targets that will build.
-# MXE_TARGETS := i686-w64-mingw32.static i686-w64-mingw32.shared x86_64-w64-mingw32.static x86_64-w64-mingw32.shared
+#MXE_TARGETS := i686-w64-mingw32.static i686-w64-mingw32.shared x86_64-w64-mingw32.static x86_64-w64-mingw32.shared
 MXE_TARGETS := i686-w64-mingw32.shared x86_64-w64-mingw32.shared
 MXE_GCC_THREADS := posix
 
@@ -34,7 +34,7 @@ LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
 # The three lines below makes `make` build these "local
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
-LOCAL_PKG_LIST := aspell boost jsoncpp libidn lua minizip miniupnpc nsis qtbase qtmultimedia qttools qtwebkit qca libotr tidy-html5
+LOCAL_PKG_LIST := aspell boost jsoncpp libidn lua minizip miniupnpc nsis libotr tidy-html5 qtbase qttools qtmultimedia qtwebkit qca
 .DEFAULT local-pkg-list:
 local-pkg-list: $(LOCAL_PKG_LIST)
 
