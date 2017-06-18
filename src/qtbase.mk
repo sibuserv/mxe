@@ -4,15 +4,15 @@ PKG             := qtbase
 $(PKG)_WEBSITE  := http://qt-project.org/
 $(PKG)_DESCR    := Qt
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 5.5.1
-$(PKG)_CHECKSUM := dfa4e8a4d7e4c6b69285e7e8833eeecd819987e1bdbe5baa6b6facd4420de916
+$(PKG)_VERSION  := 5.6.0
+$(PKG)_CHECKSUM := 6efa8a5c559e92b2e526d48034e858023d5fd3c39115ac1bfd3bb65834dbd67a
 $(PKG)_SUBDIR   := $(PKG)-opensource-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-opensource-src-$($(PKG)_VERSION).tar.xz
-$(PKG)_URL      := https://download.qt.io/archive/qt/5.5/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
+$(PKG)_URL      := https://download.qt.io/archive/qt/5.6/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc fontconfig freetype jpeg libpng openssl zlib
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- http://download.qt-project.org/official_releases/qt/5.5/ | \
+    $(WGET) -q -O- http://download.qt-project.org/official_releases/qt/5.6/ | \
     $(SED) -n 's,.*href="\(5\.[0-9]\.[^/]*\)/".*,\1,p' | \
     grep -iv -- '-rc' | \
     sort |
