@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM := 267eb2af1a203c087f2113f43b08014d0e2d2cb269295b8602d869a2fad52
 $(PKG)_SUBDIR   := $(PKG)-opensource-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-opensource-src-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://download.qt.io/official_releases/qt/5.9/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc fontconfig freetype jpeg libpng openssl zlib
+$(PKG)_DEPS     := gcc fontconfig freetype jpeg libpng openssl sqlite zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- https://download.qt.io/official_releases/qt/5.8/ | \
@@ -47,14 +47,15 @@ define $(PKG)_BUILD
             -accessibility \
             -nomake examples \
             -nomake tests \
+            -plugin-sql-sqlite \
             -system-zlib \
             -system-libpng \
             -system-libjpeg \
+            -system-sqlite \
             -fontconfig \
             -system-freetype \
             -no-harfbuzz \
             -openssl-linked \
-            -no-sql-sqlite \
             -no-sql-sqlite2 \
             -no-sql-mysql \
             -no-sql-psql \
