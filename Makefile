@@ -36,7 +36,8 @@ PATCH      := $(shell gpatch --help >/dev/null 2>&1 && echo g)patch
 SED        := $(shell gsed --help >/dev/null 2>&1 && echo g)sed
 SORT       := $(shell gsort --help >/dev/null 2>&1 && echo g)sort
 DEFAULT_UA := $(shell wget --version | $(SED) -n 's,GNU \(Wget\) \([0-9.]*\).*,\1/\2,p')
-WGET        = wget --user-agent='$(or $($(1)_UA),$(DEFAULT_UA))'
+WGET_TOOL   = wget
+WGET        = $(WGET_TOOL) --user-agent='$(or $($(1)_UA),$(DEFAULT_UA))'
 
 REQUIREMENTS := autoconf automake autopoint bash bison bzip2 flex \
                 $(BUILD_CC) $(BUILD_CXX) gperf intltoolize $(LIBTOOL) \
@@ -116,6 +117,7 @@ MXE_GCC_EXCEPTION_OPTS = \
 # install files such as pcre-config (which we do want to be installed).
 
 MXE_DISABLE_PROGRAMS = \
+    dist_bin_SCRIPTS= \
     bin_PROGRAMS= \
     sbin_PROGRAMS= \
     noinst_PROGRAMS= \
@@ -142,6 +144,16 @@ MXE_DISABLE_DOCS = \
     dist_man7_MANS= \
     dist_man8_MANS= \
     dist_man9_MANS= \
+    nodist_man_MANS= \
+    nodist_man1_MANS= \
+    nodist_man2_MANS= \
+    nodist_man3_MANS= \
+    nodist_man4_MANS= \
+    nodist_man5_MANS= \
+    nodist_man6_MANS= \
+    nodist_man7_MANS= \
+    nodist_man8_MANS= \
+    nodist_man9_MANS= \
     notrans_dist_man_MANS= \
     MANLINKS= \
     info_TEXINFOS= \
@@ -878,7 +890,8 @@ docs/build-matrix.html: $(foreach 1,$(PKGS),$(PKG_MAKEFILES))
 	            $(eval $(PKG)_BUILD_ONLY := $(false)) \
 	            <td class="supported">&#x2713;</td>,            \
 	            <td class="unsupported">&#x2717;</td>)\n)       \
-	    $(if $(call set_is_member,$(PKG),$($(BUILD)_PKGS)),        \
+	    $(if $(and $(call set_is_member,$(PKG),$($(BUILD)_PKGS)), \
+	               $(value $(call LOOKUP_PKG_RULE,$(PKG),BUILD,$(BUILD)))), \
 	        $(eval $(PKG)_VIRTUAL := $(false))   \
 	        <td class="supported">&#x2713;</td>, \
 	        <td class="unsupported">&#x2717;</td>)\n \

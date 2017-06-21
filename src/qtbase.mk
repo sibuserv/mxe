@@ -4,12 +4,12 @@ PKG             := qtbase
 $(PKG)_WEBSITE  := https://www.qt.io/
 $(PKG)_DESCR    := Qt
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 5.8.0
-$(PKG)_CHECKSUM := c17111ae02a44dc7be1ec2cf979a47ee9e58edf4904041a525c21f4fa53fc005
+$(PKG)_VERSION  := 5.9.0
+$(PKG)_CHECKSUM := 267eb2af1a203c087f2113f43b08014d0e2d2cb269295b8602d869a2fad5296c
 $(PKG)_SUBDIR   := $(PKG)-opensource-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-opensource-src-$($(PKG)_VERSION).tar.xz
-$(PKG)_URL      := https://download.qt.io/official_releases/qt/5.8/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc dbus fontconfig freetds freetype harfbuzz jpeg libmysqlclient libpng openssl pcre postgresql sqlite zlib
+$(PKG)_URL      := https://download.qt.io/official_releases/qt/5.9/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
+$(PKG)_DEPS     := gcc dbus fontconfig freetds freetype harfbuzz jpeg libmysqlclient libpng openssl pcre2 postgresql sqlite zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- https://download.qt.io/official_releases/qt/5.8/ | \
@@ -27,10 +27,9 @@ define $(PKG)_BUILD
         SYBASE_LIBS="-lsybdb `'$(TARGET)-pkg-config' --libs-only-l gnutls` -liconv -lws2_32" \
         PKG_CONFIG="${TARGET}-pkg-config" \
         PKG_CONFIG_SYSROOT_DIR="/" \
-        PKG_CONFIG_LIBDIR="$(PREFIX)/$(TARGET)/lib/pc" \
+        PKG_CONFIG_LIBDIR="$(PREFIX)/$(TARGET)/lib/pkgconfig" \
         ./configure \
             -opensource \
-            -c++std c++11 \
             -confirm-license \
             -xplatform win32-g++ \
             -device-option CROSS_COMPILE=${TARGET}- \
