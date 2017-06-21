@@ -41,7 +41,6 @@ define $(PKG)_BUILD
             --disable-static --enable-shared ) \
         --yasmexe='$(TARGET)-yasm' \
         --disable-debug \
-        --enable-memalign-hack \
         --disable-pthreads \
         --enable-w32threads \
         --disable-doc \
