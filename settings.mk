@@ -3,7 +3,7 @@
 
 # This variable controls the number of compilation processes
 # within one package ("intra-package parallelism").
-#JOBS :=
+#JOBS := 
 
 # This variable controls where intermediate files are created
 # this is necessary when compiling inside a virtualbox shared
@@ -35,6 +35,6 @@ MXE_PLUGIN_DIRS += plugins/gcc6
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
 LOCAL_PKG_LIST := freeglut sdl2 qt5 qwt protobuf libjpeg-turbo boost ffmpeg openscenegraph
-.DEFAULT local-pkg-list:
+.DEFAULT_GOAL  := local-pkg-list
 local-pkg-list: $(LOCAL_PKG_LIST)
 
