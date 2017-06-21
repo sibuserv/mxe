@@ -1,11 +1,11 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := qtscript
-$(PKG)_WEBSITE  := http://qt-project.org/
+$(PKG)_WEBSITE  := https://www.qt.io/
 $(PKG)_DESCR    := Qt
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION   = $(qtbase_VERSION)
-$(PKG)_CHECKSUM := 293ab91d2d189d889dc80609aa259190fb7de636d360e904784a5ce1a45e5ad3
+$(PKG)_CHECKSUM := 3c32b6be7b5dcf61b1a25d4646cdac96cc44f5c739c38597a5881231ae3ac964
 $(PKG)_SUBDIR    = $(subst qtbase,qtscript,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtscript,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtscript,$(qtbase_URL))

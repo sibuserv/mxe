@@ -8,11 +8,11 @@ $(PKG)_VERSION  := 0.9.1
 $(PKG)_CHECKSUM := 80de5e04918678dd8e6dac3b22a34b3247f74bf744c719bae21faaa49649aaae
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
-$(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/luabind/$($(PKG)_FILE)
+$(PKG)_URL      := https://$(SOURCEFORGE_MIRROR)/luabind/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc boost lua
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://sourceforge.net/projects/luabind/files/luabind/' | \
+    $(WGET) -q -O- 'https://sourceforge.net/projects/luabind/files/luabind/' | \
     $(SED) -n 's,.*<a href="/projects/luabind/files/luabind/\([0-9][^>]*\)/.*,\1,p' | \
     head -1
 endef

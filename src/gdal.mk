@@ -13,7 +13,7 @@ $(PKG)_URL_2    := ftp://ftp.remotesensing.org/gdal/$($(PKG)_VERSION)/$($(PKG)_F
 $(PKG)_DEPS     := gcc expat giflib jpeg libpng proj tiff zlib
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://trac.osgeo.org/gdal/wiki/DownloadSource' | \
+    $(WGET) -q -O- 'https://trac.osgeo.org/gdal/wiki/DownloadSource' | \
     $(SED) -n 's,.*gdal-\([0-9][^>]*\)\.tar.*,\1,p' | \
     head -1
 endef
