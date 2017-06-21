@@ -8,24 +8,22 @@ $(PKG)_VERSION  := 1.33
 $(PKG)_CHECKSUM := 44a7aab635bb721ceef6beecc4d49dfd19478325e1b47f3196f7d2acc4930e19
 $(PKG)_SUBDIR   := libidn-$($(PKG)_VERSION)
 $(PKG)_FILE     := libidn-$($(PKG)_VERSION).tar.gz
-$(PKG)_URL      := http://ftp.gnu.org/gnu/libidn/$($(PKG)_FILE)
-$(PKG)_URL_2    := ftp://ftp.gnu.org/gnu/libidn/$($(PKG)_FILE)
+$(PKG)_URL      := https://ftp.gnu.org/gnu/libidn/$($(PKG)_FILE)
+$(PKG)_URL_2    := https://ftpmirror.gnu.org/libidn/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc gettext libiconv
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://git.savannah.gnu.org/gitweb/?p=libidn.git;a=tags' | \
+    $(WGET) -q -O- 'https://git.savannah.gnu.org/gitweb/?p=libidn.git;a=tags' | \
     grep '<a class="list subject"' | \
     $(SED) -n 's,.*<a[^>]*>\([0-9][^<]*\)<.*,\1,p' | \
     head -1
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)' && rm aclocal.m4 && autoreconf -fi
+    # don't build and install docs
+    (echo '# DISABLED'; echo 'all:'; echo 'install:') > '$(1)/doc/Makefile.in'
+    cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --disable-csharp \
         --with-libiconv-prefix='$(PREFIX)/$(TARGET)'

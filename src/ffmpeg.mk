@@ -1,10 +1,10 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := ffmpeg
-$(PKG)_WEBSITE  := http://www.ffmpeg.org/
+$(PKG)_WEBSITE  := https://ffmpeg.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 3.2.3
-$(PKG)_CHECKSUM := e9a41be04e8a7f62f83d0ff5ecaa9c82a857f9200f61b02ef5f304a16fb9b072
+$(PKG)_VERSION  := 3.3.2
+$(PKG)_CHECKSUM := 216900d5c0af9017bb8f76b0ad23f0ac53cf7fc618cf04b40d989bd99b088e6a
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := http://www.ffmpeg.org/releases/$($(PKG)_FILE)
@@ -17,7 +17,7 @@ $(PKG)_DEPS     := gcc bzip2 yasm zlib
 # See docs/index.html#potential-legal-issues
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://ffmpeg.org/releases/' | \
+    $(WGET) -q -O- 'https://ffmpeg.org/releases/' | \
     $(SED) -n 's,.*ffmpeg-\([0-9][^>]*\)\.tar.*,\1,p' | \
     grep -v 'alpha\|beta\|rc\|git' | \
     $(SORT) -Vr | \

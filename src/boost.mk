@@ -1,18 +1,18 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := boost
-$(PKG)_WEBSITE  := http://www.boost.org/
+$(PKG)_WEBSITE  := https://www.boost.org/
 $(PKG)_DESCR    := Boost C++ Library
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.63.0
-$(PKG)_CHECKSUM := beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0
+$(PKG)_VERSION  := 1.64.0
+$(PKG)_CHECKSUM := 7bcc5caace97baa948931d712ea5f37038dbb1c5d89b43ad4def4ed7cb683332
 $(PKG)_SUBDIR   := boost_$(subst .,_,$($(PKG)_VERSION))
 $(PKG)_FILE     := boost_$(subst .,_,$($(PKG)_VERSION)).tar.bz2
-$(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/project/boost/boost/$($(PKG)_VERSION)/$($(PKG)_FILE)
+$(PKG)_URL      := https://$(SOURCEFORGE_MIRROR)/project/boost/boost/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc bzip2 expat zlib
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://www.boost.org/users/download/' | \
+    $(WGET) -q -O- 'https://www.boost.org/users/download/' | \
     $(SED) -n 's,.*/boost/\([0-9][^"/]*\)/".*,\1,p' | \
     grep -v beta | \
     head -1
@@ -30,7 +30,7 @@ define $(PKG)_BUILD
     cd '$(1)/tools/build/' && ./bootstrap.sh
 
     # cross-build, see b2 options at:
-    # http://www.boost.org/build/doc/html/bbv2/overview/invocation.html
+    # https://www.boost.org/build/doc/html/bbv2/overview/invocation.html
     cd '$(1)' && ./tools/build/b2 \
         -a \
         -q \

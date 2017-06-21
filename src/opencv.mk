@@ -8,12 +8,12 @@ $(PKG)_VERSION  := 2.4.10
 $(PKG)_CHECKSUM := 1bf4cb87283797fd91669d4f90b622a677a903c20b4a577b7958a2164f7596c6
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := opencv-$($(PKG)_VERSION).zip
-$(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/project/$(PKG)library/$(PKG)-unix/$($(PKG)_VERSION)/$($(PKG)_FILE)
-$(PKG)_URL_2    := http://distfiles.macports.org/opencv/$($(PKG)_FILE)
+$(PKG)_URL      := https://$(SOURCEFORGE_MIRROR)/project/$(PKG)library/$(PKG)-unix/$($(PKG)_VERSION)/$($(PKG)_FILE)
+$(PKG)_URL_2    := https://distfiles.macports.org/opencv/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc eigen ffmpeg jasper jpeg lcms1 libpng openexr tiff xz zlib
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/' | \
+    $(WGET) -q -O- 'https://sourceforge.net/projects/opencvlibrary/files/opencv-unix/' | \
     $(SED) -n 's,.*/\([0-9][^"]*\)/".*,\1,p' | \
     head -1
 endef

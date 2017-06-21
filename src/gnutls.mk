@@ -3,16 +3,16 @@
 PKG             := gnutls
 $(PKG)_WEBSITE  := https://www.gnu.org/software/gnutls/
 $(PKG)_DESCR    := GnuTLS
-$(PKG)_VERSION  := 3.5.9
-$(PKG)_CHECKSUM := 82b10f0c4ef18f4e64ad8cef5dbaf14be732f5095a41cf366b4ecb4050382951
+$(PKG)_VERSION  := 3.5.13
+$(PKG)_CHECKSUM := 79f5480ad198dad5bc78e075f4a40c4a315a1b2072666919d2d05a08aec13096
 $(PKG)_SUBDIR   := gnutls-$($(PKG)_VERSION)
 $(PKG)_FILE     := gnutls-$($(PKG)_VERSION).tar.xz
-$(PKG)_URL      := http://mirrors.dotsrc.org/gnupg/gnutls/v3.5/$($(PKG)_FILE)
-$(PKG)_URL_2    := ftp://ftp.gnutls.org/gcrypt/gnutls/v3.5//$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc gettext gmp libgnurx libidn libunistring nettle zlib
+$(PKG)_URL      := https://gnupg.org/ftp/gcrypt/gnutls/v3.5/$($(PKG)_FILE)
+$(PKG)_URL_2    := ftp://ftp.gnutls.org/gcrypt/gnutls/v3.5/$($(PKG)_FILE)
+$(PKG)_DEPS     := gcc gettext gmp libgnurx libidn2 libunistring nettle zlib
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- ftp://ftp.gnutls.org/gcrypt/gnutls/v3.5/ | \
+    $(WGET) -q -O- https://gnupg.org/ftp/gcrypt/gnutls/v3.5/ | \
     $(SED) -n 's,.*gnutls-\([1-9]\+\.[0-9]\+.[0-9]\+\)\..*,\1,p' | \
     $(SORT) -V | \
     tail -1
@@ -20,13 +20,8 @@ endef
 
 define $(PKG)_BUILD
     # AI_ADDRCONFIG referenced by src/serv.c but not provided by mingw.
-    # Value taken from http://msdn.microsoft.com/en-us/library/windows/desktop/ms737530%28v=vs.85%29.aspx
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    # Value taken from https://msdn.microsoft.com/en-us/library/windows/desktop/ms737530%28v=vs.85%29.aspx
+    cd '$(1)' && autoreconf -fi && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --disable-rpath \
         --disable-nls \
