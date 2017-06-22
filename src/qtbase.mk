@@ -1,7 +1,7 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := qtbase
-$(PKG)_WEBSITE  := http://qt-project.org/
+$(PKG)_WEBSITE  := https://www.qt.io/
 $(PKG)_DESCR    := Qt
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 5.6.0
@@ -28,7 +28,7 @@ define $(PKG)_BUILD
         OPENSSL_LIBS="`'$(TARGET)-pkg-config' --libs-only-l openssl`" \
         PKG_CONFIG="${TARGET}-pkg-config" \
         PKG_CONFIG_SYSROOT_DIR="/" \
-        PKG_CONFIG_LIBDIR="$(PREFIX)/$(TARGET)/lib/pc" \
+        PKG_CONFIG_LIBDIR="$(PREFIX)/$(TARGET)/lib/pkgconfig" \
         ./configure \
             -opensource \
             -confirm-license \
