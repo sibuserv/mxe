@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.0)
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui UiTools)
 
 include_directories(${Qt5UiTools_INCLUDE_DIRS})
+link_directories(${_qt5Widgets_install_prefix}/lib)
 add_executable(mxe-cmake-qtuitools mxe-cmake-qtuitools.cpp)
 # NB: Qt5Widgets, Qt5Gui, Qt5Core must be given separately; otherwise they are
 # appended automatically at the end, making it impossible to satisfy all the
@@ -17,17 +18,12 @@ target_link_libraries(
     ${Qt5Gui_LIBRARIES}
     ${Qt5Core_LIBRARIES}
     opengl32
-    harfbuzz
+    qtpcre
     jpeg
     png
-    glib-2.0
     winmm
     dwmapi
     uxtheme
     ws2_32
-    intl
-    iconv
-    pcre2-16
-    version
     z
 )
