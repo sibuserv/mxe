@@ -18,7 +18,8 @@ target_link_libraries(
     ${Qt5Gui_LIBRARIES}
     ${Qt5Core_LIBRARIES}
     opengl32
-    qtpcre
+    qtpcre2
+    version
     jpeg
     png
     winmm
