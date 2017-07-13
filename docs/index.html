@@ -139,16 +139,16 @@
         <ol>
             <li>If you want a 64 bit Windows executable,
                 statically linked into one big executable:
-                use MXE_TARGET x86_64-w64-mingw32.static;</li>
+                use MXE_TARGETS x86_64-w64-mingw32.static;</li>
             <li>If you want a 64 bit Windows executable,
                 split into an executable and dependant dlls
-                use MXE_TARGET x86_64-w64-mingw32.shared;</li>
+                use MXE_TARGETS x86_64-w64-mingw32.shared;</li>
             <li>If you want a 32 bit Windows executable,
                 statically linked into one big executable:
-                use MXE_TARGET i686-w64-mingw32.static;</li>
+                use MXE_TARGETS i686-w64-mingw32.static;</li>
             <li>If you want a 32 bit Windows executable,
                 split into an executable and dependant dlls
-                use MXE_TARGET i686-w64-mingw32.shared.</li>
+                use MXE_TARGETS i686-w64-mingw32.shared.</li>
         </ol>
         Remark: The 'w64-mingw32' in those names are left-overs from
         historical evolutions in the open source cross-compilation world
@@ -681,7 +681,7 @@ USE_OSGPLUGIN(&lt;plugin2&gt;)
     <pre>apt-get install \
     autoconf automake autopoint bash bison bzip2 flex gettext\
     git g++ gperf intltool libffi-dev libgdk-pixbuf2.0-dev \
-    libtool libltdl-dev libssl-dev libxml-parser-perl make \
+    libtool-bin libltdl-dev libssl-dev libxml-parser-perl make \
     openssl p7zip-full patch perl pkg-config python ruby scons \
     sed unzip wget xz-utils</pre>
 
@@ -691,10 +691,9 @@ USE_OSGPLUGIN(&lt;plugin2&gt;)
     <pre>apt-get install g++-multilib libc6-dev-i386</pre>
 
     <p>
-    On Debian Jessie (8) or Ubuntu Utopic (14.10) or later,
-    install also:
+    Prior to Debian Jessie (8) or Ubuntu Utopic (14.10),
+    install <code>libtool</code> instead of <code>libtool-bin</code>.
     </p>
-    <pre>apt-get install libtool-bin</pre>
 
     <p>
     Only the <a href="https://www.debian.org/releases/stable/">latest Debian stable series</a> is supported.
