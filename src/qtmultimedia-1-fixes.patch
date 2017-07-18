@@ -1,0 +1,68 @@
+This file is part of MXE. See LICENSE.md for licensing information.
+
+Contains ad hoc patches for cross building.
+
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Boris Pek <tehnick-8@yandex.ru>
+Date: Wed, 19 Jul 2017 19:52:07 +0300
+Subject: [PATCH] Fix headers names.
+
+
+diff --git a/src/plugins/common/evr/evrdefs.h b/src/plugins/common/evr/evrdefs.h
+index 1111111..2222222 100644
+--- a/src/plugins/common/evr/evrdefs.h
++++ b/src/plugins/common/evr/evrdefs.h
+@@ -35,12 +35,12 @@
+ #define EVRDEFS_H
+ 
+ #include <d3d9.h>
+-#include <Evr9.h>
++#include <evr9.h>
+ #include <evr.h>
+ #include <dxva2api.h>
+ #include <mfapi.h>
+ #include <mfidl.h>
+-#include <Mferror.h>
++#include <mferror.h>
+ 
+ extern const CLSID clsid_EnhancedVideoRenderer;
+ extern const GUID mr_VIDEO_RENDER_SERVICE;
+diff --git a/src/plugins/wmf/mftvideo.cpp b/src/plugins/wmf/mftvideo.cpp
+index 1111111..2222222 100644
+--- a/src/plugins/wmf/mftvideo.cpp
++++ b/src/plugins/wmf/mftvideo.cpp
+@@ -34,7 +34,7 @@
+ #include "mftvideo.h"
+ #include "mfvideoprobecontrol.h"
+ #include <private/qmemoryvideobuffer_p.h>
+-#include <Mferror.h>
++#include <mferror.h>
+ #include <strmif.h>
+ #include <uuids.h>
+ #include <InitGuid.h>
+diff --git a/src/plugins/wmf/player/mfplayersession.cpp b/src/plugins/wmf/player/mfplayersession.cpp
+index 1111111..2222222 100644
+--- a/src/plugins/wmf/player/mfplayersession.cpp
++++ b/src/plugins/wmf/player/mfplayersession.cpp
+@@ -50,7 +50,7 @@
+ #include "mfplayersession.h"
+ #include "mfplayerservice.h"
+ #include "mfmetadatacontrol.h"
+-#include <Mferror.h>
++#include <mferror.h>
+ #include <nserror.h>
+ #include "sourceresolver.h"
+ #include "samplegrabber.h"
+diff --git a/src/plugins/wmf/sourceresolver.cpp b/src/plugins/wmf/sourceresolver.cpp
+index 1111111..2222222 100644
+--- a/src/plugins/wmf/sourceresolver.cpp
++++ b/src/plugins/wmf/sourceresolver.cpp
+@@ -34,7 +34,7 @@
+ #include "mfplayersession.h"
+ #include "mfstream.h"
+ #include "sourceresolver.h"
+-#include <Mferror.h>
++#include <mferror.h>
+ #include <nserror.h>
+ #include <QtCore/qfile.h>
+ 
