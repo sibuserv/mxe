@@ -13,7 +13,8 @@
 
 # This variable controls the targets that will build.
 #MXE_TARGETS := i686-w64-mingw32.static i686-w64-mingw32.shared x86_64-w64-mingw32.static x86_64-w64-mingw32.shared
-MXE_TARGETS := i686-w64-mingw32.shared x86_64-w64-mingw32.shared
+#MXE_TARGETS := i686-w64-mingw32.shared x86_64-w64-mingw32.shared
+MXE_TARGETS := i686-w64-mingw32.shared
 MXE_GCC_THREADS := posix
 
 # Special flags for compiler.
@@ -25,7 +26,7 @@ LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
 # This variable controls which plugins are in use.
 # See plugins/README.md for further information.
 #override MXE_PLUGIN_DIRS += plugins/apps plugins/native
-#MXE_PLUGIN_DIRS += plugins/gcc6
+MXE_PLUGIN_DIRS += plugins/gcc6
 
 # This variable controls the download mirror for SourceForge,
 # when it is used. Enabling the value below means auto.
