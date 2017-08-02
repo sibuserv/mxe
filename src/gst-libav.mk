@@ -3,8 +3,8 @@
 PKG             := gst-libav
 $(PKG)_WEBSITE  := https://gstreamer.freedesktop.org/modules/gst-libav.html
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.6.2
-$(PKG)_CHECKSUM := 2597acc00171006d49f0d300440a87df51b113d557466e532153abc740db3469
+$(PKG)_VERSION  := 1.12.2
+$(PKG)_CHECKSUM := 5bb735b9bb218b652ae4071ea6f6be8eaae55e9d3233aec2f36b882a27542db3
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://gstreamer.freedesktop.org/src/$(PKG)/$($(PKG)_FILE)
@@ -20,6 +20,7 @@ define $(PKG)_BUILD
 
     # some .dlls are installed to lib - no obvious way to change
     $(if $(BUILD_SHARED),
-        mv -vf '$(PREFIX)/$(TARGET)/lib/gstreamer-1.0/'*.dll '$(PREFIX)/$(TARGET)/bin/'
+        $(INSTALL) -d '$(PREFIX)/$(TARGET)/bin/gstreamer-1.0'
+        mv -vf '$(PREFIX)/$(TARGET)/lib/gstreamer-1.0/'*.dll '$(PREFIX)/$(TARGET)/bin/gstreamer-1.0/'
     )
 endef

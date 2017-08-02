@@ -1,195 +1,9 @@
-This file is part of MXE.
-See index.html for further information.
+This file is part of MXE. See LICENSE.md for licensing information.
 
-Contains ad hoc patches for cross building.
-
-From 54b168c305f54e60de0e32501b166faa7f5913e0 Mon Sep 17 00:00:00 2001
-From: Mark Brand <mabrand@mabrand.nl>
-Date: Thu, 6 Aug 2015 23:35:08 +0200
-Subject: [PATCH 1/8] fix qwindows plugin linking with system-freetype (MXE
- specific)
-
-Change-Id: I8783e3ab2d19011b083dd3c471107298a17293c4
-
-diff --git a/src/3rdparty/freetype_dependency.pri b/src/3rdparty/freetype_dependency.pri
-index 39280de..e152b0d 100644
---- a/src/3rdparty/freetype_dependency.pri
-+++ b/src/3rdparty/freetype_dependency.pri
-@@ -4,4 +4,5 @@ contains(QT_CONFIG, freetype) {
- } else:contains(QT_CONFIG, system-freetype) {
-     # pull in the proper freetype2 include directory
-     include($$QT_SOURCE_TREE/config.tests/unix/freetype/freetype.pri)
-+    win32:LIBS_PRIVATE += -lfreetype -lbz2
- }
--- 
-2.5.0
-
-
-From 26b89d11b4e51d3aa2aab14dd52216ef8b1c7950 Mon Sep 17 00:00:00 2001
-From: Mark Brand <mabrand@mabrand.nl>
-Date: Sat, 21 Jun 2014 13:12:49 +0200
-Subject: [PATCH 2/8] use pkg-config for harfbuzz (MXE specific)
-
-Change-Id: Id4e4c37d68b63c9f480d72a561d95d4d2a5ded50
-
-diff --git a/config.tests/unix/harfbuzz/harfbuzz.pro b/config.tests/unix/harfbuzz/harfbuzz.pro
-index 32edd6e..a7f2c28 100644
---- a/config.tests/unix/harfbuzz/harfbuzz.pro
-+++ b/config.tests/unix/harfbuzz/harfbuzz.pro
-@@ -1,3 +1,4 @@
- SOURCES = harfbuzz.cpp
- CONFIG -= qt dylib
--LIBS += -lharfbuzz
-+CONFIG += link_pkgconfig
-+PKGCONFIG += harfbuzz
-diff --git a/src/3rdparty/harfbuzz_dependency.pri b/src/3rdparty/harfbuzz_dependency.pri
-index 7443368..c24e684 100644
---- a/src/3rdparty/harfbuzz_dependency.pri
-+++ b/src/3rdparty/harfbuzz_dependency.pri
-@@ -2,5 +2,6 @@ contains(QT_CONFIG, harfbuzz) {
-     INCLUDEPATH += $$PWD/harfbuzz-ng/include
-     LIBS_PRIVATE += -L$$QT_BUILD_TREE/lib -lqtharfbuzzng$$qtPlatformTargetSuffix()
- } else:contains(QT_CONFIG, system-harfbuzz) {
--    LIBS_PRIVATE += -lharfbuzz
-+    CONFIG += link_pkgconfig
-+    PKGCONFIG += harfbuzz
- }
--- 
-2.5.0
-
-
-From fa5ca49b4ffc1911a597b294ef2d4b5ecb983cad Mon Sep 17 00:00:00 2001
-From: Mark Brand <mabrand@mabrand.nl>
-Date: Mon, 8 Dec 2014 14:15:12 +0100
-Subject: [PATCH 3/8] fix oci config test on windows
-
-Change-Id: If1ce2241682259ca495b0ba68bf18410f8548922
-
-diff --git a/config.tests/unix/oci/oci.pro b/config.tests/unix/oci/oci.pro
-index 3ffda1d..39b6f3759 100644
---- a/config.tests/unix/oci/oci.pro
-+++ b/config.tests/unix/oci/oci.pro
-@@ -1,3 +1,3 @@
- SOURCES = oci.cpp
- CONFIG -= qt dylib
--LIBS += -lclntsh
-+!win32:LIBS += -lclntsh
--- 
-2.5.0
-
-
-From 7fd641a032c7b4ce1b14d7ca02da646b0a0c34d5 Mon Sep 17 00:00:00 2001
-From: Mark Brand <mabrand@mabrand.nl>
-Date: Thu, 6 Aug 2015 13:24:56 +0200
-Subject: [PATCH 4/8] configure: don't set QT_NO_SYSTEMSEMAPHORE for Windows
-
-Change-Id: I53c110ef40e3d14cc49fa23aa5d294611cac2ffa
-
-diff --git a/configure b/configure
-index 7651e29..4a4b478 100755
---- a/configure
-+++ b/configure
-@@ -4575,7 +4575,7 @@ fi
- [ "$XPLATFORM_ANDROID" = "yes" ] && QMakeVar add styles "android"
- 
- # check IPC support
--if ! compileTest unix/ipc_sysv "ipc_sysv" ; then
-+if [ "$XPLATFORM_MINGW" = "no" ] && ! compileTest unix/ipc_sysv "ipc_sysv" ; then
-     # SYSV IPC is not supported - check POSIX IPC
-     if compileTest unix/ipc_posix "ipc_posix" ; then
-         QCONFIG_FLAGS="$QCONFIG_FLAGS QT_POSIX_IPC"
--- 
-2.5.0
-
-
-From 959d3a71bced8c00967a16f23c6f9305e56fafcd Mon Sep 17 00:00:00 2001
-From: Mark Brand <mabrand@mabrand.nl>
-Date: Tue, 6 Oct 2015 09:53:20 +0200
-Subject: [PATCH 5/8] fix building mysql driver under mingw
-
-Change-Id: I9c4e821d5b3a6919566c6b684cb4916827feb6a9
-
-diff --git a/src/sql/drivers/mysql/qsql_mysql.pri b/src/sql/drivers/mysql/qsql_mysql.pri
-index 3cfb614..8b7063f 100644
---- a/src/sql/drivers/mysql/qsql_mysql.pri
-+++ b/src/sql/drivers/mysql/qsql_mysql.pri
-@@ -4,7 +4,7 @@ SOURCES += $$PWD/qsql_mysql.cpp
- QMAKE_CXXFLAGS *= $$QT_CFLAGS_MYSQL
- LIBS += $$QT_LFLAGS_MYSQL
- 
--unix {
-+if (unix|mingw) {
-     isEmpty(QT_LFLAGS_MYSQL) {
-         !contains(LIBS, .*mysqlclient.*):!contains(LIBS, .*mysqld.*) {
-             use_libmysqlclient_r:LIBS += -lmysqlclient_r
--- 
-2.5.0
-
-
-From a6f45e15cf19e29afc5f42d1e87feb2b4f7e9532 Mon Sep 17 00:00:00 2001
-From: Boris Nagaev <bnagaev@gmail.com>
-Date: Sun, 18 Oct 2015 23:11:28 +0300
-Subject: [PATCH 6/8] configure: fix log corruption with option -v
-
-This bug occurs if ./configure is called with -v on systems on
-which fd proc entries point to the files/devices they are open
-on instead of being magic nodes which would basically dup() the
-actual fds (e.g., Linux).
-
-In this case, the command "tee $tty" appends to /dev/stderr, which
-may be already opened by the parent process. This breaks the log file.
-
-Normally, the log file starts with
-
- This is the Qt Open Source Edition.
- ...
-
-but with `-v` flag it would start with output of awkprog and maybe
-some zero bytes. Zero bytes are observed on Debian Wheezy.
-
- DEFAULT_INCDIRS=...
- ...
- ^@^@^@^@^@^@^@^@^@^@^@^@...
- Done running configuration tests.
- ...
-
-To fix this problem, the output of `...` is saved to a variable, and
-then eval'd and echo'd (if -v).
-
-This solution was found by Tony Theodore.
-https://github.com/mxe/mxe/issues/938#issuecomment-149770348
-
-Change-Id: Id0c28598890e813774cc92f38ee46a0697b34e77
-Reviewed-by: Oswald Buddenhagen <oswald.buddenhagen@theqtcompany.com>
-Reviewed-by: Thiago Macieira <thiago.macieira@intel.com>
-(cherry picked from commit 45fe3f1cde1e516d1ddccddb5e33ea4316497c36)
-
-diff --git a/configure b/configure
-index 4a4b478..a5c0fd5 100755
---- a/configure
-+++ b/configure
-@@ -3639,10 +3639,9 @@ END {
-         print "DEFAULT_LIBDIRS=\"/lib\n/usr/lib\"\n";
- }'
- 
--unset tty
--[ "$OPT_VERBOSE" = "yes" ] && tty=/dev/stderr
--eval "`LC_ALL=C $TEST_COMPILER $SYSROOT_FLAG $TEST_COMPILER_CXXFLAGS -xc++ -E -v - < /dev/null 2>&1 > /dev/null | $AWK "$awkprog" | tee $tty`"
--unset tty
-+awkprog_result=`LC_ALL=C $TEST_COMPILER $SYSROOT_FLAG $TEST_COMPILER_CXXFLAGS -xc++ -E -v - < /dev/null 2>&1 > /dev/null | $AWK "$awkprog"`
-+eval "$awkprog_result"
-+[ "$OPT_VERBOSE" = "yes" ] && echo "$awkprog_result"
- 
- echo "Done running configuration tests."
- 
--- 
-2.5.0
-
-
-From 6064564099df17f7cddded8ec0c68d9e57d29ae9 Mon Sep 17 00:00:00 2001
+From 0e4abbfb6a0ac7bcc31fa0db0e2ae2c6e0310b26 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 26 Aug 2015 12:45:43 +0100
-Subject: [PATCH 7/8] cmake: Rearrange STATIC vs INTERFACE targets
+Subject: [PATCH 1/5] cmake: Rearrange STATIC vs INTERFACE targets
 
 Otherwise we attempt to add_library(Qt5::UiPlugin STATIC IMPORTED)
 for header-only modules when building Qt5 statically.
@@ -198,10 +12,10 @@ Source: https://git.io/vzWJz
 See also: https://github.com/mxe/mxe/issues/1185
 
 diff --git a/mkspecs/features/data/cmake/Qt5BasicConfig.cmake.in b/mkspecs/features/data/cmake/Qt5BasicConfig.cmake.in
-index d2358ca..6b1dc95 100644
+index 17da8b979e0..bddd70960a8 100644
 --- a/mkspecs/features/data/cmake/Qt5BasicConfig.cmake.in
 +++ b/mkspecs/features/data/cmake/Qt5BasicConfig.cmake.in
-@@ -222,13 +222,13 @@ if (NOT TARGET Qt5::$${CMAKE_MODULE_NAME})
+@@ -224,13 +224,13 @@ if (NOT TARGET Qt5::$${CMAKE_MODULE_NAME})
      endif()
  !!ENDIF
  
@@ -219,29 +33,163 @@ index d2358ca..6b1dc95 100644
  !!ENDIF
  !!ENDIF
 -- 
-2.5.0
+2.11.0
 
 
-From e74803bac8aa2fd2106f678b2b11584fdb582bc3 Mon Sep 17 00:00:00 2001
-From: Boris Pek <tehnick-8@yandex.ru>
-Date: Wed, 24 Feb 2016 19:39:46 +0300
-Subject: [PATCH 8/8] Fix ar error: `u' modifier ignored since `D' is the
- default (see `U')
+From 421e7313cfa5421dd41adb136a7449ecafc86e4e Mon Sep 17 00:00:00 2001
+From: Tony Theodore <tonyt@logyst.com>
+Date: Sat, 16 Jul 2016 20:31:07 +1000
+Subject: [PATCH 2/5] Fix pkgconfig file and library naming
 
+See: https://codereview.qt-project.org/#/c/165394/
+     https://bugreports.qt.io/browse/QTBUG-30898
 
-diff --git a/mkspecs/win32-g++/qmake.conf b/mkspecs/win32-g++/qmake.conf
-index 61963c7..25cf750 100644
---- a/mkspecs/win32-g++/qmake.conf
-+++ b/mkspecs/win32-g++/qmake.conf
-@@ -104,7 +104,7 @@ QMAKE_LIBS_COMPAT       = -ladvapi32 -lshell32 -lcomdlg32 -luser32 -lgdi32 -lws2
- QMAKE_LIBS_QT_ENTRY     = -lmingw32 -lqtmain
+Currently, *.pc files are generated with debug suffix `d` in `-release`
+mode and without the suffix in `-debug` or `-debug-and-release`. This
+can be worked around by `CONIFG-=debug_and_release`, however, a more
+predictable and consistent naming approach would be preferable.
+
+This change mimics the *.prl file and lib conventions:
+
+  -release: creates normal *.pc files and lib names
+  -release -force-debug-info: normal as above
+  -debug: creates *d.pc and *d lib names
+  -debug-and-release: creates both
+  -default: creates both (default link: debug)
+
+and should be unsurprising to users of `pkg-config`. At very least,
+it's deterministic and easily incorporated into build systems.
+
+Task-number: 30898
+Change-Id: If75336ec7d21a7ec0cb6d245fe87c64afcb5a644
+
+diff --git a/mkspecs/features/qt_module.prf b/mkspecs/features/qt_module.prf
+index 36f632e8caa..b07085ac429 100644
+--- a/mkspecs/features/qt_module.prf
++++ b/mkspecs/features/qt_module.prf
+@@ -263,6 +263,10 @@ load(qt_installs)
  
- QMAKE_IDL               = midl
--QMAKE_LIB               = $${CROSS_COMPILE}ar -ru
-+QMAKE_LIB               = $${CROSS_COMPILE}ar -rc
- QMAKE_RC                = $${CROSS_COMPILE}windres
+ load(qt_targets)
  
- QMAKE_STRIP             = $${CROSS_COMPILE}strip
++# Set TARGET towards the end but before pkgconfig setup to keep naming
++# conventions consistent with *prl files
++TARGET = $$qt5LibraryTarget($$TARGET$$QT_LIBINFIX)
++
+ # this builds on top of qt_common
+ !internal_module:!lib_bundle:if(unix|mingw) {
+     CONFIG += create_pc
+@@ -273,12 +277,12 @@ load(qt_targets)
+         QMAKE_PKGCONFIG_LIBDIR = $$[QT_INSTALL_LIBS/raw]
+     QMAKE_PKGCONFIG_INCDIR = $$[QT_INSTALL_HEADERS/raw]
+     QMAKE_PKGCONFIG_CFLAGS = -I${includedir}/$$MODULE_INCNAME
+-    QMAKE_PKGCONFIG_NAME = $$replace(TARGET, ^Qt, "Qt$$QT_MAJOR_VERSION ")
+-    QMAKE_PKGCONFIG_FILE = $$replace(TARGET, ^Qt, Qt$$QT_MAJOR_VERSION)
++    QMAKE_PKGCONFIG_NAME = $$replace(TARGET, ^Qt$$QT_MAJOR_VERSION, "Qt$$QT_MAJOR_VERSION ")
++    QMAKE_PKGCONFIG_FILE = $$TARGET
+     for(i, MODULE_DEPENDS): \
+-        QMAKE_PKGCONFIG_REQUIRES += $$replace(QT.$${i}.name, ^Qt, Qt$$section(QT.$${i}.VERSION, ., 0, 0))
++        QMAKE_PKGCONFIG_REQUIRES += $$replace(QT.$${i}.name, ^Qt, Qt$$section(QT.$${i}.VERSION, ., 0, 0))$$qtPlatformTargetSuffix()
+     isEmpty(QMAKE_PKGCONFIG_DESCRIPTION): \
+-        QMAKE_PKGCONFIG_DESCRIPTION = $$replace(TARGET, ^Qt, "Qt ") module
++        QMAKE_PKGCONFIG_DESCRIPTION = $$replace(TARGET, ^Qt$$QT_MAJOR_VERSION, "Qt ") module
+     pclib_replace.match = $$lib_replace.match
+     !isEmpty(lib_replace.replace): \
+         pclib_replace.replace = $$QMAKE_PKGCONFIG_LIBDIR
+@@ -312,5 +316,3 @@ win32 {
+     # On other platforms, Qt's own compilation goes needs to compile the Qt 5.0 API
+     DEFINES *= QT_DISABLE_DEPRECATED_BEFORE=0x050000
+ }
+-
+-TARGET = $$qt5LibraryTarget($$TARGET$$QT_LIBINFIX)  # Do this towards the end
 -- 
-2.5.0
+2.11.0
+
+
+From b84844de9f60380c328a481b58cd2a035851d5d3 Mon Sep 17 00:00:00 2001
+From: Mark Brand <mabrand@mabrand.nl>
+Date: Sun, 29 Jan 2017 13:02:16 +0100
+Subject: [PATCH 3/5] reenable fontconfig for win32 (MXE-specific)
+
+Change-Id: I05b036366bd402e43309742412bcf8ca91fe125f
+
+diff --git a/src/gui/configure.json b/src/gui/configure.json
+index 2fb03a452ab..91ae39177f2 100644
+--- a/src/gui/configure.json
++++ b/src/gui/configure.json
+@@ -498,7 +498,7 @@
+         },
+         "fontconfig": {
+             "label": "Fontconfig",
+-            "condition": "!config.win32 && !config.darwin && features.system-freetype && libs.fontconfig",
++            "condition": "!config.darwin && features.system-freetype && libs.fontconfig",
+             "output": [ "privateFeature", "feature" ]
+         },
+         "gbm": {
+diff --git a/src/plugins/platforms/minimal/qminimalintegration.cpp b/src/plugins/platforms/minimal/qminimalintegration.cpp
+index ca33689cd72..194523eee00 100644
+--- a/src/plugins/platforms/minimal/qminimalintegration.cpp
++++ b/src/plugins/platforms/minimal/qminimalintegration.cpp
+@@ -130,7 +130,11 @@ QPlatformFontDatabase *QMinimalIntegration::fontDatabase() const
+ {
+     if (!m_fontDatabase && (m_options & EnableFonts)) {
+ #if QT_CONFIG(fontconfig)
++#ifdef Q_OS_WIN
++        m_fontDatabase = new QFreeTypeFontDatabase;
++#else
+         m_fontDatabase = new QGenericUnixFontDatabase;
++#endif
+ #elif defined(Q_OS_WINRT)
+         m_fontDatabase = new QWinRTFontDatabase;
+ #elif defined(Q_OS_WIN)
+-- 
+2.11.0
+
+
+From c35d305ba4e1bdb4a6bdc7ad85515e0358b8d3bc Mon Sep 17 00:00:00 2001
+From: Mark Brand <mabrand@mabrand.nl>
+Date: Sun, 29 Jan 2017 16:22:03 +0100
+Subject: [PATCH 4/5] fix treatment of SYBASE_LIBS
+
+Change-Id: I4c9914cf7ef9d91feb0718a57f2551c1eeed47e0
+
+diff --git a/src/plugins/sqldrivers/configure.pri b/src/plugins/sqldrivers/configure.pri
+index 9fb957291fd..d0640809022 100644
+--- a/src/plugins/sqldrivers/configure.pri
++++ b/src/plugins/sqldrivers/configure.pri
+@@ -92,7 +92,7 @@ defineTest(qtConfLibrary_sybaseEnv) {
+         libs += "-L$${sybase}/lib"
+     libs += $$getenv(SYBASE_LIBS)
+     !isEmpty(libs) {
+-        $${1}.libs = "$$val_escape(libs)"
++        $${1}.libs = $$libs
+         export($${1}.libs)
+     }
+     return(true)
+-- 
+2.11.0
+
+
+From 4bf338634788b012bd73b7bb4aeea81e42e9bb82 Mon Sep 17 00:00:00 2001
+From: Mark Brand <mabrand@mabrand.nl>
+Date: Sun, 11 Jun 2017 00:27:41 +0200
+Subject: [PATCH 5/5] use pkg-config for harfbuzz
+
+Change-Id: Ia65cbb90fd180f1bc10ce077a9a8323a48e51421
+
+diff --git a/src/gui/configure.json b/src/gui/configure.json
+index 91ae39177f2..398d07d0b13 100644
+--- a/src/gui/configure.json
++++ b/src/gui/configure.json
+@@ -130,7 +130,8 @@
+             "label": "HarfBuzz",
+             "test": "unix/harfbuzz",
+             "sources": [
+-                "-lharfbuzz"
++               { "type": "pkgConfig", "args": "harfbuzz" },
++               "-lharfbuzz"
+             ]
+         },
+         "imf": {
+-- 
+2.11.0
 
