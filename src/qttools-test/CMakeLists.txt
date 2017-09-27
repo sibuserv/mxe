@@ -18,13 +18,14 @@ target_link_libraries(
     ${Qt5Gui_LIBRARIES}
     ${Qt5Core_LIBRARIES}
     opengl32
-    qtpcre2
-    version
+    harfbuzz
     jpeg
     png
     winmm
     dwmapi
     uxtheme
     ws2_32
+    qtpcre2
+    version
     z
 )
