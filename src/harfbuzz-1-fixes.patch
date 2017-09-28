@@ -15,7 +15,7 @@ index 949869a..59d8cbc 100644
  
  Requires: harfbuzz
 -Requires.private: icu-uc
-+Requires.private: icu-uc cairo-ft glib-2.0
++Requires.private: icu-uc 
  Libs: -L${libdir} -lharfbuzz-icu
 +Libs.private: -lusp10 -lgdi32
  Cflags: -I${includedir}/harfbuzz
@@ -27,7 +27,7 @@ index b3e124a..e74633a 100644
  Description: HarfBuzz text shaping library
  Version: %VERSION%
  
-+Requires.private: cairo-ft glib-2.0
++Requires.private: 
  Libs: -L${libdir} -lharfbuzz
 -Libs.private: %libs_private%
 +Libs.private: %libs_private% -lusp10 -lgdi32
