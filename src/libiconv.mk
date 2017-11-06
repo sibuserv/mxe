@@ -9,6 +9,9 @@ $(PKG)_SUBDIR   := libiconv-$($(PKG)_VERSION)
 $(PKG)_FILE     := libiconv-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://ftp.gnu.org/gnu/libiconv/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc
+$(PKG)_TARGETS  := $(BUILD) $(MXE_TARGETS)
+
+$(PKG)_DEPS_$(BUILD) :=
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://www.gnu.org/software/libiconv/' | \
@@ -19,12 +22,7 @@ endef
 
 define $(PKG)_BUILD
     $(SED) -i 's, sed , $(SED) ,g' '$(1)/windows/windres-options'
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --disable-nls
     $(MAKE) -C '$(1)/libcharset' -j '$(JOBS)' install
@@ -37,14 +35,14 @@ define $(PKG)_BUILD
 endef
 
 define $(PKG)_BUILD_$(BUILD)
-    mkdir '$(1).build'
-    cd    '$(1).build' && \
+    # build and install the library
+    cd '$(BUILD_DIR)' && \
     CPPFLAGS="$(CPPFLAGS)" \
     CFLAGS="$(CFLAGS)" \
     CXXFLAGS="$(CXXFLAGS)" \
     LDFLAGS="$(LDFLAGS)" \
-    '$(1)/configure' \
-        --prefix='$(PREFIX)/$(TARGET)'
-    $(MAKE) -C '$(1).build' -j '$(JOBS)' man1_MANS=
-    $(MAKE) -C '$(1).build' -j 1 install man1_MANS=
+    $(SOURCE_DIR)/configure \
+        $(MXE_CONFIGURE_OPTS)
+    $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)' $(MXE_DISABLE_DOCS)
+    $(MAKE) -C '$(BUILD_DIR)' -j 1 install $(MXE_DISABLE_DOCS)
 endef

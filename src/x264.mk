@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 0825e14945bc373107f9a00e66d45d5389bb86368efd834b92c52cddb2ded
 $(PKG)_SUBDIR   := $(PKG)-snapshot-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-snapshot-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := https://download.videolan.org/pub/videolan/$(PKG)/snapshots/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc yasm
+$(PKG)_DEPS     := gcc liblsmash yasm
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://git.videolan.org/?p=x264.git;a=shortlog' | \
@@ -19,12 +19,7 @@ endef
 
 define $(PKG)_BUILD
     $(SED) -i 's,yasm,$(TARGET)-yasm,g' '$(1)/configure'
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --cross-prefix='$(TARGET)'- \
         --enable-win32thread \
