@@ -17,9 +17,12 @@ MXE_TARGETS        := i686-w64-mingw32.static
 
 DEFAULT_MAX_JOBS   := 6
 SOURCEFORGE_MIRROR := downloads.sourceforge.net
+MXE_MIRROR         := https://mirror.mxe.cc/pkg
 PKG_MIRROR         := https://s3.amazonaws.com/mxe-pkg
 PKG_CDN            := http://d1yihgixbnrglp.cloudfront.net
-GITLAB_BACKUP      := http://gitlab.com/starius/mxe-backup2/raw/master/
+GITLAB_BACKUP      := https://gitlab.com/starius/mxe-backup2/raw/master
+# reorder as required, ensuring final one is a http fallback
+MIRROR_SITES       := GITLAB_BACKUP MXE_MIRROR PKG_MIRROR PKG_CDN
 
 PWD        := $(shell pwd)
 SHELL      := bash
@@ -257,45 +260,48 @@ define PREPARE_PKG_SOURCE
 endef
 
 PKG_CHECKSUM = \
-    openssl dgst -sha256 '$(PKG_DIR)/$($(1)_FILE)' 2>/dev/null | $(SED) -n 's,^.*\([0-9a-f]\{64\}\)$$,\1,p'
+    openssl dgst -sha256 '$(or $(2),$(PKG_DIR)/$($(1)_FILE))' 2>/dev/null | $(SED) -n 's,^.*\([0-9a-f]\{64\}\)$$,\1,p'
 
 CHECK_PKG_ARCHIVE = \
     $(if $($(1)_SOURCE_TREE),\
         $(PRINTF_FMT) '[local]' '$(1)' '$($(1)_SOURCE_TREE)' | $(RTRIM)\
-    $(else),\
-        [ '$($(1)_CHECKSUM)' == "`$$(call PKG_CHECKSUM,$(1))`" ]\
-    )
+    $(else),$(if $(SKIP_CHECHSUM),true, \
+        [ '$($(1)_CHECKSUM)' == "`$$(call PKG_CHECKSUM,$(1),$(2))`" ]\
+    ))
 
 ESCAPE_PKG = \
 	echo '$($(1)_FILE)' | perl -lpe 's/([^A-Za-z0-9])/sprintf("%%%02X", ord($$$$1))/seg'
 
 BACKUP_DOWNLOAD = \
     (echo "MXE Warning! Downloading $(1) from backup." >&2 && \
-    ($(WGET) -O '$(PKG_DIR)/.tmp-$($(1)_FILE)' $(PKG_MIRROR)/`$(call ESCAPE_PKG,$(1))` || \
-    $(WGET) -O '$(PKG_DIR)/.tmp-$($(1)_FILE)' $(PKG_CDN)/`$(call ESCAPE_PKG,$(1))` || \
-    $(WGET) -O '$(PKG_DIR)/.tmp-$($(1)_FILE)' $(GITLAB_BACKUP)/`$(call ESCAPE_PKG,$(1))`_$($(1)_CHECKSUM)))
+    ($(foreach SITE,$(MIRROR_SITES), \
+        $(WGET) -O '$(TMP_FILE)' $($(SITE))/`$(call ESCAPE_PKG,$(1))`_$($(1)_CHECKSUM) || ) false))
 
 DOWNLOAD_PKG_ARCHIVE = \
+    $(eval TMP_FILE := $(PKG_DIR)/.tmp-$($(1)_FILE)) \
     $(if $($(1)_SOURCE_TREE),\
         true\
     $(else),\
         mkdir -p '$(PKG_DIR)' && ( \
-            $(WGET) -T 30 -t 3 -O '$(PKG_DIR)/.tmp-$($(1)_FILE)' '$($(1)_URL)' \
+            ($(WGET) -T 30 -t 3 -O '$(TMP_FILE)' '$($(1)_URL)' && \
+             $(call CHECK_PKG_ARCHIVE,$(1),'$(TMP_FILE)')) \
             $(if $($(1)_URL_2), \
                 || (echo "MXE Warning! Downloading $(1) from second URL." >&2 && \
-                    $(WGET) -T 30 -t 3 -O '$(PKG_DIR)/.tmp-$($(1)_FILE)' '$($(1)_URL_2)')) \
+                    $(WGET) -T 30 -t 3 -O '$(TMP_FILE)' '$($(1)_URL_2)' && \
+                    $(call CHECK_PKG_ARCHIVE,$(1),'$(TMP_FILE)'))) \
             $(if $(MXE_NO_BACKUP_DL),, \
                 || $(BACKUP_DOWNLOAD)) \
-        ) && cat '$(PKG_DIR)/.tmp-$($(1)_FILE)' \
+        ) && cat '$(TMP_FILE)' \
         $(if $($(1)_FIX_GZIP), \
             | gzip -d | gzip -9n, \
             ) \
         > '$(PKG_DIR)/$($(1)_FILE)' && \
-        rm '$(PKG_DIR)/.tmp-$($(1)_FILE)' || \
+        $(if $(CREATE_SUFFIXED_ARCHIVE),cp '$(PKG_DIR)/$($(1)_FILE)' '$(PKG_DIR)/$($(1)_FILE)_$($(1)_CHECKSUM)' &&) \
+        rm '$(TMP_FILE)' || \
         ( echo; \
           echo 'Download failed!'; \
           echo; \
-          rm -f '$(PKG_DIR)/$($(1)_FILE)' '$(PKG_DIR)/.tmp-$($(1)_FILE)'; )\
+          rm -f '$(PKG_DIR)/$($(1)_FILE)' '$(TMP_FILE)'; )\
     )
 
 # open issue from 2002:
@@ -359,31 +365,6 @@ LIST_NMIN   = $(shell echo '$(strip $(1))' | tr ' ' '\n' | sort -n | head -1)
 
 NPROCS := $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 1)
 JOBS   := $(call LIST_NMIN, $(DEFAULT_MAX_JOBS) $(NPROCS))
-
-# cache some target string manipulation functions
-# `memoize` and `uc` from gmsl
-_CHOP_TARGET = $(call merge,.,$(call chop,$(call split,.,$(1))))
-CHOP_TARGET  = $(call memoize,_CHOP_TARGET,$(1))
-_UC_LIB_TYPE = $(call uc,$(word 2,$(subst ., ,$(1))))
-UC_LIB_TYPE  = $(call memoize,_UC_LIB_TYPE,$(1))
-
-# finds a package build rule or deps by truncating the target elements
-# $(call LOOKUP_PKG_RULE, package, rule type ie. BUILD|DEPS|FILE, target,[lib type, original target to cache])
-# returns variable name for use with $(value)
-#
-# caches result with gmsl associative arrays (`get` and `set` functions)
-# since `memoize` only works with single argument
-LOOKUP_PKG_RULE = $(strip \
-    $(or $(call get,LOOKUP_PKG_RULE_,$(1)_$(2)_$(or $(5),$(3))),\
-    $(if $(findstring undefined, $(flavor $(1)_$(2)_$(3))),\
-        $(if $(3),\
-            $(call LOOKUP_PKG_RULE,$(1),$(2),$(call CHOP_TARGET,$(3)),$(or $(4),$(call UC_LIB_TYPE,$(3))),$(or $(5),$(3))),\
-            $(if $(4),\
-                $(call LOOKUP_PKG_RULE,$(1),$(2),$(4),,$(5)),\
-                $(call set,LOOKUP_PKG_RULE_,$(1)_$(2)_$(5),$(1)_$(2))\
-                $(1)_$(2))),\
-        $(call set,LOOKUP_PKG_RULE_,$(1)_$(2)_$(or $(5),$(3)),$(1)_$(2)_$(3))\
-        $(1)_$(2)_$(3))))
 
 # Core packages.
 override MXE_PLUGIN_DIRS := $(realpath $(TOP_DIR)/src) $(MXE_PLUGIN_DIRS)
@@ -460,6 +441,46 @@ $(foreach TARGET,$(CROSS_TARGETS),\
 # always add $(BUILD) to our targets
 override MXE_TARGETS := $(CROSS_TARGETS) $(BUILD)
 
+# cache some target string manipulation functions with normal make variables
+CHOP_TARGETS = \
+    $(if $(1),\
+        $(eval CHOPPED := $(call merge,.,$(call chop,$(call split,.,$(1)))))\
+        $(eval $(1)_CHOPPED := $(CHOPPED))\
+        $(call CHOP_TARGETS,$(CHOPPED)))
+
+$(foreach TARGET,$(MXE_TARGETS),\
+    $(call CHOP_TARGETS,$(TARGET))\
+    $(eval $(TARGET)_UC_LIB_TYPE := $(if $(findstring shared,$(TARGET)),SHARED,STATIC)))
+
+# finds a package rule defintion
+RULE_TYPES := BUILD DEPS FILE MESSAGE URL
+# by truncating the target elements then looking for STAIC|SHARED rules:
+#
+# foo_BUILD_i686-w64-mingw32.static.posix.dw2
+# foo_BUILD_i686-w64-mingw32.static.posix
+# foo_BUILD_i686-w64-mingw32.static
+# foo_BUILD_i686-w64-mingw32
+# foo_BUILD_SHARED
+# foo_BUILD
+
+# return the pre-populated rule if defined
+LOOKUP_PKG_RULE = $(or $(LOOKUP_PKG_RULE_$(1)_$(2)_$(3)),$(1)_$(2))
+
+# $(call _LOOKUP_PKG_RULE, package, rule type, target [, lib type])
+# returns variable name for use with $(value). PKG_RULE below will
+# populate LOOKUP_PKG_RULE_* variables for rules that require lookups
+_LOOKUP_PKG_RULE = $(strip \
+    $(if $(findstring undefined, $(flavor $(PKG)_$(RULE)_$(3))),\
+        $(if $(3),\
+            $(call _LOOKUP_PKG_RULE,$(PKG),$(RULE),$($(3)_CHOPPED),$(or $(4),$($(3)_UC_LIB_TYPE)))\
+        $(else),\
+            $(if $(4),\
+                $(call _LOOKUP_PKG_RULE,$(PKG),$(RULE),$(4))\
+            $(else),\
+                $(PKG)_$(RULE)))\
+    $(else),\
+        $(PKG)_$(RULE)_$(3)))
+
 # set column widths for build status messages
 PKG_COL_WIDTH    := $(call plus,2,$(call LIST_NMAX, $(sort $(call map, strlen, $(PKGS)))))
 MAX_TARGET_WIDTH := $(call LIST_NMAX, $(sort $(call map, strlen, $(MXE_TARGETS))))
@@ -512,7 +533,7 @@ download-only-$($(1)_FILE)::
 	@$$(if $$(REMOVE_DOWNLOAD),rm -f '$(PKG_DIR)/$($(1)_FILE)')
 	@if ! $(call CHECK_PKG_ARCHIVE,$(1)); then \
 	    $(PRINTF_FMT) '[download]' '$(1)' | $(RTRIM); \
-	    (set -x; $(call DOWNLOAD_PKG_ARCHIVE,$(1))) &> '$(LOG_DIR)/$(TIMESTAMP)/$(1)-download'; \
+	    ($(call DOWNLOAD_PKG_ARCHIVE,$(1))) &> '$(LOG_DIR)/$(TIMESTAMP)/$(1)-download'; \
 	    grep 'MXE Warning' '$(LOG_DIR)/$(TIMESTAMP)/$(1)-download'; \
 	    ln -sf '$(TIMESTAMP)/$(1)-download' '$(LOG_DIR)/$(1)-download'; \
 	    if ! $(call CHECK_PKG_ARCHIVE,$(1)); then \
@@ -534,6 +555,12 @@ prepare-pkg-source-$(1): download-only-$(1)
 	rm -rf '$(2)'
 	mkdir -p '$(2)'
 	$$(call PREPARE_PKG_SOURCE,$(1),$(2))
+
+# populate LOOKUP_PKG_RULE_ variables where there are multiple defined
+$(foreach RULE,$(RULE_TYPES),\
+    $(if $(filter-out %_URL_2,$(filter-out $(PKG)_$(RULE),$(filter $(PKG)_$(RULE)%,$(.VARIABLES)))),\
+        $(foreach TARGET,$(MXE_TARGETS),\
+            $(eval LOOKUP_PKG_RULE_$(PKG)_$(RULE)_$(TARGET) := $(call _LOOKUP_PKG_RULE,$(PKG),$(RULE),$(TARGET))))))
 endef
 $(foreach PKG,$(PKGS),$(eval $(call PKG_RULE,$(PKG),$(call TMP_DIR,$(PKG)))))
 
@@ -685,9 +712,9 @@ WALK_DOWNSTREAM = \
     $(strip \
         $(foreach PKG,$(PKGS),\
             $(call SET_CLEAR,PKGS_VISITED)\
-            $(eval $(PKG)_DEPS_ALL := $(call WALK_UPSTREAM,$(PKG))))\
+            $(eval ALL_$(PKG)_DEPS := $(call WALK_UPSTREAM,$(PKG))))\
         $(foreach PKG,$(PKGS),\
-            $(if $(filter $(1),$($(PKG)_DEPS_ALL)),$(PKG))))
+            $(if $(filter $(1),$(ALL_$(PKG)_DEPS)),$(PKG))))
 
 # EXCLUDE_PKGS can be a list of pkgs and/or wildcards
 RECURSIVELY_EXCLUDED_PKGS = \
@@ -730,13 +757,13 @@ show-upstream-deps-%:
 # print first level pkg deps for use in build-pkg.lua
 .PHONY: print-deps-for-build-pkg
 print-deps-for-build-pkg:
-	$(foreach TARGET,$(MXE_TARGETS), \
+	$(foreach TARGET,$(sort $(MXE_TARGETS)), \
 	    $(foreach PKG,$(sort $($(TARGET)_PKGS)), \
-	        $(info for-build-pkg $(TARGET)~$(PKG) \
+	        $(info $(strip for-build-pkg $(TARGET)~$(PKG) \
 	        $(subst $(space),-,$($(PKG)_VERSION)) \
 	        $(addprefix $(TARGET)~,$(value $(call LOOKUP_PKG_RULE,$(PKG),DEPS,$(TARGET)))) \
 	        $(addprefix $(TARGET)~,$(if $(call set_is_not_member,$(PKG),$(MXE_CONF_PKGS)),$(MXE_CONF_PKGS))) \
-	        $(and $($(TARGET)_DEPS),$(addprefix $($(TARGET)_DEPS)~,$($($(TARGET)_DEPS)_PKGS))))))
+	        $(and $($(TARGET)_DEPS),$(addprefix $($(TARGET)_DEPS)~,$($($(TARGET)_DEPS)_PKGS)))))))
 	        @echo -n
 
 BUILD_PKG_TMP_FILES := *-*.list mxe-*.tar.xz mxe-*.deb* wheezy jessie
@@ -750,55 +777,12 @@ clean:
 clean-pkg:
 	rm -f $(patsubst %,'%', \
                   $(filter-out \
-                      $(foreach PKG,$(PKGS),$(PKG_DIR)/$($(PKG)_FILE)), \
+                      $(foreach PKG,$(PKGS),$(PKG_DIR)/$($(PKG)_FILE) $(PKG_DIR)/$($(PKG)_FILE)_$($(PKG)_CHECKSUM)), \
                       $(wildcard $(PKG_DIR)/*)))
 
 .PHONY: clean-junk
 clean-junk: clean-pkg
 	rm -rf $(LOG_DIR) $(call TMP_DIR,*)
-
-COMPARE_VERSIONS = $(strip \
-    $(if $($(1)_BRANCH),$(call seq,$($(1)_VERSION),$(2)),\
-    $(filter $(2),$(shell printf '$($(1)_VERSION)\n$(2)' | $(SORT) -V | head -1))))
-
-.PHONY: update
-define UPDATE
-    $(if $(2),
-        $(if $(filter $($(1)_IGNORE),$(2)),
-            $(info IGNORED  $(1)  $(2)),
-            $(if $(COMPARE_VERSIONS),
-                $(if $(filter $(2),$($(1)_VERSION)),
-                    $(info .        $(1)  $(2)),
-                    $(info OLD      $(1)  $($(1)_VERSION) --> $(2) ignoring)),
-                $(info NEW      $(1)  $($(1)_VERSION) --> $(2))
-                $(if $(findstring undefined, $(origin UPDATE_DRYRUN)),
-                    $(SED) -i 's/^\([^ ]*_VERSION *:=\).*/\1 $(2)/' '$($(1)_MAKEFILE)'
-                    $(MAKE) -f '$(MAKEFILE)' 'update-checksum-$(1)' \
-                        || { $(SED) -i 's/^\([^ ]*_VERSION *:=\).*/\1 $($(1)_VERSION)/' '$($(1)_MAKEFILE)'; \
-                             exit 1; }))),
-        $(info Unable to update version number of package $(1) \
-            $(newline)$(newline)$($(1)_UPDATE)$(newline)))
-
-endef
-update:
-	$(foreach PKG,$(PKGS),\
-	    $(and $($(PKG)_UPDATE),$(call UPDATE,$(PKG),$(shell $($(PKG)_UPDATE)))))
-
-update-package-%:
-	$(if $(call set_is_member,$*,$(PKGS)), \
-	    $(and $($*_UPDATE),$(call UPDATE,$*,$(shell $($*_UPDATE)))), \
-	    $(error Package $* not found))
-	    @echo -n
-
-check-update-package-%: UPDATE_DRYRUN = true
-check-update-package-%: update-package-% ;
-
-update-checksum-%: MXE_NO_BACKUP_DL = true
-update-checksum-%:
-	$(if $(call set_is_member,$*,$(PKGS)), \
-	    $(call DOWNLOAD_PKG_ARCHIVE,$*) && \
-	    $(SED) -i 's/^\([^ ]*_CHECKSUM *:=\).*/\1 '"`$(call PKG_CHECKSUM,$*)`"'/' '$($*_MAKEFILE)', \
-	    $(error Package $* not found))
 
 .PHONY: cleanup-style
 define CLEANUP_STYLE
@@ -937,6 +921,6 @@ docs/packages.json: $(foreach 1,$(PKGS),$(PKG_MAKEFILES))
 	@echo '    "": null'             >> $@
 	@echo '}'                        >> $@
 
-# for patch-tool-mxe
-
+# for other mxe functions
 include patch.mk
+include updates.mk

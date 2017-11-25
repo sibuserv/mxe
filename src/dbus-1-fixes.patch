@@ -5,7 +5,7 @@ Contains ad hoc patches for cross building.
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: darealshinji <djcj@gmx.de>
 Date: Mon, 3 Jul 2017 01:55:45 +0200
-Subject: [PATCH] Avoid multiple definitions of DllMain in static builds
+Subject: [PATCH 1/1] Avoid multiple definitions of DllMain in static builds
 
 
 diff --git a/dbus/dbus-sysdeps-thread-win.c b/dbus/dbus-sysdeps-thread-win.c
@@ -30,24 +30,3 @@ index 1111111..2222222 100644
  DBusCMutex *
  _dbus_platform_cmutex_new (void)
  {
-
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Tony Theodore <tonyt@logyst.com>
-Date: Sat, 28 Oct 2017 12:27:09 +1100
-Subject: [PATCH] fix build on darwin (no -e option for echo)
-
-See: https://bugs.freedesktop.org/show_bug.cgi?id=103493
-
-diff --git a/tools/Makefile.in b/tools/Makefile.in
-index 1111111..2222222 100644
---- a/tools/Makefile.in
-+++ b/tools/Makefile.in
-@@ -1090,7 +1090,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-dist_examplesSCRIPTS
- @DBUS_WIN_TRUE@	$(RC) $< -o $@
- 
- @DBUS_WIN_TRUE@disable-uac.rc: Win32.Manifest
--@DBUS_WIN_TRUE@	echo -e "1 24 \"$<\"" > $@
-+@DBUS_WIN_TRUE@	echo '1 24 "$<"' > $@
- 
- # create the /var/lib/dbus directory for dbus-uuidgen
- install-data-local:

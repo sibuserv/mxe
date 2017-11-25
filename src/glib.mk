@@ -12,7 +12,7 @@ $(PKG)_URL      := https://download.gnome.org/sources/glib/$(call SHORT_PKG_VERS
 $(PKG)_DEPS     := gcc dbus gettext libffi libiconv pcre zlib
 $(PKG)_TARGETS  := $(BUILD) $(MXE_TARGETS)
 
-$(PKG)_DEPS_$(BUILD) := gettext libiconv zlib
+$(PKG)_DEPS_$(BUILD) := autotools gettext libiconv zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://git.gnome.org/browse/glib/refs/tags' | \
@@ -30,6 +30,7 @@ endef
 
 define $(PKG)_BUILD_NATIVE
     # native build for glib-tools
+    cd '$(SOURCE_DIR)' && NOCONFIGURE=true ./autogen.sh
     cd '$(BUILD_DIR)' && '$(SOURCE_DIR)/configure' \
         $(MXE_CONFIGURE_OPTS) \
         --enable-regex \
