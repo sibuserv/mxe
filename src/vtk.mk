@@ -8,7 +8,7 @@ $(PKG)_SUBDIR     := VTK-$($(PKG)_VERSION)
 $(PKG)_FILE       := $($(PKG)_SUBDIR).tar.gz
 $(PKG)_URL        := https://www.vtk.org/files/release/$(call SHORT_PKG_VERSION,$(PKG))/$($(PKG)_FILE)
 $(PKG)_QT_VERSION := 5
-$(PKG)_DEPS       := gcc hdf5 qtbase qttools libpng expat libxml2 jsoncpp tiff freetype lz4 hdf5 libharu glew
+$(PKG)_DEPS       := gcc expat freetype glew hdf5 jsoncpp libharu libpng libxml2 lz4 qtbase qttools tiff
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://vtk.org/gitweb?p=VTK.git;a=tags' | \
@@ -23,6 +23,8 @@ define $(PKG)_BUILD
     # first we need a native build to create the compile tools
     mkdir '$(BUILD_DIR).native'
     cd '$(BUILD_DIR).native' && '$(PREFIX)/$(BUILD)/bin/cmake' '$(SOURCE_DIR)' \
+        -DVTK_USE_X=OFF \
+        -DVTK_USE_OFFSCREEN=ON \
         -DBUILD_TESTING=FALSE \
         -DCMAKE_BUILD_TYPE="Release"
     $(MAKE) -C '$(BUILD_DIR).native' -j '$(JOBS)' VERBOSE=1 vtkCompileTools

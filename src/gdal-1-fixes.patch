@@ -3,17 +3,57 @@ This file is part of MXE. See LICENSE.md for licensing information.
 Contains ad hoc patches for cross building.
 
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: MXE
-Date: Sat, 18 Oct 2014 18:25:34 -0400
-Subject: [PATCH 1/2] Fix geos detection
+From: Luke Potgieter <fried.roadkill+ght@gmail.com>
+Date: Tue, 29 Aug 2017 16:31:09 +0200
+Subject: [PATCH 1/3] Detect spatialite more effectively than just checking for
+ headers in the system paths. PostgreSQL detection requires -lpthread when
+ building statically.
 
 
+diff --git a/configure.ac b/configure.ac
+index 1111111..2222222 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1124,7 +1124,7 @@ else
+ 
+   AC_MSG_RESULT([yes])
+ 
+-  AC_CHECK_LIB(pq,PQconnectdb,HAVE_PG=yes,HAVE_PG=no,-L`$PG_CONFIG --libdir`)
++  AC_CHECK_LIB(pq,PQconnectdb,HAVE_PG=yes,HAVE_PG=no,-L`$PG_CONFIG --libdir` -lpthread)
+ 
+   if test "${HAVE_PG}" = "yes" ; then
+     LIBS=-L`$PG_CONFIG --libdir`" -lpq $LIBS"
+@@ -3544,16 +3544,21 @@ AC_ARG_WITH(spatialite-soname,
+ 
+ HAVE_SPATIALITE=no
+ SPATIALITE_AMALGAMATION=no
++HAVE_SPAT_PKG=no
+ 
+ if test -z "$with_spatialite" -o "$with_spatialite" = "no"; then
+     AC_MSG_RESULT(disabled)
+ elif test "$with_spatialite" = "yes"; then
+     AC_CHECK_HEADERS(sqlite3.h)
+     if test "$ac_cv_header_sqlite3_h" = "yes"; then
+-        AC_MSG_CHECKING([for spatialite.h in /usr/include or /usr/local/include])
+-        if test -f "/usr/include/spatialite.h" -o -f "/usr/local/include/spatialite.h"; then
+-            AC_MSG_RESULT(found)
++        #AC_MSG_CHECKING([for spatialite.h in /usr/include or /usr/local/include])
++        #if test -f "/usr/include/spatialite.h" -o -f "/usr/local/include/spatialite.h"; then
++        PKG_CHECK_MODULES(SPATIALITE, spatialite, [HAVE_SPAT_PKG=yes], [HAVE_SPAT_PKG=no])
++        if test "$HAVE_SPAT_PKG" = "yes"; then
++            OLD_LIBS="$LIBS"
++            LIBS="$LIBS -lsqlite3 -lspatialite -lgeos_c -lgeos -lxml2 -liconv -llzma -lproj -lstdc++ -lws2_32 -lm -lz"
+             AC_CHECK_LIB(spatialite,spatialite_init,SPATIALITE_INIT_FOUND=yes,SPATIALITE_INIT_FOUND=no,)
++            LIBS="$OLD_LIBS"
+             if test "$SPATIALITE_INIT_FOUND" = "yes"; then
+                 HAVE_SPATIALITE=yes
+                 SPATIALITE_LIBS="-lspatialite -lsqlite3"
 diff --git a/m4/geos.m4 b/m4/geos.m4
 index 1111111..2222222 100644
 --- a/m4/geos.m4
 +++ b/m4/geos.m4
 @@ -121,14 +121,14 @@ AC_DEFUN([GEOS_INIT],[
-       
+ 
        HAVE_GEOS="no"
  
 -      GEOS_LIBS="`${GEOS_CONFIG} --ldflags` -lgeos_c"
@@ -32,92 +72,298 @@ index 1111111..2222222 100644
          [GEOSversion],
 
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: MXE
-Date: Tue, 5 Jul 2016 22:23:16 +0300
-Subject: [PATCH 2/2] Use AC_PATH_TOOL for config scripts
+From: Luke Potgieter <fried.roadkill+ght@gmail.com>
+Date: Tue, 26 Sep 2017 14:56:19 +0200
+Subject: [PATCH 2/3] Use the new proj dll version number for the latest proj.
 
 
-diff --git a/configure.in b/configure.in
+diff --git a/ogr/ogrct.cpp b/ogr/ogrct.cpp
 index 1111111..2222222 100644
---- a/configure.in
-+++ b/configure.in
-@@ -866,7 +866,7 @@ AC_ARG_WITH(pg,
- 	       [Include PostgreSQL GDAL/OGR Support (ARG=path to pg_config)]),,)
+--- a/ogr/ogrct.cpp
++++ b/ogr/ogrct.cpp
+@@ -96,9 +96,9 @@ static bool      bProjLocaleSafe = false;
+ // build) it can be named either way, so use PROJSO environment variable to
+ // specify the right library name. By default assume that in Cygwin/MinGW all
+ // components were built in the same way.
+-#  define LIBNAME "libproj-9.dll"
++#  define LIBNAME "libproj-12.dll"
+ #elif defined(__CYGWIN__)
+-#  define LIBNAME "cygproj-9.dll"
++#  define LIBNAME "cygproj-12.dll"
+ #elif defined(__APPLE__)
+ #  define LIBNAME "libproj.dylib"
+ #else
+
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Tony Theodore <tonyt@logyst.com>
+Date: Sun, 19 Nov 2017 12:01:30 +1100
+Subject: [PATCH 3/3] Add support for openjpeg 2.3
+
+taken from:
+https://trac.osgeo.org/gdal/changeset/40330
+
+diff --git a/configure b/configure
+index 1111111..2222222 100755
+--- a/configure
++++ b/configure
+@@ -25116,19 +25116,20 @@ $as_echo "$as_me: OpenJPEG (JPEG2000) support disabled." >&6;}
  
- if test "x$with_pg" = "xyes" -o "x$with_pg" = "x" ; then
--  AC_PATH_PROG(PG_CONFIG, pg_config, no)
-+  AC_PATH_TOOL(PG_CONFIG, pg_config, no)
- else
-   PG_CONFIG=$with_pg
- fi
-@@ -2016,7 +2016,7 @@ KEA_CONFIG=no
- AC_ARG_WITH(kea,[  --with-kea[=ARG]      Include kealib (ARG=path to kea-config) [[default=yes]]],,)
+ elif test "$with_openjpeg" = "yes" -o "$with_openjpeg" = "" ; then
  
- if test "$with_kea" = "yes" -o "x$with_kea" = "x" ; then
--  AC_PATH_PROG(KEA_CONFIG, kea-config, no)
-+  AC_PATH_TOOL(KEA_CONFIG, kea-config, no)
- else
-    KEA_CONFIG=$with_kea
+-  for ac_header in openjpeg-2.2/openjpeg.h
++
++  for ac_header in openjpeg-2.3/openjpeg.h
+ do :
+-  ac_fn_c_check_header_mongrel "$LINENO" "openjpeg-2.2/openjpeg.h" "ac_cv_header_openjpeg_2_2_openjpeg_h" "$ac_includes_default"
+-if test "x$ac_cv_header_openjpeg_2_2_openjpeg_h" = xyes; then :
++  ac_fn_c_check_header_mongrel "$LINENO" "openjpeg-2.3/openjpeg.h" "ac_cv_header_openjpeg_2_3_openjpeg_h" "$ac_includes_default"
++if test "x$ac_cv_header_openjpeg_2_3_openjpeg_h" = xyes; then :
+   cat >>confdefs.h <<_ACEOF
+-#define HAVE_OPENJPEG_2_2_OPENJPEG_H 1
++#define HAVE_OPENJPEG_2_3_OPENJPEG_H 1
+ _ACEOF
+ 
  fi
-@@ -2079,10 +2079,10 @@ else
-   dnl find nc-config location
-   unset ac_cv_path_NETCDF_NCCONFIG
-   if test "$with_netcdf" = "yes" -o "$with_netcdf" = "" ; then
--    AC_PATH_PROG(NETCDF_NCCONFIG, nc-config, no)
-+    AC_PATH_TOOL(NETCDF_NCCONFIG, nc-config, no)
+ 
+ done
+ 
+-  if test "$ac_cv_header_openjpeg_2_2_openjpeg_h" = "yes"; then
++  if test "$ac_cv_header_openjpeg_2_3_openjpeg_h" = "yes"; then
+     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for opj_stream_set_user_data_length in -lopenjp2" >&5
+ $as_echo_n "checking for opj_stream_set_user_data_length in -lopenjp2... " >&6; }
+ if ${ac_cv_lib_openjp2_opj_stream_set_user_data_length+:} false; then :
+@@ -25172,23 +25173,23 @@ else
+ fi
+ 
+     if test "$HAVE_OPENJPEG" = "yes"; then
+-        OPENJPEG_VERSION=20200
++        OPENJPEG_VERSION=20300
+         LIBS="-lopenjp2 $LIBS"
+     fi
    else
-     tmp_path="$with_netcdf/bin$PATH_SEPARATOR$with_netcdf"
--    AC_PATH_PROG(NETCDF_NCCONFIG, nc-config, no, $tmp_path)
-+    AC_PATH_TOOL(NETCDF_NCCONFIG, nc-config, no, $tmp_path)
+-    for ac_header in openjpeg-2.1/openjpeg.h
++    for ac_header in openjpeg-2.2/openjpeg.h
+ do :
+-  ac_fn_c_check_header_mongrel "$LINENO" "openjpeg-2.1/openjpeg.h" "ac_cv_header_openjpeg_2_1_openjpeg_h" "$ac_includes_default"
+-if test "x$ac_cv_header_openjpeg_2_1_openjpeg_h" = xyes; then :
++  ac_fn_c_check_header_mongrel "$LINENO" "openjpeg-2.2/openjpeg.h" "ac_cv_header_openjpeg_2_2_openjpeg_h" "$ac_includes_default"
++if test "x$ac_cv_header_openjpeg_2_2_openjpeg_h" = xyes; then :
+   cat >>confdefs.h <<_ACEOF
+-#define HAVE_OPENJPEG_2_1_OPENJPEG_H 1
++#define HAVE_OPENJPEG_2_2_OPENJPEG_H 1
+ _ACEOF
+ 
+ fi
+ 
+ done
+ 
+-    if test "$ac_cv_header_openjpeg_2_1_openjpeg_h" = "yes"; then
++    if test "$ac_cv_header_openjpeg_2_2_openjpeg_h" = "yes"; then
+         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for opj_stream_set_user_data_length in -lopenjp2" >&5
+ $as_echo_n "checking for opj_stream_set_user_data_length in -lopenjp2... " >&6; }
+ if ${ac_cv_lib_openjp2_opj_stream_set_user_data_length+:} false; then :
+@@ -25232,23 +25233,23 @@ else
+ fi
+ 
+         if test "$HAVE_OPENJPEG" = "yes"; then
+-            OPENJPEG_VERSION=20100
++            OPENJPEG_VERSION=20200
+             LIBS="-lopenjp2 $LIBS"
+         fi
+     else
+-        for ac_header in openjpeg-2.0/openjpeg.h
++        for ac_header in openjpeg-2.1/openjpeg.h
+ do :
+-  ac_fn_c_check_header_mongrel "$LINENO" "openjpeg-2.0/openjpeg.h" "ac_cv_header_openjpeg_2_0_openjpeg_h" "$ac_includes_default"
+-if test "x$ac_cv_header_openjpeg_2_0_openjpeg_h" = xyes; then :
++  ac_fn_c_check_header_mongrel "$LINENO" "openjpeg-2.1/openjpeg.h" "ac_cv_header_openjpeg_2_1_openjpeg_h" "$ac_includes_default"
++if test "x$ac_cv_header_openjpeg_2_1_openjpeg_h" = xyes; then :
+   cat >>confdefs.h <<_ACEOF
+-#define HAVE_OPENJPEG_2_0_OPENJPEG_H 1
++#define HAVE_OPENJPEG_2_1_OPENJPEG_H 1
+ _ACEOF
+ 
+ fi
+ 
+ done
+ 
+-        if test "$ac_cv_header_openjpeg_2_0_openjpeg_h" = "yes"; then
++        if test "$ac_cv_header_openjpeg_2_1_openjpeg_h" = "yes"; then
+             { $as_echo "$as_me:${as_lineno-$LINENO}: checking for opj_stream_set_user_data_length in -lopenjp2" >&5
+ $as_echo_n "checking for opj_stream_set_user_data_length in -lopenjp2... " >&6; }
+ if ${ac_cv_lib_openjp2_opj_stream_set_user_data_length+:} false; then :
+@@ -25292,8 +25293,69 @@ else
+ fi
+ 
+             if test "$HAVE_OPENJPEG" = "yes"; then
++                OPENJPEG_VERSION=20100
+                 LIBS="-lopenjp2 $LIBS"
+             fi
++        else
++            for ac_header in openjpeg-2.0/openjpeg.h
++do :
++  ac_fn_c_check_header_mongrel "$LINENO" "openjpeg-2.0/openjpeg.h" "ac_cv_header_openjpeg_2_0_openjpeg_h" "$ac_includes_default"
++if test "x$ac_cv_header_openjpeg_2_0_openjpeg_h" = xyes; then :
++  cat >>confdefs.h <<_ACEOF
++#define HAVE_OPENJPEG_2_0_OPENJPEG_H 1
++_ACEOF
++
++fi
++
++done
++
++            if test "$ac_cv_header_openjpeg_2_0_openjpeg_h" = "yes"; then
++                { $as_echo "$as_me:${as_lineno-$LINENO}: checking for opj_stream_set_user_data_length in -lopenjp2" >&5
++$as_echo_n "checking for opj_stream_set_user_data_length in -lopenjp2... " >&6; }
++if ${ac_cv_lib_openjp2_opj_stream_set_user_data_length+:} false; then :
++  $as_echo_n "(cached) " >&6
++else
++  ac_check_lib_save_LIBS=$LIBS
++LIBS="-lopenjp2  $LIBS"
++cat confdefs.h - <<_ACEOF >conftest.$ac_ext
++/* end confdefs.h.  */
++
++/* Override any GCC internal prototype to avoid an error.
++   Use char because int might match the return type of a GCC
++   builtin and then its argument prototype would still apply.  */
++#ifdef __cplusplus
++extern "C"
++#endif
++char opj_stream_set_user_data_length ();
++int
++main ()
++{
++return opj_stream_set_user_data_length ();
++  ;
++  return 0;
++}
++_ACEOF
++if ac_fn_c_try_link "$LINENO"; then :
++  ac_cv_lib_openjp2_opj_stream_set_user_data_length=yes
++else
++  ac_cv_lib_openjp2_opj_stream_set_user_data_length=no
++fi
++rm -f core conftest.err conftest.$ac_objext \
++    conftest$ac_exeext conftest.$ac_ext
++LIBS=$ac_check_lib_save_LIBS
++fi
++{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_openjp2_opj_stream_set_user_data_length" >&5
++$as_echo "$ac_cv_lib_openjp2_opj_stream_set_user_data_length" >&6; }
++if test "x$ac_cv_lib_openjp2_opj_stream_set_user_data_length" = xyes; then :
++  HAVE_OPENJPEG=yes
++else
++  HAVE_OPENJPEG=no
++fi
++
++                if test "$HAVE_OPENJPEG" = "yes"; then
++                    LIBS="-lopenjp2 $LIBS"
++                fi
++            fi
+         fi
+     fi
+   fi
+@@ -25308,8 +25370,11 @@ else
+   elif test -r $with_openjpeg/include/openjpeg-2.2/openjpeg.h ; then
+     OPENJPEG_VERSION=20200
+     EXTRA_INCLUDES="-I$with_openjpeg/include $EXTRA_INCLUDES"
++  elif test -r $with_openjpeg/include/openjpeg-2.3/openjpeg.h ; then
++    OPENJPEG_VERSION=20300
++    EXTRA_INCLUDES="-I$with_openjpeg/include $EXTRA_INCLUDES"
+   else
+-    as_fn_error $? "openjpeg.h not found in $with_openjpeg/include/openjpeg-2.0 or $with_openjpeg/include/openjpeg-2.1 or $with_openjpeg/include/openjpeg-2.2" "$LINENO" 5
++    as_fn_error $? "openjpeg.h not found in $with_openjpeg/include/openjpeg-2.0 or $with_openjpeg/include/openjpeg-2.1 or $with_openjpeg/include/openjpeg-2.2 or $with_openjpeg/include/openjpeg-2.3" "$LINENO" 5
    fi
  
-   dnl test nc-config
-@@ -2832,7 +2832,7 @@ MYSQL_CONFIG=no
- AC_ARG_WITH(mysql,[  --with-mysql[=ARG]      Include MySQL (ARG=path to mysql_config) [[default=no]]],,)
- 
- if test "$with_mysql" = "yes" ; then
--  AC_PATH_PROG(MYSQL_CONFIG, mysql_config, no)
-+  AC_PATH_TOOL(MYSQL_CONFIG, mysql_config, no)
- else
-     if test "x$with_mysql" != "x" ; then
-       MYSQL_CONFIG=$with_mysql
-@@ -3162,7 +3162,7 @@ if test "`basename xx/$with_curl`" = "curl-config" ; then
- elif test "$with_curl" = "no" ; then
-   LIBCURL_CONFIG=no
- else
--  AC_PATH_PROG(LIBCURL_CONFIG, curl-config, no)
-+  AC_PATH_TOOL(LIBCURL_CONFIG, curl-config, no)
- fi
- 
- if test "$LIBCURL_CONFIG" != "no" ; then
-@@ -3204,7 +3204,7 @@ if test "`basename xx/$with_xml2`" = "xml2-config" ; then
- elif test "$with_xml2" = "no" ; then
-   LIBXML2_CONFIG=no
- else
--  AC_PATH_PROG(LIBXML2_CONFIG, xml2-config, no)
-+  AC_PATH_TOOL(LIBXML2_CONFIG, xml2-config, no)
- fi
- 
- if test "$LIBXML2_CONFIG" != "no" ; then
-diff --git a/m4/geos.m4 b/m4/geos.m4
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for opj_stream_set_user_data_length in -lopenjp2" >&5
+diff --git a/configure.ac b/configure.ac
 index 1111111..2222222 100644
---- a/m4/geos.m4
-+++ b/m4/geos.m4
-@@ -58,7 +58,7 @@ AC_DEFUN([GEOS_INIT],[
+--- a/configure.ac
++++ b/configure.ac
+@@ -2539,28 +2539,38 @@ if test "$with_openjpeg" = "no" ; then
  
-   elif test x"$with_geos" = x"yes" -o x"$with_geos" = x"" ; then
+ elif test "$with_openjpeg" = "yes" -o "$with_openjpeg" = "" ; then
  
--    AC_PATH_PROG(GEOS_CONFIG, geos-config, no)
-+    AC_PATH_TOOL(GEOS_CONFIG, geos-config, no)
-     ac_geos_config_auto=yes
- 
+-  AC_CHECK_HEADERS([openjpeg-2.2/openjpeg.h])
+-  if test "$ac_cv_header_openjpeg_2_2_openjpeg_h" = "yes"; then
++
++  AC_CHECK_HEADERS([openjpeg-2.3/openjpeg.h])
++  if test "$ac_cv_header_openjpeg_2_3_openjpeg_h" = "yes"; then
+     AC_CHECK_LIB(openjp2,opj_stream_set_user_data_length,HAVE_OPENJPEG=yes,HAVE_OPENJPEG=no,)
+     if test "$HAVE_OPENJPEG" = "yes"; then
+-        OPENJPEG_VERSION=20200
++        OPENJPEG_VERSION=20300
+         LIBS="-lopenjp2 $LIBS"
+     fi
    else
-@@ -133,7 +133,7 @@ AC_DEFUN([GEOS_INIT],[
-       AC_CHECK_LIB([geos_c],
-         [GEOSversion],
-         [HAVE_GEOS="yes"],
--        [HAVE_GEOS="no"],
-+        [HAVE_GEOS="no" && echo "$GEOS_LIBS" && exit 1],
-         []
-       )
+-    AC_CHECK_HEADERS([openjpeg-2.1/openjpeg.h])
+-    if test "$ac_cv_header_openjpeg_2_1_openjpeg_h" = "yes"; then
++    AC_CHECK_HEADERS([openjpeg-2.2/openjpeg.h])
++    if test "$ac_cv_header_openjpeg_2_2_openjpeg_h" = "yes"; then
+         AC_CHECK_LIB(openjp2,opj_stream_set_user_data_length,HAVE_OPENJPEG=yes,HAVE_OPENJPEG=no,)
+         if test "$HAVE_OPENJPEG" = "yes"; then
+-            OPENJPEG_VERSION=20100
++            OPENJPEG_VERSION=20200
+             LIBS="-lopenjp2 $LIBS"
+         fi
+     else
+-        AC_CHECK_HEADERS([openjpeg-2.0/openjpeg.h])
+-        if test "$ac_cv_header_openjpeg_2_0_openjpeg_h" = "yes"; then
++        AC_CHECK_HEADERS([openjpeg-2.1/openjpeg.h])
++        if test "$ac_cv_header_openjpeg_2_1_openjpeg_h" = "yes"; then
+             AC_CHECK_LIB(openjp2,opj_stream_set_user_data_length,HAVE_OPENJPEG=yes,HAVE_OPENJPEG=no,)
+             if test "$HAVE_OPENJPEG" = "yes"; then
++                OPENJPEG_VERSION=20100
+                 LIBS="-lopenjp2 $LIBS"
+             fi
++        else
++            AC_CHECK_HEADERS([openjpeg-2.0/openjpeg.h])
++            if test "$ac_cv_header_openjpeg_2_0_openjpeg_h" = "yes"; then
++                AC_CHECK_LIB(openjp2,opj_stream_set_user_data_length,HAVE_OPENJPEG=yes,HAVE_OPENJPEG=no,)
++                if test "$HAVE_OPENJPEG" = "yes"; then
++                    LIBS="-lopenjp2 $LIBS"
++                fi
++            fi
+         fi
+     fi
+   fi
+@@ -2575,8 +2585,11 @@ else
+   elif test -r $with_openjpeg/include/openjpeg-2.2/openjpeg.h ; then
+     OPENJPEG_VERSION=20200
+     EXTRA_INCLUDES="-I$with_openjpeg/include $EXTRA_INCLUDES"
++  elif test -r $with_openjpeg/include/openjpeg-2.3/openjpeg.h ; then
++    OPENJPEG_VERSION=20300
++    EXTRA_INCLUDES="-I$with_openjpeg/include $EXTRA_INCLUDES"
+   else
+-    AC_MSG_ERROR([openjpeg.h not found in $with_openjpeg/include/openjpeg-2.0 or $with_openjpeg/include/openjpeg-2.1 or $with_openjpeg/include/openjpeg-2.2])
++    AC_MSG_ERROR([openjpeg.h not found in $with_openjpeg/include/openjpeg-2.0 or $with_openjpeg/include/openjpeg-2.1 or $with_openjpeg/include/openjpeg-2.2 or $with_openjpeg/include/openjpeg-2.3])
+   fi
  
+   AC_CHECK_LIB(openjp2,opj_stream_set_user_data_length,HAVE_OPENJPEG=yes,HAVE_OPENJPEG=no,-L$with_openjpeg/lib)
+diff --git a/frmts/openjpeg/openjpegdataset.cpp b/frmts/openjpeg/openjpegdataset.cpp
+index 1111111..2222222 100644
+--- a/frmts/openjpeg/openjpegdataset.cpp
++++ b/frmts/openjpeg/openjpegdataset.cpp
+@@ -34,7 +34,9 @@
+ #pragma clang diagnostic ignored "-Wdocumentation"
+ #endif
+ 
+-#if defined(OPENJPEG_VERSION) && OPENJPEG_VERSION >= 20200
++#if defined(OPENJPEG_VERSION) && OPENJPEG_VERSION >= 20300
++#include <openjpeg-2.3/openjpeg.h>
++#elif defined(OPENJPEG_VERSION) && OPENJPEG_VERSION >= 20200
+ #include <openjpeg-2.2/openjpeg.h>
+ #elif defined(OPENJPEG_VERSION) && OPENJPEG_VERSION >= 20100
+ #include <openjpeg-2.1/openjpeg.h>
+diff --git a/nmake.opt b/nmake.opt
+index 1111111..2222222 100644
+--- a/nmake.opt
++++ b/nmake.opt
+@@ -611,6 +611,8 @@ OCI_INCLUDE =	-I$(ORACLE_HOME)\oci\include
+ #OPENJPEG_VERSION = 20100
+ # For OpenJpeg 2.2.x, uncomment
+ #OPENJPEG_VERSION = 20200
++# For OpenJpeg 2.3.x, uncomment
++#OPENJPEG_VERSION = 20300
+ 
+ #if using an external zlib uncomment the following lines
+ #ZLIB_EXTERNAL_LIB = 1
