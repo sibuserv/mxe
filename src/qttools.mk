@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM := 0d244c61bbe5505cb94310e980b06ef13dd573511e80ccbdc060f71d54622
 $(PKG)_SUBDIR    = $(subst qtbase,qttools,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qttools,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qttools,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtactiveqt qtbase qtdeclarative
+$(PKG)_DEPS     := cc qtactiveqt qtbase qtdeclarative
 
 $(PKG)_TEST_DIR := $(dir $(lastword $(MAKEFILE_LIST)))/qttools-test
 

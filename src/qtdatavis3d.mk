@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM :=
 $(PKG)_SUBDIR    = $(subst qtbase,qtdatavis3d,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtdatavis3d,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtdatavis3d,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase qtdeclarative qtmultimedia
+$(PKG)_DEPS     := cc qtbase qtdeclarative qtmultimedia
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)

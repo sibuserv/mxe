@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM := 66add59e826a0161f4a4dc3ec0b44c17fad1451390b4f7c67af23ee7429d9
 $(PKG)_SUBDIR    = $(subst qtbase,qtcanvas3d,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtcanvas3d,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtcanvas3d,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase qtdeclarative
+$(PKG)_DEPS     := cc qtbase qtdeclarative
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)

@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM := b961789daecebed030ad36568301d1fe6c1ad97e9a2726fad5bd96ad603f4
 $(PKG)_SUBDIR    = $(subst qtbase,qt3d,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qt3d,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qt3d,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase qtdeclarative
+$(PKG)_DEPS     := cc qtbase qtdeclarative qtgamepad
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)

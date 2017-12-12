@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := b24890e2bb46e12e72a79f7e965f409f4e16466d00e1dd15d93d73ee6b592
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://$(SOURCEFORGE_MIRROR)/project/$(PKG)/$($(PKG)_VERSION)/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc yasm
+$(PKG)_DEPS     := cc yasm
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://sourceforge.net/projects/$(PKG)/files/' | \
@@ -17,12 +17,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --libdir='$(PREFIX)/$(TARGET)/lib/$(PKG)' \
         --includedir='$(PREFIX)/$(TARGET)/include/$(PKG)' \

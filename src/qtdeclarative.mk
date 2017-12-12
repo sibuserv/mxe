@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM := 8c55f053f0e348577b56da541af74d02d0f2b61c9a6c15152b03dad03dfde
 $(PKG)_SUBDIR    = $(subst qtbase,qtdeclarative,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtdeclarative,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtdeclarative,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase qtsvg qtxmlpatterns
+$(PKG)_DEPS     := cc qtbase qtsvg qtxmlpatterns
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)

@@ -10,7 +10,7 @@ $(PKG)_CHECKSUM := 3a64e9105c734dcf631c0b3ed60404531bce6c0f5a64bfe1a6402a4cc2314
 $(PKG)_SUBDIR   := icu
 $(PKG)_FILE     := $(PKG)-$(subst .,_,$($(PKG)_VERSION))-src.tgz
 $(PKG)_URL      := http://download.icu-project.org/files/$(PKG)/$($(PKG)_VERSION)/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc
+$(PKG)_DEPS     := cc
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://bugs.icu-project.org/trac/browser/icu/tags' | \
@@ -22,21 +22,11 @@ endef
 
 define $(PKG)_BUILD_COMMON
     cd '$(1)/source' && autoreconf -fi
-    mkdir '$(1).native' && cd '$(1).native' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    '$(1)/source/configure' \
+    mkdir '$(1).native' && cd '$(1).native' && '$(1)/source/configure' \
         CC=$(BUILD_CC) CXX=$(BUILD_CXX)
     $(MAKE) -C '$(1).native' -j '$(JOBS)'
 
-    mkdir '$(1).cross' && cd '$(1).cross' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    '$(1)/source/configure' \
+    mkdir '$(1).cross' && cd '$(1).cross' && '$(1)/source/configure' \
         $(MXE_CONFIGURE_OPTS) \
         --with-cross-build='$(1).native' \
         CFLAGS=-DU_USING_ICU_NAMESPACE=0 \

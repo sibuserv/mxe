@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM := 9809351f0922b2d91aeb5d8e5756665eea0b2cbcaab74a570f6e5bf08574c
 $(PKG)_SUBDIR    = $(subst qtbase,qttranslations,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qttranslations,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qttranslations,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase qttools
+$(PKG)_DEPS     := cc qtbase qttools
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)

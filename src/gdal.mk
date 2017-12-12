@@ -10,7 +10,7 @@ $(PKG)_SUBDIR   := gdal-$($(PKG)_VERSION)
 $(PKG)_FILE     := gdal-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := http://download.osgeo.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_URL_2    := ftp://ftp.remotesensing.org/gdal/$($(PKG)_VERSION)/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc expat giflib jpeg libpng proj tiff zlib
+$(PKG)_DEPS     := cc expat giflib jpeg libpng proj tiff zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://trac.osgeo.org/gdal/wiki/DownloadSource' | \

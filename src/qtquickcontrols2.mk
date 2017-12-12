@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM := 59ec6ea2282931bc0d0748b3979a52e1a322e7ef8d1e5490b8a34931e8b9f
 $(PKG)_SUBDIR    = $(subst qtbase,qtquickcontrols2,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtquickcontrols2,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtquickcontrols2,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase qtdeclarative
+$(PKG)_DEPS     := cc qtbase qtdeclarative
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)

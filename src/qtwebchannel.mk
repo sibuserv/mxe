@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM := c25424935e866e77f31e5ebc50fc97eaedd4d77f6e967bfc59ce7fa6a7b4c
 $(PKG)_SUBDIR    = $(subst qtbase,qtwebchannel,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtwebchannel,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtwebchannel,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase qtdeclarative qtwebsockets
+$(PKG)_DEPS     := cc qtbase qtdeclarative qtwebsockets
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)

@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM :=
 $(PKG)_SUBDIR    = $(subst qtbase,qtspeech,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtspeech,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtspeech,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase
+$(PKG)_DEPS     := cc qtbase
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)
