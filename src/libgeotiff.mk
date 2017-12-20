@@ -24,12 +24,7 @@ define $(PKG)_BUILD
     $(SED) -i 's,/usr/local,@prefix@,' '$(1)/bin/Makefile.in'
     touch '$(1)/configure'
     cd '$(1)' && autoreconf -fi
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --with-jpeg \
         --with-zlib \

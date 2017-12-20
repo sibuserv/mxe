@@ -22,12 +22,7 @@ define $(PKG)_BUILD
 
     # yasm is always static
     # build libyasm and tools
-    cd '$(BUILD_DIR)'&& \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    '$(SOURCE_DIR)/configure' \
+    cd '$(BUILD_DIR)' && '$(SOURCE_DIR)/configure' \
         $(MXE_CONFIGURE_OPTS) \
         --disable-nls \
         --disable-python

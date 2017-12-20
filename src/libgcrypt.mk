@@ -19,12 +19,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_CONFIGURE
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --with-gpg-error-prefix='$(PREFIX)/$(TARGET)'
 endef
