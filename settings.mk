@@ -34,7 +34,7 @@ MXE_PLUGIN_DIRS += plugins/gcc6
 # The three lines below makes `make` build these "local
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
-LOCAL_PKG_LIST := freeglut sdl2 qt5 qwt protobuf libjpeg-turbo boost ffmpeg openscenegraph
+LOCAL_PKG_LIST := freeglut sdl2 qtbase qtconnectivity qtscript qtserialport qtsvg qttools qtwebsockets qwt protobuf libjpeg-turbo boost ffmpeg openscenegraph
 .DEFAULT_GOAL  := local-pkg-list
 local-pkg-list: $(LOCAL_PKG_LIST)
 
