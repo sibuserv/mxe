@@ -17,13 +17,17 @@ target_link_libraries(
     ${Qt5Widgets_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Core_LIBRARIES}
+    netapi32
+    userenv
     opengl32
-    qtpcre
+    harfbuzz
     jpeg
     png
     winmm
     dwmapi
     uxtheme
     ws2_32
+    qtpcre2
+    version
     z
 )

@@ -11,6 +11,9 @@ $(PKG)_URL      := https://ftp.gnu.org/gnu/gettext/$($(PKG)_FILE)
 $(PKG)_URL_2    := https://ftpmirror.gnu.org/gettext/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc libiconv
 
+$(PKG)_TARGETS       := $(BUILD) $(MXE_TARGETS)
+$(PKG)_DEPS_$(BUILD) := libiconv
+
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://ftp.gnu.org/gnu/gettext/' | \
     grep 'gettext-' | \
@@ -20,12 +23,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)/gettext-runtime' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)/gettext-runtime' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --enable-threads=win32 \
         --without-libexpat-prefix \
@@ -35,14 +33,9 @@ define $(PKG)_BUILD
 endef
 
 define $(PKG)_BUILD_$(BUILD)
-    mkdir '$(1).build'
-    cd    '$(1).build' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    '$(1)/configure' \
-        --prefix='$(PREFIX)/$(TARGET)'
-    $(MAKE) -C '$(1).build' -j '$(JOBS)' man1_MANS=
-    $(MAKE) -C '$(1).build' -j 1 install man1_MANS=
+    # build and install the library
+    cd '$(BUILD_DIR)' && $(SOURCE_DIR)/configure \
+        $(MXE_CONFIGURE_OPTS)
+    $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)' $(MXE_DISABLE_DOCS)
+    $(MAKE) -C '$(BUILD_DIR)' -j 1 install $(MXE_DISABLE_DOCS)
 endef

@@ -3,13 +3,12 @@
 PKG             := ffmpeg
 $(PKG)_WEBSITE  := https://ffmpeg.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 3.3.2
-$(PKG)_CHECKSUM := 1998de1ab32616cbf2ff86efc3f1f26e76805ec5dc51e24c041c79edd8262785
+$(PKG)_VERSION  := 3.4.1
+$(PKG)_CHECKSUM := f3443e20154a590ab8a9eef7bc951e8731425efc75b44ff4bee31d8a7a574a2c
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
-$(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.xz
-$(PKG)_URL      := http://ffmpeg.org/releases/$($(PKG)_FILE)
-$(PKG)_URL_2    := https://www.videohelp.com/download/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc bzip2 yasm zlib
+$(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.bz2
+$(PKG)_URL      := https://ffmpeg.org/releases/$($(PKG)_FILE)
+$(PKG)_DEPS     := gcc bzip2 x264 yasm zlib
 
 # DO NOT ADD fdk-aac OR openssl SUPPORT.
 # Although they are free softwares, their licenses are not compatible with
@@ -17,7 +16,7 @@ $(PKG)_DEPS     := gcc bzip2 yasm zlib
 # See docs/index.html#potential-legal-issues
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://ffmpeg.org/releases/' | \
+    $(WGET) -q -O- 'https://ffmpeg.org/releases/' | \
     $(SED) -n 's,.*ffmpeg-\([0-9][^>]*\)\.tar.*,\1,p' | \
     grep -v 'alpha\|beta\|rc\|git' | \
     $(SORT) -Vr | \
@@ -49,6 +48,7 @@ define $(PKG)_BUILD
         --enable-version3 \
         --extra-libs='-mconsole' \
         --enable-avisynth \
+        --enable-libx264 \
         --disable-libass \
         --disable-libbluray \
         --disable-libbs2b \
@@ -63,10 +63,8 @@ define $(PKG)_BUILD
         --disable-libvo-amrwbenc \
         --disable-libvorbis \
         --disable-libvpx \
-        --disable-libx264 \
         --disable-libxvid \
         --disable-programs \
-        --disable-sdl \
         --disable-iconv \
         --disable-openssl \
         --disable-gnutls \

@@ -22,12 +22,7 @@ define $(PKG)_BUILD
     # apparently there's no real difference b/w pei and pe
     # so we set the libtool cache variables
     # https://sourceware.org/cgi-bin/cvsweb.cgi/src/bfd/libpei.h?annotate=1.25&cvsroot=src
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --with-host_os=mingw \
         --with-winapi=wmme,directx,wdmks,wasapi \
