@@ -5,11 +5,11 @@ $(PKG)_WEBSITE   = $(qtbase_WEBSITE)
 $(PKG)_DESCR    := Qt
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION   = $(qtbase_VERSION)
-$(PKG)_CHECKSUM := ac9cef10637b54fa8d0bfe83f5b98c1c295cb68e63cf0973b2c6f188dcecaa01
+$(PKG)_CHECKSUM := 79159e1a9502ccb67145e0f6bdc43e3c2248835ff22be04a10c18db15a845ac1
 $(PKG)_SUBDIR    = $(subst qtbase,qtspeech,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtspeech,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtspeech,$(qtbase_URL))
-$(PKG)_DEPS     := gcc qtbase
+$(PKG)_DEPS     := cc qtbase
 
 define $(PKG)_UPDATE
     echo $(qtbase_VERSION)

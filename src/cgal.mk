@@ -3,14 +3,14 @@
 PKG             := cgal
 $(PKG)_WEBSITE  := https://www.cgal.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 4.10
-$(PKG)_CHECKSUM := eb56e17dcdecddf6a6fb808931b2142f20aaa182916ddbd912273c51e0f0c045
+$(PKG)_VERSION  := 4.11
+$(PKG)_CHECKSUM := 27a7762e5430f5392a1fe12a3a4abdfe667605c40224de1c6599f49d66cfbdd2
 # using / in tag name means we have to set SUBDIR, FILE, URL
-$(PKG)_GH_CONF  := CGAL/cgal, releases/CGAL-
+$(PKG)_GH_CONF  := CGAL/cgal/tags, releases%2FCGAL-
 $(PKG)_SUBDIR   := CGAL-$($(PKG)_VERSION)
 $(PKG)_FILE     := CGAL-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://github.com/CGAL/cgal/releases/download/releases/$($(PKG)_SUBDIR)/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc boost gmp mpfr qt5
+$(PKG)_DEPS     := cc boost gmp mpfr qt5
 
 define $(PKG)_BUILD
     cd '$(BUILD_DIR)' && '$(TARGET)-cmake' '$(SOURCE_DIR)' \

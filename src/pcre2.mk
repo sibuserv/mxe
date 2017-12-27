@@ -1,7 +1,7 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := pcre2
-$(PKG)_WEBSITE  := http://www.pcre.org/
+$(PKG)_WEBSITE  := https://www.pcre.org/
 $(PKG)_DESCR    := PCRE2
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 10.30
@@ -10,7 +10,7 @@ $(PKG)_SUBDIR   := pcre2-$($(PKG)_VERSION)
 $(PKG)_FILE     := pcre2-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := https://ftp.pcre.org/pub/pcre/$($(PKG)_FILE)
 $(PKG)_URL_2    := https://$(SOURCEFORGE_MIRROR)/project/pcre/pcre2/$($(PKG)_VERSION)/$($(PKG)_FILE)
-$(PKG)_DEPS     := gcc
+$(PKG)_DEPS     := cc
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://ftp.pcre.org/pub/pcre/' | \
