@@ -32,6 +32,6 @@ index 1111111..2222222 100644
 +Requires.private: 
  Libs: -L${libdir} -lharfbuzz
 -Libs.private: -lm %libs_private%
-+Libs.private: -lm %libs_private% -lfreetype -lusp10 -lgdi32
++Libs.private: -lm %libs_private% -lusp10 -lgdi32
  Requires.private: %requires_private%
  Cflags: -I${includedir}/harfbuzz
