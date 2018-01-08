@@ -23,7 +23,7 @@ define $(PKG)_BUILD_COMMON
     CFLAGS="$(CFLAGS)" \
     CXXFLAGS="$(CXXFLAGS)" \
     LDFLAGS="$(LDFLAGS)" \
-    GNUMAKE=$(MAKE) ./configure \
+    GNUMAKE=$(MAKE) ./configure --with-harfbuzz=no \
         $(MXE_CONFIGURE_OPTS) \
         LIBPNG_CFLAGS="`$(TARGET)-pkg-config libpng --cflags`" \
         LIBPNG_LDFLAGS="`$(TARGET)-pkg-config libpng --libs`" \
