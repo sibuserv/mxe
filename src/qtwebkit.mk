@@ -8,7 +8,7 @@ $(PKG)_VERSION   = $(qtbase_VERSION)
 $(PKG)_CHECKSUM := 
 $(PKG)_SUBDIR    = $(subst qtbase,qtwebkit,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtwebkit,$(qtbase_FILE))
-$(PKG)_URL       = http://download.qt.io/community_releases/5.7/$(qtbase_VERSION)/$($(PKG)_FILE)
+$(PKG)_URL       = http://download.qt.io/community_releases/5.6/$(qtbase_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc qtbase qtmultimedia qtquickcontrols sqlite
 
 define $(PKG)_UPDATE
