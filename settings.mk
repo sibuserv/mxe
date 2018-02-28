@@ -35,8 +35,8 @@ MXE_PLUGIN_DIRS += plugins/gcc6
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
 LOCAL_PKG_LIST := boost aspell hunspell jsoncpp libidn lua minizip miniupnpc \
-                  libotr tidy-html5 gstreamer qtbase qttools qtkeychain qca \
-                  qtmultimedia qtwebkit
+                  libotr libsignal-protocol-c tidy-html5 gstreamer qtbase \
+                  qttools qtkeychain qca qtmultimedia qtwebkit
 .DEFAULT_GOAL  := local-pkg-list
 local-pkg-list: $(LOCAL_PKG_LIST)
 
