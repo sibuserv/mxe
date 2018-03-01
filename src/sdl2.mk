@@ -18,12 +18,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && aclocal -I acinclude && autoconf && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)' && aclocal -I acinclude && autoconf && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --enable-threads \
         --enable-directx \

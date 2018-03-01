@@ -19,12 +19,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && CC='$(TARGET)-gcc' RC='$(TARGET)-windres' \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./Configure \
+    cd '$(1)' && CC='$(TARGET)-gcc' RC='$(TARGET)-windres' ./Configure \
         @openssl-target@ \
         zlib \
         $(if $(BUILD_STATIC),no-,)shared \

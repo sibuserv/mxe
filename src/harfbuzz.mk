@@ -20,12 +20,7 @@ endef
 
 define $(PKG)_BUILD
     # mman-win32 is only a partial implementation
-    cd '$(1)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    ./configure \
+    cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         ac_cv_header_sys_mman_h=no \
         LIBS='-lstdc++'

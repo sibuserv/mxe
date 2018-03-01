@@ -23,12 +23,7 @@ define $(PKG)_BUILD
     cd '$(SOURCE_DIR)' && mv '$(googletest_SUBDIR)' gmock/gtest
     cd '$(SOURCE_DIR)' && ./autogen.sh
 
-    cd '$(BUILD_DIR)' && \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    CXXFLAGS="$(CXXFLAGS)" \
-    LDFLAGS="$(LDFLAGS)" \
-    '$(SOURCE_DIR)'/configure \
+    cd '$(BUILD_DIR)' && '$(SOURCE_DIR)'/configure \
         $(MXE_CONFIGURE_OPTS) \
         $(if $(BUILD_CROSS), \
             --with-zlib \
