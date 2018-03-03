@@ -444,7 +444,7 @@ MXE_CONF_PKGS := mxe-conf
 
 # autotools/cmake are generally always required, but separate them
 # for the case of `make gcc` which should only build real deps.
-AUTOTOOLS_PKGS := $(filter-out $(MXE_CONF_PKGS) $(BUILD)~autotools, \
+AUTOTOOLS_PKGS := $(filter-out $(MXE_CONF_PKGS) $(BUILD)~autotools autoconf automake libtool, \
     $(sort $(basename $(notdir \
         $(shell grep -l 'auto[conf\|reconf\|gen\|make]\|aclocal\|LIBTOOL' \
                 $(addsuffix /*.mk,$(MXE_PLUGIN_DIRS)))))))
@@ -485,7 +485,7 @@ PKG_OO_DEPS = \
                       $(filter $($($(DEP)_PKG)_TYPE),$(BUILD_PKG_TYPES))), \
                 $($(DEP)_TGT)/installed/$($(DEP)_PKG))))
 
-# all deps for download rule
+# all deps for download rules (includes source-only pkgs)
 PKG_ALL_DEPS = \
     $(foreach DEP,$($(PKG)_OO_DEPS) $(value $(call LOOKUP_PKG_RULE,$(PKG),DEPS,$(TARGET))), \
         $(if $(filter $(DEP),$(PKGS)), \
@@ -681,6 +681,7 @@ $(PREFIX)/$(3)/installed/$(1): $(PKG_MAKEFILES) \
                           | $(if $(DONT_CHECK_REQUIREMENTS),,check-requirements) \
                           $(if $(value $(call LOOKUP_PKG_RULE,$(1),URL,$(3))),download-only-$(1)) \
                           $(addprefix $(PREFIX)/,$(PKG_OO_DEPS)) \
+                          $(addprefix download-,$(PKG_ALL_DEPS)) \
                           $(NONET_LIB) \
                           $(PREFIX)/$(3)/installed/.gitkeep \
                           print-git-oneline
