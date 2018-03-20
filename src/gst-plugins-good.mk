@@ -8,8 +8,7 @@ $(PKG)_CHECKSUM := 649f49bec60892d47ee6731b92266974c723554da1c6649f21296097715eb
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://gstreamer.freedesktop.org/src/$(PKG)/$($(PKG)_FILE)
-$(PKG)_DEPS     := cc cairo flac gdk-pixbuf glib gst-plugins-base gstreamer jpeg libcaca \
-                   liboil libpng libshout libsoup libvpx libxml2 speex taglib wavpack
+$(PKG)_DEPS     := cc glib gst-plugins-base gstreamer jpeg libpng speex
 
 $(PKG)_UPDATE = $(subst gstreamer/refs,gst-plugins-good/refs,$(gstreamer_UPDATE))
 
