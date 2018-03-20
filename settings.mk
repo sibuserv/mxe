@@ -26,7 +26,6 @@ MXE_TARGETS := i686-w64-mingw32.shared x86_64-w64-mingw32.shared
 # See plugins/README.md for further information.
 #override MXE_PLUGIN_DIRS += plugins/apps plugins/native
 #MXE_PLUGIN_DIRS += plugins/gcc6
-#MXE_PLUGIN_DIRS += plugins/gcc7
 
 # This variable controls the download mirror for SourceForge,
 # when it is used. Enabling the value below means auto.
@@ -35,11 +34,10 @@ MXE_TARGETS := i686-w64-mingw32.shared x86_64-w64-mingw32.shared
 # The three lines below makes `make` build these "local
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
-
-# gstreamer gst-plugins-base gst-plugins-bad
 LOCAL_PKG_LIST := boost aspell hunspell jsoncpp libidn lua minizip miniupnpc \
                   libotr libsignal-protocol-c tidy-html5 qtbase qttools \
-                  qtkeychain qca qtmultimedia qtwebkit
+                  qtkeychain qca qtmultimedia qtwebkit gstreamer \
+                  gst-plugins-base gst-plugins-bad
 
 .DEFAULT_GOAL  := local-pkg-list
 local-pkg-list: $(LOCAL_PKG_LIST)
