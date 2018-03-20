@@ -11,6 +11,8 @@ $(PKG)_FILE     := postgresql-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := https://ftp.postgresql.org/pub/source/v$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := cc openssl pthreads zlib
 
+$(PKG)_PATCHES  := $(realpath $(sort $(wildcard $(dir $(lastword $(MAKEFILE_LIST)))/$(PKG)-[0-9]*.patch)))
+
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://git.postgresql.org/gitweb?p=postgresql.git;a=tags' | \
     grep 'refs/tags/REL9[0-9_]*"' | \
