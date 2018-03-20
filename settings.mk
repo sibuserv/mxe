@@ -25,7 +25,8 @@ MXE_TARGETS := i686-w64-mingw32.shared
 # This variable controls which plugins are in use.
 # See plugins/README.md for further information.
 #override MXE_PLUGIN_DIRS += plugins/apps plugins/native
-MXE_PLUGIN_DIRS += plugins/gcc6 plugins/examples/qt5-freeze
+#MXE_PLUGIN_DIRS += plugins/gcc6
+MXE_PLUGIN_DIRS += plugins/examples/qt5-freeze
 
 # This variable controls the download mirror for SourceForge,
 # when it is used. Enabling the value below means auto.
@@ -35,8 +36,10 @@ MXE_PLUGIN_DIRS += plugins/gcc6 plugins/examples/qt5-freeze
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
 LOCAL_PKG_LIST := boost aspell hunspell jsoncpp libidn lua minizip miniupnpc \
-                  libotr libsignal-protocol-c tidy-html5 gstreamer qtbase \
-                  qttools qtkeychain qca qtmultimedia qtwebkit
+                  libotr libsignal-protocol-c tidy-html5 qtbase qttools \
+                  qtkeychain qca qtmultimedia qtwebkit gstreamer \
+                  gst-plugins-bad gst-plugins-good
+
 .DEFAULT_GOAL  := local-pkg-list
 local-pkg-list: $(LOCAL_PKG_LIST)
 
