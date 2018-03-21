@@ -5,6 +5,7 @@ $(PKG)_WEBSITE  := https://www.openssl.org/
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 1.0.2n
 $(PKG)_CHECKSUM := 370babb75f278c39e0c50e8c4e7493bc0f18db6867478341a832a982fd15a8fe
+$(PKG)_PATCHES  := $(realpath $(sort $(wildcard $(dir $(lastword $(MAKEFILE_LIST)))/$(PKG)-[0-9]*.patch)))
 $(PKG)_SUBDIR   := openssl-$($(PKG)_VERSION)
 $(PKG)_FILE     := openssl-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://www.openssl.org/source/$($(PKG)_FILE)
