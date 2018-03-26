@@ -15,7 +15,7 @@
 #MXE_TARGETS := i686-w64-mingw32.static i686-w64-mingw32.shared \
 #               x86_64-w64-mingw32.static x86_64-w64-mingw32.shared
 MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared
-MXE_GCC_THREADS := posix
+#MXE_GCC_THREADS := posix
 
 # Special flags for compiler.
 #CPPFLAGS := -D_FORTIFY_SOURCE=2
