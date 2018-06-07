@@ -3,8 +3,8 @@
 PKG             := ffmpeg
 $(PKG)_WEBSITE  := https://ffmpeg.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 3.4.2
-$(PKG)_CHECKSUM := eb0370bf223809b9ebb359fed5318f826ac038ce77933b3afd55ab1a0a21785a
+$(PKG)_VERSION  := 4.0
+$(PKG)_CHECKSUM := 318a39d906c9107d49766c63787798dd078d2a36e6670a9dfeda3c55be4573b8
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := https://ffmpeg.org/releases/$($(PKG)_FILE)
