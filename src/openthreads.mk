@@ -12,7 +12,7 @@ $(PKG)_URL       = $(openscenegraph_URL)
 $(PKG)_DEPS     := cc
 
 define $(PKG)_UPDATE
-    echo $openscenegraph_VERSION)
+    echo $(openscenegraph_VERSION)
 endef
 
 define $(PKG)_BUILD

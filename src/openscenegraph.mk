@@ -4,12 +4,9 @@ PKG             := openscenegraph
 $(PKG)_WEBSITE  := http://www.openscenegraph.org/
 $(PKG)_DESCR    := OpenSceneGraph
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 3.4.1
-$(PKG)_CHECKSUM := 930eb46f05781a76883ec16c5f49cfb29a059421db131005d75bec4d78401fd5
-#$(PKG)_GH_CONF  := openscenegraph/OpenSceneGraph/tags, OpenSceneGraph-
-$(PKG)_SUBDIR   := OpenSceneGraph-OpenSceneGraph-$($(PKG)_VERSION)
-$(PKG)_FILE     := OpenSceneGraph-$($(PKG)_VERSION).tar.gz
-$(PKG)_URL      := https://github.com/openscenegraph/OpenSceneGraph/archive/$($(PKG)_FILE)
+$(PKG)_VERSION  := 3.6.1
+$(PKG)_CHECKSUM := 777429556818184588ee5f2351fe262f105539bfc4393c373bc933025bd16a33
+$(PKG)_GH_CONF  := openscenegraph/OpenSceneGraph/tags, OpenSceneGraph-
 $(PKG)_DEPS     := cc freetype gdal giflib jpeg libpng openthreads tiff zlib
 
 define $(PKG)_UPDATE
