@@ -28,7 +28,7 @@ define $(PKG)_BUILD
 
     $(if $(BUILD_CROSS),
         '$(TARGET)-g++' \
-            -W -Wall -Werror -ansi -pedantic \
+            -W -Wall -Werror -ansi -pedantic -std=c++14 \
             '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-protobuf.exe' \
             `'$(TARGET)-pkg-config' protobuf --cflags --libs`
     )
