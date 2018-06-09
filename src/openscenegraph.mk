@@ -7,7 +7,7 @@ $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 3.6.1
 $(PKG)_CHECKSUM := 777429556818184588ee5f2351fe262f105539bfc4393c373bc933025bd16a33
 $(PKG)_GH_CONF  := openscenegraph/OpenSceneGraph/tags, OpenSceneGraph-
-$(PKG)_DEPS     := cc freetype gdal giflib jpeg libpng openthreads tiff zlib
+$(PKG)_DEPS     := cc freetype curl gdal giflib jpeg libpng openthreads tiff zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://www.openscenegraph.org/index.php/download-section/stable-releases' | \
