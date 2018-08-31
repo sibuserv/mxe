@@ -4,8 +4,8 @@ PKG             := openscenegraph
 $(PKG)_WEBSITE  := http://www.openscenegraph.org/
 $(PKG)_DESCR    := OpenSceneGraph
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 3.6.2
-$(PKG)_CHECKSUM := 762c6601f32a761c7a0556766097558f453f23b983dd75bcf90f922e2d077a34
+$(PKG)_VERSION  := 3.4.1
+$(PKG)_CHECKSUM := 930eb46f05781a76883ec16c5f49cfb29a059421db131005d75bec4d78401fd5
 $(PKG)_GH_CONF  := openscenegraph/OpenSceneGraph/tags, OpenSceneGraph-
 $(PKG)_DEPS     := cc freetype curl gdal giflib jpeg libpng openthreads tiff zlib
 
