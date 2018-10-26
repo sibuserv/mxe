@@ -17,4 +17,10 @@ define $(PKG)_BUILD
 
     $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)' $(MXE_DISABLE_CRUFT)
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install $(MXE_DISABLE_CRUFT)
+
+    # Test
+    '$(TARGET)-g++' \
+        -W -Wall -Werror -std=c++0x -pedantic \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
+        `'$(TARGET)-pkg-config' fcgi --cflags --libs`
 endef
