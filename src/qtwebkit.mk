@@ -12,6 +12,7 @@ $(PKG)_DEPS     := cc libxml2 libxslt qtbase qtmultimedia qtquickcontrols sqlite
 
 define $(PKG)_BUILD_SHARED
     cd '$(BUILD_DIR)' && $(TARGET)-cmake '$(SOURCE_DIR)' \
+        -DCMAKE_INSTALL_PREFIX=$(PREFIX)/$(TARGET)/qt5 \
         -DSHARED_CORE=$(CMAKE_SHARED_BOOL) \
         -DQT_STATIC_BUILD=$(CMAKE_STATIC_BOOL) \
         -DENABLE_GEOLOCATION=OFF \
