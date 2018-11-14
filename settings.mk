@@ -26,7 +26,7 @@ MXE_GCC_THREADS := posix
 # This variable controls which plugins are in use.
 # See plugins/README.md for further information.
 #override MXE_PLUGIN_DIRS += plugins/apps plugins/native
-MXE_PLUGIN_DIRS += plugins/gcc6
+MXE_PLUGIN_DIRS += plugins/gcc8
 #MXE_PLUGIN_DIRS += plugins/examples/qt5-freeze
 
 # This variable controls the download mirror for SourceForge,
