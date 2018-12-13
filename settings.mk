@@ -19,8 +19,10 @@ MXE_GCC_THREADS := posix
 
 # Special flags for compiler.
 CPPFLAGS := -D_FORTIFY_SOURCE=2
-CFLAGS   := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS) -static-libgcc
-CXXFLAGS := -s -Os -fdata-sections -ffunction-sections -fPIC $(CPPFLAGS) -static-libgcc -static-libstdc++
+CFLAGS   := -s -Os -fdata-sections -ffunction-sections \
+            -fPIC $(CPPFLAGS) -static-libgcc
+CXXFLAGS := -s -Os -fdata-sections -ffunction-sections \
+            -fPIC $(CPPFLAGS) -static-libgcc -static-libstdc++
 LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
 
 # This variable controls which plugins are in use.
