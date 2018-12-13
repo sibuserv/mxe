@@ -109,6 +109,7 @@ define $(PKG)_BUILD_$(BUILD)
         -a \
         -q \
         -j '$(JOBS)' \
+        --ignore-site-config \
         variant=release \
         link=static \
         threading=multi \
