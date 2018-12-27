@@ -4,9 +4,11 @@ PKG             := qtwebkit
 $(PKG)_WEBSITE  := https://github.com/annulen/webkit
 $(PKG)_DESCR    := Qt WebKit
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 72cfbd7
-$(PKG)_CHECKSUM := 7773f97599486c4e54973373637e4e1118b581fd70c2a45c0f2e69d862088b80
-$(PKG)_GH_CONF  := qt/qtwebkit/branches/5.212
+$(PKG)_VERSION  := 5.212
+$(PKG)_CHECKSUM := 283b907ea324a2c734e3983c73fc27dbd8b33e2383c583de41842ee84d648a3e
+$(PKG)_SUBDIR   := qtwebkit-everywhere-src-$($(PKG)_VERSION)
+$(PKG)_FILE     := qtwebkit-everywhere-src-$($(PKG)_VERSION).tar.xz
+$(PKG)_URL      := https://download.qt.io/snapshots/ci/qtwebkit/$($(PKG)_VERSION)/latest/src/submodules/$($(PKG)_FILE)
 $(PKG)_DEPS     := cc libxml2 libxslt qtbase qtmultimedia qtquickcontrols sqlite \
                    qtsensors qtwebchannel
 
@@ -16,7 +18,13 @@ define $(PKG)_BUILD_SHARED
         -DSHARED_CORE=$(CMAKE_SHARED_BOOL) \
         -DQT_STATIC_BUILD=$(CMAKE_STATIC_BOOL) \
         -DENABLE_GEOLOCATION=OFF \
-        -DPORT=Qt
+        -DPORT=Qt \
+        -DENABLE_INSPECTOR_UI=OFF \
+        -DENABLE_DEVICE_ORIENTATION=OFF \
+        -DUSE_QT_MULTIMEDIA=OFF \
+        -DENABLE_VIDEO=OFF \
+        -DENABLE_QT_WEBCHANNEL=OFF \
+        -DENABLE_GEOLOCATION=OFF
     $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)' VERBOSE=1
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 

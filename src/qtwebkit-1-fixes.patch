@@ -2,7 +2,7 @@ This file is part of MXE. See LICENSE.md for licensing information.
 
 Contains ad hoc patches for cross building.
 
---- a/Source/WTF/wtf/CurrentTime.cpp.orig	2017-02-07 20:18:29.395887200 +0300
+--- a/Source/WTF/wtf/CurrentTime.cpp	2017-02-07 20:18:29.395887200 +0300
 +++ b/Source/WTF/wtf/CurrentTime.cpp	2017-02-07 20:20:03.241254800 +0300
 @@ -91,6 +91,35 @@
  
@@ -50,9 +50,7 @@ Contains ad hoc patches for cross building.
 +#if OS(WINDOWS) && !COMPILER(GCC)
      // I think that this does the equivalent of a dummy interlocked instruction,
      // instead of using the 'mfence' instruction, at least according to MSDN. I
-     // know that it is equivalent for our purposes, but it would be good to
-
---- a/Source/JavaScriptCore/jsc.cpp.orig	2017-02-07 21:14:51.788349000 +0300
+     // know that it is equivalent for our purposes, but it would be good to--- a/Source/JavaScriptCore/jsc.cpp	2017-02-07 21:14:51.788349000 +0300
 +++ b/Source/JavaScriptCore/jsc.cpp	2017-02-07 21:15:15.280692700 +0300
 @@ -1710,7 +1710,7 @@
      fesetenv( &env );
@@ -63,8 +61,7 @@ Contains ad hoc patches for cross building.
      // The VS2013 runtime has a bug where it mis-detects AVX-capable processors
      // if the feature has been disabled in firmware. This causes us to crash
      // in some of the math functions. For now, we disable those optimizations
-
---- a/Source/cmake/FindICU.cmake.orig	2017-02-07 21:39:31.536985800 +0300
+--- a/Source/cmake/FindICU.cmake	2017-02-07 21:39:31.536985800 +0300
 +++ b/Source/cmake/FindICU.cmake	2017-02-07 21:43:45.849531600 +0300
 @@ -49,7 +49,7 @@
      pkg_check_modules(PC_ICU_I18N icu-i18n)
@@ -75,9 +72,8 @@ Contains ad hoc patches for cross building.
          HINTS ${PC_ICU_I18N_LIBRARY_DIRS}
                ${PC_ICU_I18N_LIBDIR}
          DOC "Libraries to link against for ICU internationalization")
-
---- qtwebkit-tp5/Source/WebCore/platform/network/create-http-header-name-table.orig	2017-02-07 23:28:00.520278300 +0300
-+++ qtwebkit-tp5/Source/WebCore/platform/network/create-http-header-name-table	2017-02-07 23:29:15.412561900 +0300
+--- a/Source/WebCore/platform/network/create-http-header-name-table	2017-02-07 23:28:00.520278300 +0300
++++ b/Source/WebCore/platform/network/create-http-header-name-table	2017-02-07 23:29:15.412561900 +0300
 @@ -54,7 +55,7 @@
  
  http_header_names.sort()
@@ -87,8 +83,8 @@ Contains ad hoc patches for cross building.
  gperf_file.write('''
  %{
  /*
---- qtwebkit-tp5/Source/WebCore/css/makeSelectorPseudoClassAndCompatibilityElementMap.py.orig	2017-02-08 00:23:27.256556700 +0300
-+++ qtwebkit-tp5/Source/WebCore/css/makeSelectorPseudoClassAndCompatibilityElementMap.py	2017-02-08 00:23:33.040887600 +0300
+--- a/Source/WebCore/css/makeSelectorPseudoClassAndCompatibilityElementMap.py	2017-02-08 00:23:27.256556700 +0300
++++ b/Source/WebCore/css/makeSelectorPseudoClassAndCompatibilityElementMap.py	2017-02-08 00:23:33.040887600 +0300
 @@ -57,7 +57,7 @@
  def expand_ifdef_condition(condition):
      return condition.replace('(', '_').replace(')', '')
@@ -98,8 +94,8 @@ Contains ad hoc patches for cross building.
  
  output_file.write("""
  %{
---- qtwebkit-tp5/Source/WebCore/css/makeSelectorPseudoElementsMap.py.orig	2017-02-08 00:23:46.797674400 +0300
-+++ qtwebkit-tp5/Source/WebCore/css/makeSelectorPseudoElementsMap.py	2017-02-08 00:23:51.732956700 +0300
+--- a/Source/WebCore/css/makeSelectorPseudoElementsMap.py	2017-02-08 00:23:46.797674400 +0300
++++ b/Source/WebCore/css/makeSelectorPseudoElementsMap.py	2017-02-08 00:23:51.732956700 +0300
 @@ -57,7 +57,7 @@
  def expand_ifdef_condition(condition):
      return condition.replace('(', '_').replace(')', '')
@@ -109,9 +105,8 @@ Contains ad hoc patches for cross building.
  
  output_file.write("""
  %{
-
---- qtwebkit-tp5/Source/WebCore/bindings/scripts/preprocess-idls.pl.orig	2017-02-08 07:25:12.036907400 +0300
-+++ qtwebkit-tp5/Source/WebCore/bindings/scripts/preprocess-idls.pl	2017-02-08 07:32:03.926466100 +0300
+--- a/Source/WebCore/bindings/scripts/preprocess-idls.pl	2017-02-08 07:25:12.036907400 +0300
++++ b/Source/WebCore/bindings/scripts/preprocess-idls.pl	2017-02-08 07:32:03.926466100 +0300
 @@ -179,9 +179,9 @@
  sub CygwinPathIfNeeded
  {
@@ -125,8 +120,20 @@ Contains ad hoc patches for cross building.
          }
          chomp($path = `cygpath -u '$path'`);
 
---- qtwebkit-tp5/Source/cmake/ECMGeneratePriFile.cmake.orig	2017-02-10 09:36:07.508360400 +0300
-+++ qtwebkit-tp5/Source/cmake/ECMGeneratePriFile.cmake	2017-02-10 09:44:52.735367300 +0300
+
+diff -Naur qtwebkit-tp5-orig/Source/JavaScriptCore/runtime/JSGenericTypedArrayViewConstructorInlines.h qtwebkit-tp5/Source/JavaScriptCore/runtime/JSGenericTypedArrayViewConstructorInlines.h
+--- qtwebkit-tp5-orig/Source/JavaScriptCore/runtime/JSGenericTypedArrayViewConstructorInlines.h	2016-05-21 18:54:11.000000000 +0300
++++ b/Source/JavaScriptCore/runtime/JSGenericTypedArrayViewConstructorInlines.h	2017-02-10 07:41:34.183341500 +0300
+@@ -32,6 +32,7 @@
+ #include "JSCJSValueInlines.h"
+ #include "JSDataView.h"
+ #include "JSGenericTypedArrayViewConstructor.h"
++#include "JSGenericTypedArrayViewInlines.h"
+ #include "JSGlobalObject.h"
+ #include "StructureInlines.h"
+ 
+--- a/Source/cmake/ECMGeneratePriFile.cmake	2017-02-10 09:36:07.508360400 +0300
++++ b/Source/cmake/ECMGeneratePriFile.cmake	2017-02-10 09:44:52.735367300 +0300
 @@ -101,7 +101,11 @@
    query_qmake(qt_host_data_dir QT_HOST_DATA)
    set(ECM_MKSPECS_INSTALL_DIR ${qt_host_data_dir}/mkspecs/modules CACHE PATH "The directory where mkspecs will be installed to.")
@@ -140,6 +147,8 @@ Contains ad hoc patches for cross building.
  endif()
  
  function(ECM_GENERATE_PRI_FILE)
+
+
 
 diff --git a/Source/JavaScriptCore/llint/LLIntOfflineAsmConfig.h b/Source/JavaScriptCore/llint/LLIntOfflineAsmConfig.h
 index 51ada4fbf63..23eb928c307 100644
@@ -161,6 +170,157 @@ index 51ada4fbf63..23eb928c307 100644
  #define OFFLINE_ASM_X86_64_WIN 1
  #else
  #define OFFLINE_ASM_X86_64_WIN 0
+
+
+From 2baa118166d65f9eefe3bc84f2eef871ed83b739 Mon Sep 17 00:00:00 2001
+From: Leszek Lesner <leszek.lsner@web.de>
+Date: Wed, 6 Sep 2017 23:31:38 +0200
+Subject: [PATCH] Add proper full screen support
+
+Change-Id: I7a354847dc2faee139f477c73d1b338c3a09f00d
+---
+ Source/WebKit2/UIProcess/qt/QtPageClient.cpp       | 13 +++-
+ .../WebKit2/UIProcess/qt/QtWebPageEventHandler.h   |  1 +
+ .../UIProcess/qt/WebFullScreenManagerProxyQt.cpp   | 86 ----------------------
+ 3 files changed, 12 insertions(+), 88 deletions(-)
+ delete mode 100644 Source/WebKit2/UIProcess/qt/WebFullScreenManagerProxyQt.cpp
+
+diff --git a/Source/WebKit2/UIProcess/qt/QtPageClient.cpp b/Source/WebKit2/UIProcess/qt/QtPageClient.cpp
+index 5f62dc600762..53faa7647bdb 100644
+--- a/Source/WebKit2/UIProcess/qt/QtPageClient.cpp
++++ b/Source/WebKit2/UIProcess/qt/QtPageClient.cpp
+@@ -288,12 +288,21 @@ bool QtPageClient::isFullScreen()
+ 
+ void QtPageClient::enterFullScreen()
+ {
+-    notImplemented();
++    if (!m_webView)
++        return;
++
++    WebFullScreenManagerProxy* manager = m_eventHandler->webPageProxy()->fullScreenManager();
++    manager->willEnterFullScreen();
++    emit m_webView->experimental()->enterFullScreenRequested();
++    manager->didEnterFullScreen();
+ }
+ 
+ void QtPageClient::exitFullScreen()
+ {
+-    notImplemented();
++    WebFullScreenManagerProxy* manager = m_eventHandler->webPageProxy()->fullScreenManager();
++    manager->willExitFullScreen();
++    emit m_webView->experimental()->exitFullScreenRequested();
++    manager->didExitFullScreen();
+ }
+ 
+ void QtPageClient::beganEnterFullScreen(const IntRect& initialFrame, const IntRect& finalFrame)
+
+
+diff --git a/Source/WebKit2/UIProcess/qt/QtWebPageEventHandler.h b/Source/WebKit2/UIProcess/qt/QtWebPageEventHandler.h
+index 2fe82e8e0999..32c7f3f0ddba 100644
+--- a/Source/WebKit2/UIProcess/qt/QtWebPageEventHandler.h
++++ b/Source/WebKit2/UIProcess/qt/QtWebPageEventHandler.h
+@@ -93,6 +93,7 @@ class QtWebPageEventHandler final : public QObject {
+     void resetGestureRecognizers();
+ 
+     PageViewportControllerClientQt* viewportController() { return m_viewportController; }
++    WebPageProxy* webPageProxy() { return m_webPageProxy; }
+ 
+     void startDrag(const WebCore::DragData&, PassRefPtr<ShareableBitmap> dragImage);
+ 
+diff --git a/Source/WebKit2/UIProcess/qt/WebFullScreenManagerProxyQt.cpp b/Source/WebKit2/UIProcess/qt/WebFullScreenManagerProxyQt.cpp
+deleted file mode 100644
+index 2b97dc722e49..000000000000
+--- a/Source/WebKit2/UIProcess/qt/WebFullScreenManagerProxyQt.cpp
++++ /dev/null
+@@ -1,87 +0,0 @@
+-/*
+- * Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies)
+- *
+- *  This library is free software; you can redistribute it and/or
+- *  modify it under the terms of the GNU Library General Public
+- *  License as published by the Free Software Foundation; either
+- *  version 2 of the License, or (at your option) any later version.
+- *
+- *  This library is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  Library General Public License for more details.
+- *
+- *  You should have received a copy of the GNU Library General Public License
+- *  along with this library; see the file COPYING.LIB.  If not, write to
+- *  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+- *  Boston, MA 02110-1301, USA.
+- */
+-
+-#include "config.h"
+-#include "WebFullScreenManagerProxy.h"
+-
+-#if ENABLE(FULLSCREEN_API)
+-
+-#include "WebContext.h"
+-#include "WebFullScreenManagerMessages.h"
+-#include "WebFullScreenManagerProxyMessages.h"
+-#include "WebProcess.h"
+-#include <WebCore/NotImplemented.h>
+-
+-#if HAVE(QTQUICK)
+-#include "qquickwebview_p.h"
+-#endif
+-
+-using namespace WebCore;
+-
+-namespace WebKit {
+-
+-void WebFullScreenManagerProxy::invalidate()
+-{
+-#if HAVE(QTQUICK)
+-    m_webView = 0;
+-#endif
+-}
+-
+-void WebFullScreenManagerProxy::close()
+-{
+-    notImplemented();
+-}
+-
+-bool WebFullScreenManagerProxy::isFullScreen()
+-{
+-    notImplemented();
+-    return false;
+-}
+-
+-void WebFullScreenManagerProxy::enterFullScreen()
+-{
+-    willEnterFullScreen();
+-#if HAVE(QTQUICK)
+-    emit m_webView->experimental()->enterFullScreenRequested();
+-#endif
+-    didEnterFullScreen();
+-}
+-
+-void WebFullScreenManagerProxy::exitFullScreen()
+-{
+-    willExitFullScreen();
+-#if HAVE(QTQUICK)
+-    emit m_webView->experimental()->exitFullScreenRequested();
+-#endif
+-    didExitFullScreen();
+-}
+-
+-void WebFullScreenManagerProxy::beganEnterFullScreen(const IntRect& initialFrame, const IntRect& finalFrame)
+-{
+-    notImplemented();
+-}
+-
+-void WebFullScreenManagerProxy::beganExitFullScreen(const IntRect& initialFrame, const IntRect& finalFrame)
+-{
+-    notImplemented();
+-}
+-
+-} // namespace WebKit
+-
+-#endif // ENABLE(FULLSCREEN_API)
+
 
 From dc9ff80e6341913d1077fb4ffe23aed6754dcd96 Mon Sep 17 00:00:00 2001
 From: Konstantin Tokarev <annulen@yandex.ru>
@@ -186,6 +346,146 @@ index 8708cedf8463..f0e4acf8a5a6 100644
  install(
      FILES
          ${WebKit_PRIVATE_HEADERS}
+@@ -519,11 +519,19 @@ if (KDE_INSTALL_USE_QT_SYS_PATHS)
+             INCLUDE_INSTALL_DIR "$$QT_MODULE_LIB_BASE/QtWebKit.framework/Headers"
+             MODULE_CONFIG "lib_bundle"
+         )
++        list(APPEND WebKit_Private_PRI_ARGUMENTS
++            INCLUDE_INSTALL_DIR "$$QT_MODULE_LIB_BASE/QtWebKit.framework/Headers/${PROJECT_VERSION}"
++            INCLUDE_INSTALL_DIR2 "$$QT_MODULE_LIB_BASE/QtWebKit.framework/Headers/${PROJECT_VERSION}/QtWebKit"
++        )
+     else ()
+         list(APPEND WebKit_PRI_ARGUMENTS
+             INCLUDE_INSTALL_DIR "$$QT_MODULE_INCLUDE_BASE"
+             INCLUDE_INSTALL_DIR2 "$$QT_MODULE_INCLUDE_BASE/QtWebKit"
+         )
++        list(APPEND WebKit_Private_PRI_ARGUMENTS
++            INCLUDE_INSTALL_DIR "$$QT_MODULE_INCLUDE_BASE/QtWebKit/${PROJECT_VERSION}"
++            INCLUDE_INSTALL_DIR2 "$$QT_MODULE_INCLUDE_BASE/QtWebKit/${PROJECT_VERSION}/QtWebKit"
++        )
+     endif ()
+ else ()
+     set(WebKit_PRI_ARGUMENTS
+@@ -534,14 +542,24 @@ else ()
+             INCLUDE_INSTALL_DIR "${LIB_INSTALL_DIR}/QtWebKit.framework/Headers"
+             MODULE_CONFIG "lib_bundle"
+         )
++        list(APPEND WebKit_Private_PRI_ARGUMENTS
++            INCLUDE_INSTALL_DIR "${LIB_INSTALL_DIR}/QtWebKit.framework/Headers/${PROJECT_VERSION}"
++            INCLUDE_INSTALL_DIR2 "${LIB_INSTALL_DIR}/QtWebKit.framework/Headers/${PROJECT_VERSION}/QtWebKit"
++        )
+     else ()
+         list(APPEND WebKit_PRI_ARGUMENTS
+             INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR}
+             INCLUDE_INSTALL_DIR2 "${KDE_INSTALL_INCLUDEDIR}/QtWebKit"
+         )
++        list(APPEND WebKit_Private_PRI_ARGUMENTS
++            INCLUDE_INSTALL_DIR "${KDE_INSTALL_INCLUDEDIR}/QtWebKit/${PROJECT_VERSION}"
++            INCLUDE_INSTALL_DIR2 "${KDE_INSTALL_INCLUDEDIR}/QtWebKit/${PROJECT_VERSION}/QtWebKit"
++        )
+     endif ()
+ endif ()
+ 
++list(APPEND WebKit_Private_PRI_ARGUMENTS MODULE_CONFIG "internal_module no_link")
++
+ if (MACOS_BUILD_FRAMEWORKS)
+     set(WebKit_OUTPUT_NAME QtWebKit)
+ else ()
+@@ -561,7 +579,23 @@ ecm_generate_pri_file(
+     FILENAME_VAR WebKit_PRI_FILENAME
+     ${WebKit_PRI_ARGUMENTS}
+ )
+-install(FILES ${WebKit_PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR} COMPONENT Data)
++ecm_generate_pri_file(
++    BASE_NAME webkit_private
++    NAME "QtWebKit"
++    LIB_NAME " "
++    DEPS "webkit"
++    RUNTIME_DEPS " "
++    DEFINES " "
++    QT_MODULES webkit
++    EXTRA_LIBS " "
++    FILENAME_VAR WebKit_Private_PRI_FILENAME
++    ${WebKit_Private_PRI_ARGUMENTS}
++)
++install(
++    FILES ${WebKit_PRI_FILENAME} ${WebKit_Private_PRI_FILENAME}
++    DESTINATION ${ECM_MKSPECS_INSTALL_DIR}
++    COMPONENT Data
++)
+ 
+ if (QT_STATIC_BUILD)
+     set(WebKit_LIBRARY_TYPE STATIC)
+@@ -708,11 +742,19 @@ if (KDE_INSTALL_USE_QT_SYS_PATHS)
+             INCLUDE_INSTALL_DIR "$$QT_MODULE_LIB_BASE/QtWebKitWidgets.framework/Headers"
+             MODULE_CONFIG "lib_bundle"
+         )
++        list(APPEND WebKitWidgets_Private_PRI_ARGUMENTS
++            INCLUDE_INSTALL_DIR "$$QT_MODULE_LIB_BASE/QtWebKitWidgets.framework/Headers/${PROJECT_VERSION}"
++            INCLUDE_INSTALL_DIR2 "$$QT_MODULE_LIB_BASE/QtWebKitWidgets.framework/Headers/${PROJECT_VERSION}/QtWebKitWidgets"
++        )
+     else ()
+         list(APPEND WebKitWidgets_PRI_ARGUMENTS
+             INCLUDE_INSTALL_DIR "$$QT_MODULE_INCLUDE_BASE"
+             INCLUDE_INSTALL_DIR2 "$$QT_MODULE_INCLUDE_BASE/QtWebKitWidgets"
+         )
++        list(APPEND WebKitWidgets_Private_PRI_ARGUMENTS
++            INCLUDE_INSTALL_DIR "$$QT_MODULE_INCLUDE_BASE/QtWebKitWidgets/${PROJECT_VERSION}"
++            INCLUDE_INSTALL_DIR2 "$$QT_MODULE_INCLUDE_BASE/QtWebKitWidgets/${PROJECT_VERSION}/QtWebKitWidgets"
++        )
+     endif ()
+ else ()
+     set(WebKitWidgets_PRI_ARGUMENTS
+@@ -723,14 +765,24 @@ else ()
+             INCLUDE_INSTALL_DIR "${LIB_INSTALL_DIR}/QtWebKitWidgets.framework/Headers"
+             MODULE_CONFIG "lib_bundle"
+         )
++        list(APPEND WebKitWidgets_Private_PRI_ARGUMENTS
++            INCLUDE_INSTALL_DIR "${LIB_INSTALL_DIR}/QtWebKitWidgets.framework/Headers/${PROJECT_VERSION}"
++            INCLUDE_INSTALL_DIR2 "${LIB_INSTALL_DIR}/QtWebKitWidgets.framework/Headers/${PROJECT_VERSION}/QtWebKitWidgets"
++        )
+     else ()
+         list(APPEND WebKitWidgets_PRI_ARGUMENTS
+             INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR}
+             INCLUDE_INSTALL_DIR2 "${KDE_INSTALL_INCLUDEDIR}/QtWebKitWidgets"
+         )
++        list(APPEND WebKitWidgets_Private_PRI_ARGUMENTS
++            INCLUDE_INSTALL_DIR "${KDE_INSTALL_INCLUDEDIR}/QtWebKitWidgets/${PROJECT_VERSION}"
++            INCLUDE_INSTALL_DIR2 "${KDE_INSTALL_INCLUDEDIR}/QtWebKitWidgets/${PROJECT_VERSION}/QtWebKitWidgets"
++        )
+     endif ()
+ endif ()
+ 
++list(APPEND WebKitWidgets_Private_PRI_ARGUMENTS MODULE_CONFIG "internal_module no_link")
++
+ if (MACOS_BUILD_FRAMEWORKS)
+     set(WebKitWidgets_OUTPUT_NAME QtWebKitWidgets)
+ else ()
+@@ -749,7 +801,23 @@ ecm_generate_pri_file(
+     FILENAME_VAR WebKitWidgets_PRI_FILENAME
+     ${WebKitWidgets_PRI_ARGUMENTS}
+ )
+-install(FILES ${WebKitWidgets_PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR} COMPONENT Data)
++ecm_generate_pri_file(
++    BASE_NAME webkitwidgets_private
++    NAME "QtWebKitWidgets"
++    LIB_NAME " "
++    DEPS "webkitwidgets"
++    RUNTIME_DEPS " "
++    DEFINES " "
++    QT_MODULES webkitwidgets
++    EXTRA_LIBS " "
++    FILENAME_VAR WebKitWidgets_Private_PRI_FILENAME
++    ${WebKitWidgets_Private_PRI_ARGUMENTS}
++)
++install(
++    FILES ${WebKitWidgets_PRI_FILENAME}  ${WebKitWidgets_Private_PRI_FILENAME}
++    DESTINATION ${ECM_MKSPECS_INSTALL_DIR}
++    COMPONENT Data
++)
+ 
+ if (MSVC)
+     if (CMAKE_SIZEOF_VOID_P EQUAL 8)
 diff --git a/Source/cmake/WebKitMacros.cmake b/Source/cmake/WebKitMacros.cmake
 index 858e2e47d8d5..4c54c1c5de1e 100644
 --- a/Source/cmake/WebKitMacros.cmake
@@ -200,7 +500,114 @@ index 858e2e47d8d5..4c54c1c5de1e 100644
      target_link_libraries(${_target} ${${_target}_LIBRARIES})
      set_target_properties(${_target} PROPERTIES COMPILE_DEFINITIONS "BUILDING_${_target}")
 
---- qtwebkit-5.212.0-alpha2/Source/WebKit/PlatformQt.cmake.orig	2017-12-11 14:58:21.092231000 +0300
+
+From f71f9f5883eba9ea60d136ab282cee3b1b1abaf1 Mon Sep 17 00:00:00 2001
+From: Konstantin Tokarev <annulen@yandex.ru>
+Date: Wed, 25 Oct 2017 21:16:14 +0300
+Subject: [PATCH] [cmake][qmake] Add QtMultimedia dependencies to generated
+ .pri and .pc files
+
+Change-Id: I27fac977683fb0c4d47c58ad8f183a6b62c7ea0f
+---
+ Source/WebKit/PlatformQt.cmake | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/Source/WebKit/PlatformQt.cmake b/Source/WebKit/PlatformQt.cmake
+index 055c89710b29..8708cedf8463 100644
+--- a/Source/WebKit/PlatformQt.cmake
++++ b/Source/WebKit/PlatformQt.cmake
+@@ -447,6 +447,10 @@ endif ()
+ if (USE_MEDIA_FOUNDATION)
+     set(WEBKIT_PRI_EXTRA_LIBS "-lmfuuid -lstrmiids ${WEBKIT_PRI_EXTRA_LIBS}")
+ endif ()
++if (USE_QT_MULTIMEDIA)
++    set(WEBKIT_PKGCONGIG_DEPS "${WEBKIT_PKGCONGIG_DEPS} Qt5Multimedia")
++    set(WEBKIT_PRI_RUNTIME_DEPS "multimedia ${WEBKIT_PRI_RUNTIME_DEPS}")
++endif ()
+ 
+ set(WEBKITWIDGETS_PKGCONGIG_DEPS "${WEBKIT_PKGCONGIG_DEPS} Qt5Widgets Qt5WebKit")
+ set(WEBKITWIDGETS_PRI_DEPS "${WEBKIT_PRI_DEPS} widgets webkit")
+@@ -460,6 +464,11 @@ if (ENABLE_PRINT_SUPPORT)
+     set(WEBKITWIDGETS_PRI_RUNTIME_DEPS "${WEBKITWIDGETS_PRI_RUNTIME_DEPS} printsupport")
+ endif ()
+ 
++if (USE_QT_MULTIMEDIA)
++    set(WEBKITWIDGETS_PKGCONGIG_DEPS "${WEBKITWIDGETS_PKGCONGIG_DEPS} Qt5MultimediaWidgets")
++    set(WEBKITWIDGETS_PRI_RUNTIME_DEPS "${WEBKITWIDGETS_PRI_RUNTIME_DEPS} multimediawidgets")
++endif ()
++
+ if (QT_STATIC_BUILD)
+     set(WEBKITWIDGETS_PKGCONGIG_DEPS "${WEBKITWIDGETS_PKGCONGIG_DEPS} Qt5PrintSupport")
+     set(WEBKITWIDGETS_PRI_DEPS "${WEBKITWIDGETS_PRI_DEPS} printsupport")
+
+
+From c1e876e08e6e65a6f3b0b21d3d4b9c3ab6839da6 Mon Sep 17 00:00:00 2001
+From: Konstantin Tokarev <annulen@yandex.ru>
+Date: Wed, 31 May 2017 09:54:59 +0300
+Subject: [PATCH] [WK2][Win] Fix compilation with ICU 59.1
+
+Change-Id: Ib06c09bca7a54e309c804896c63685d5433e2c31
+---
+ Source/WebKit2/Platform/IPC/win/ConnectionWin.cpp | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Source/WebKit2/Platform/IPC/win/ConnectionWin.cpp b/Source/WebKit2/Platform/IPC/win/ConnectionWin.cpp
+index 7ea5ba0f5980..c5a8ccfa9d97 100644
+--- a/Source/WebKit2/Platform/IPC/win/ConnectionWin.cpp
++++ b/Source/WebKit2/Platform/IPC/win/ConnectionWin.cpp
+@@ -29,6 +29,7 @@
+ #include "DataReference.h"
+ #include <wtf/RandomNumber.h>
+ #include <wtf/text/WTFString.h>
++#include <wtf/text/win/WCharStringExtras.h>
+ #include <wtf/threads/BinarySemaphore.h>
+ 
+ using namespace std;
+@@ -46,7 +47,7 @@ bool Connection::createServerAndClientIdentifiers(HANDLE& serverIdentifier, HAND
+         unsigned uniqueID = randomNumber() * std::numeric_limits<unsigned>::max();
+         pipeName = String::format("\\\\.\\pipe\\com.apple.WebKit.%x", uniqueID);
+ 
+-        serverIdentifier = ::CreateNamedPipe(pipeName.charactersWithNullTermination().data(),
++        serverIdentifier = ::CreateNamedPipe(stringToNullTerminatedWChar(pipeName).data(),
+             PIPE_ACCESS_DUPLEX | FILE_FLAG_FIRST_PIPE_INSTANCE | FILE_FLAG_OVERLAPPED,
+             PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE, 1, inlineMessageMaxSize, inlineMessageMaxSize,
+             0, 0);
+@@ -61,7 +62,7 @@ bool Connection::createServerAndClientIdentifiers(HANDLE& serverIdentifier, HAND
+     if (!serverIdentifier)
+         return false;
+ 
+-    clientIdentifier = ::CreateFileW(pipeName.charactersWithNullTermination().data(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, 0);
++    clientIdentifier = ::CreateFileW(stringToNullTerminatedWChar(pipeName).data(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, 0);
+     if (!clientIdentifier) {
+         ::CloseHandle(serverIdentifier);
+         return false;
+
+
+From 3cc04201ec8753a94b78bd0632ef232210005173 Mon Sep 17 00:00:00 2001
+From: Konstantin Tokarev <annulen@yandex.ru>
+Date: Sun, 15 Oct 2017 19:29:51 +0300
+Subject: [PATCH] Make size of MinGW debug dll's tolerable
+
+Change-Id: Id185d8ef610fcf166233588fb89886975bb7ab77
+---
+ Source/PlatformQt.cmake | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Source/PlatformQt.cmake b/Source/PlatformQt.cmake
+index 0044dec033c9..4685caced6ff 100644
+--- a/Source/PlatformQt.cmake
++++ b/Source/PlatformQt.cmake
+@@ -32,6 +32,9 @@ if (USE_MINIMAL_DEBUG_INFO AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+     if (TARGET gtest)
+         target_compile_options(gtest          PRIVATE -g0 -O1)
+     endif ()
++
++    target_compile_options(WebKit            PRIVATE -g1 -O1 -fdebug-types-section)
++    target_compile_options(WebKit2           PRIVATE -g1 -O1 -fdebug-types-section)
+ endif ()
+ 
+ if (USE_MINIMAL_DEBUG_INFO_MSVC AND MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+--- qtwebkit-5.212.0-alpha2/Source/WebKit/PlatformQt.cmake	2017-12-11 14:58:21.092231000 +0300
 +++ qtwebkit-5.212.0-alpha2/Source/WebKit/PlatformQt.cmake	2017-12-11 15:02:04.943675300 +0300
 @@ -490,7 +490,7 @@
      install(FILES ${WebKit_PKGCONFIG_FILENAME} DESTINATION ${ECM_PKGCONFIG_INSTALL_DIR} COMPONENT Data)
@@ -220,3 +627,151 @@ index 858e2e47d8d5..4c54c1c5de1e 100644
      set(WebKitWidgets_PRI_ARGUMENTS
          BIN_INSTALL_DIR "$$QT_MODULE_BIN_BASE"
          LIB_INSTALL_DIR "$$QT_MODULE_LIB_BASE"
+diff --git a/Source/WTF/wtf/HashTable.h b/Source/WTF/wtf/HashTable.h
+index 022e281cc93a..e6a950fd4009 100644
+--- a/Source/WTF/wtf/HashTable.h
++++ b/Source/WTF/wtf/HashTable.h
+@@ -845,7 +845,7 @@ namespace WTF {
+             // This initializes the bucket without copying the empty value.
+             // That makes it possible to use this with types that don't support copying.
+             // The memset to 0 looks like a slow operation but is optimized by the compilers.
+-            memset(&bucket, 0, sizeof(bucket));
++            memset(static_cast<void*>(&bucket), 0, sizeof(bucket));
+         }
+     };
+     
+diff --git a/Source/WTF/wtf/Vector.h b/Source/WTF/wtf/Vector.h
+index cfcb6bbac5ab..80ee20b368fa 100644
+--- a/Source/WTF/wtf/Vector.h
++++ b/Source/WTF/wtf/Vector.h
+@@ -96,7 +96,7 @@ struct VectorInitializer<true, true, T>
+ {
+     static void initializeIfNonPOD(T* begin, T* end)
+     {
+-        memset(begin, 0, reinterpret_cast<char*>(end) - reinterpret_cast<char*>(begin));
++        memset(static_cast<void*>(begin), 0, reinterpret_cast<char*>(end) - reinterpret_cast<char*>(begin));
+     }
+ 
+     static void initialize(T* begin, T* end)
+@@ -141,11 +141,11 @@ struct VectorMover<true, T>
+ {
+     static void move(const T* src, const T* srcEnd, T* dst) 
+     {
+-        memcpy(dst, src, reinterpret_cast<const char*>(srcEnd) - reinterpret_cast<const char*>(src));
++        memcpy(static_cast<void*>(dst), static_cast<void*>(const_cast<T*>(src)), reinterpret_cast<const char*>(srcEnd) - reinterpret_cast<const char*>(src));
+     }
+     static void moveOverlapping(const T* src, const T* srcEnd, T* dst) 
+     {
+-        memmove(dst, src, reinterpret_cast<const char*>(srcEnd) - reinterpret_cast<const char*>(src));
++        memmove(static_cast<void*>(dst), static_cast<void*>(const_cast<T*>(src)), reinterpret_cast<const char*>(srcEnd) - reinterpret_cast<const char*>(src));
+     }
+ };
+ 
+@@ -171,7 +171,7 @@ struct VectorCopier<true, T>
+ {
+     static void uninitializedCopy(const T* src, const T* srcEnd, T* dst)
+     {
+-        memcpy(dst, src, reinterpret_cast<const char*>(srcEnd) - reinterpret_cast<const char*>(src));
++        memcpy(static_cast<void*>(dst), static_cast<void*>(const_cast<T*>(src)), reinterpret_cast<const char*>(srcEnd) - reinterpret_cast<const char*>(src));
+     }
+     template<typename U>
+     static void uninitializedCopy(const T* src, const T* srcEnd, U* dst)
+diff --git a/Source/WebCore/accessibility/AXObjectCache.cpp b/Source/WebCore/accessibility/AXObjectCache.cpp
+index 3998f313e0f6..31b8a2b78c32 100644
+--- a/Source/WebCore/accessibility/AXObjectCache.cpp
++++ b/Source/WebCore/accessibility/AXObjectCache.cpp
+@@ -1710,7 +1710,9 @@ CharacterOffset AXObjectCache::startOrEndCharacterOffsetForRange(RefPtr<Range> r
+ 
+ void AXObjectCache::startOrEndTextMarkerDataForRange(TextMarkerData& textMarkerData, RefPtr<Range> range, bool isStart)
+ {
+-    memset(&textMarkerData, 0, sizeof(TextMarkerData));
++    // This memory must be zero'd so instances of TextMarkerData can be tested for byte-equivalence.
++    // Warning: This is risky and bad because TextMarkerData is a nontrivial type.
++    memset(static_cast<void*>(&textMarkerData), 0, sizeof(TextMarkerData));
+     
+     CharacterOffset characterOffset = startOrEndCharacterOffsetForRange(range, isStart);
+     if (characterOffset.isNull())
+@@ -1767,7 +1767,10 @@ CharacterOffset AXObjectCache::characterOffsetForNodeAndOffset(Node& node, int o
+ 
+ void AXObjectCache::textMarkerDataForCharacterOffset(TextMarkerData& textMarkerData, const CharacterOffset& characterOffset)
+ {
+-    memset(&textMarkerData, 0, sizeof(TextMarkerData));
++    // This memory must be zero'd so instances of TextMarkerData can be tested for byte-equivalence.
++    // Warning: This is risky and bad because TextMarkerData is a nontrivial type.
++    memset(static_cast<void*>(&textMarkerData), 0, sizeof(TextMarkerData));
++
+     setTextMarkerDataWithCharacterOffset(textMarkerData, characterOffset);
+ }
+ 
+@@ -1875,7 +1875,8 @@ std::optional<TextMarkerData> AXObjectCache::textMarkerDataForVisiblePosition(co
+ {
+     // This memory must be bzero'd so instances of TextMarkerData can be tested for byte-equivalence.
+     // This also allows callers to check for failure by looking at textMarkerData upon return.
+-    memset(&textMarkerData, 0, sizeof(TextMarkerData));
++    // Warning: This is risky and bad because TextMarkerData is a nontrivial type.
++    memset(static_cast<void*>(&textMarkerData), 0, sizeof(TextMarkerData));
+     
+     if (visiblePos.isNull())
+         return;
+diff --git a/Source/WebCore/css/CSSSelectorList.cpp b/Source/WebCore/css/CSSSelectorList.cpp
+index 57efa67d0b3e..4fc69838c710 100644
+--- a/Source/WebCore/css/CSSSelectorList.cpp
++++ b/Source/WebCore/css/CSSSelectorList.cpp
+@@ -67,7 +67,7 @@ void CSSSelectorList::adoptSelectorVector(Vector<std::unique_ptr<CSSParserSelect
+             {
+                 // Move item from the parser selector vector into m_selectorArray without invoking destructor (Ugh.)
+                 CSSSelector* currentSelector = current->releaseSelector().release();
+-                memcpy(&m_selectorArray[arrayIndex], currentSelector, sizeof(CSSSelector));
++                memcpy(static_cast<void*>(&m_selectorArray[arrayIndex]), static_cast<void*>(currentSelector), sizeof(CSSSelector));
+ 
+                 // Free the underlying memory without invoking the destructor.
+                 operator delete (currentSelector);
+diff --git a/Source/WebCore/platform/Length.h b/Source/WebCore/platform/Length.h
+index 64a08e8c1b4f..bf14421af35f 100644
+--- a/Source/WebCore/platform/Length.h
++++ b/Source/WebCore/platform/Length.h
+@@ -196,7 +196,7 @@ inline Length& Length::operator=(const Length& other)
+     if (isCalculated())
+         deref();
+ 
+-    memcpy(this, &other, sizeof(Length));
++    memcpy(static_cast<void*>(this), static_cast<void*>(const_cast<Length*>(&other)), sizeof(Length));
+     return *this;
+ }
+ 
+@@ -208,7 +208,7 @@ inline Length& Length::operator=(Length&& other)
+     if (isCalculated())
+         deref();
+ 
+-    memcpy(this, &other, sizeof(Length));
++    memcpy(static_cast<void*>(this), static_cast<void*>(&other), sizeof(Length));
+     other.m_type = Auto;
+     return *this;
+ }
+diff --git a/Source/WebCore/platform/graphics/Gradient.cpp b/Source/WebCore/platform/graphics/Gradient.cpp
+index e7f8c6710153..8994c021edfb 100644
+--- a/Source/WebCore/platform/graphics/Gradient.cpp
++++ b/Source/WebCore/platform/graphics/Gradient.cpp
+@@ -213,7 +213,8 @@ unsigned Gradient::hash() const
+     COMPILE_ASSERT(!(sizeof(ColorStop) % 2), Color_stop_size_should_be_multiple_of_two);
+     
+     // Ensure that any padding in the struct is zero-filled, so it will not affect the hash value.
+-    memset(&parameters, 0, sizeof(parameters));
++    // FIXME: This is asking for trouble, because it is a nontrivial type.
++    memset(static_cast<void*>(&parameters), 0, sizeof(parameters));
+     
+     WTF::switchOn(m_data,
+         [&parameters] (const LinearData& data) {
+diff --git a/Source/WebCore/platform/graphics/freetype/FontCustomPlatformDataFreeType.cpp b/Source/WebCore/platform/graphics/freetype/FontCustomPlatformDataFreeType.cpp
+index d3fc934fe4be..bd9cd0009afb 100644
+--- a/Source/WebCore/platform/graphics/freetype/FontCustomPlatformDataFreeType.cpp
++++ b/Source/WebCore/platform/graphics/freetype/FontCustomPlatformDataFreeType.cpp
+@@ -48,7 +48,7 @@ FontCustomPlatformData::FontCustomPlatformData(FT_Face freeTypeFace, SharedBuffe
+     // this cairo_font_face_t is destroyed, it cleans up the FreeType face as well.
+     static cairo_user_data_key_t freeTypeFaceKey;
+     cairo_font_face_set_user_data(m_fontFace, &freeTypeFaceKey, freeTypeFace,
+-         reinterpret_cast<cairo_destroy_func_t>(FT_Done_Face));
++        reinterpret_cast<cairo_destroy_func_t>(reinterpret_cast<GCallback>(FT_Done_Face)));
+ }
+ 
+ FontCustomPlatformData::~FontCustomPlatformData()
