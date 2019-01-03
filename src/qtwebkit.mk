@@ -15,23 +15,23 @@ $(PKG)_DEPS     := cc libxml2 libxslt qtbase qtmultimedia qtquickcontrols sqlite
 define $(PKG)_BUILD_SHARED
     cd '$(BUILD_DIR)' && $(TARGET)-cmake '$(SOURCE_DIR)' \
         -DCMAKE_INSTALL_PREFIX=$(PREFIX)/$(TARGET)/qt5 \
-        -DSHARED_CORE=$(CMAKE_SHARED_BOOL) \
-        -DQT_STATIC_BUILD=$(CMAKE_STATIC_BOOL) \
-        -DENABLE_GEOLOCATION=OFF \
+        -DCMAKE_CXX_FLAGS='-fpermissive' \
+        -DEGPF_DEPS='Qt5Core Qt5Gui Qt5Multimedia Qt5Widgets Qt5WebKit' \
+        -DCMAKE_BUILD_TYPE=Release \
         -DPORT=Qt \
+        -DUSE_QT_MULTIMEDIA=ON \
+        -DENABLE_VIDEO=ON \
+        -DENABLE_GEOLOCATION=OFF \
         -DENABLE_INSPECTOR_UI=OFF \
         -DENABLE_DEVICE_ORIENTATION=OFF \
-        -DUSE_QT_MULTIMEDIA=OFF \
-        -DENABLE_VIDEO=OFF \
-        -DENABLE_QT_WEBCHANNEL=OFF \
-        -DENABLE_GEOLOCATION=OFF
+        -DENABLE_QT_WEBCHANNEL=ON
     $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)' VERBOSE=1
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 
     # build test manually
     # add $(BUILD_TYPE_SUFFIX) for debug builds - see qtbase.mk
     $(TARGET)-g++ \
-        -W -Wall -std=c++11 \
+        -W -Wall -std=c++14 \
         '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
         `$(TARGET)-pkg-config Qt5WebKitWidgets --cflags --libs`
 
