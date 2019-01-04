@@ -10,21 +10,16 @@ $(PKG)_SUBDIR   := qtwebkit-everywhere-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := qtwebkit-everywhere-src-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://download.qt.io/snapshots/ci/qtwebkit/$($(PKG)_VERSION)/latest/src/submodules/$($(PKG)_FILE)
 $(PKG)_DEPS     := cc libxml2 libxslt qtbase qtmultimedia qtquickcontrols sqlite \
-                   qtsensors qtwebchannel
+                   qtsensors qtwebchannel libwebp
 
 define $(PKG)_BUILD_SHARED
     cd '$(BUILD_DIR)' && $(TARGET)-cmake '$(SOURCE_DIR)' \
         -DCMAKE_INSTALL_PREFIX=$(PREFIX)/$(TARGET)/qt5 \
         -DCMAKE_CXX_FLAGS='-fpermissive' \
         -DEGPF_DEPS='Qt5Core Qt5Gui Qt5Multimedia Qt5Widgets Qt5WebKit' \
-        -DCMAKE_BUILD_TYPE=Release \
         -DPORT=Qt \
-        -DUSE_QT_MULTIMEDIA=ON \
-        -DENABLE_VIDEO=ON \
-        -DENABLE_GEOLOCATION=OFF \
-        -DENABLE_INSPECTOR_UI=OFF \
-        -DENABLE_DEVICE_ORIENTATION=OFF \
-        -DENABLE_QT_WEBCHANNEL=ON
+        -DENABLE_GEOLOCATION=OFF
+
     $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)' VERBOSE=1
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 
