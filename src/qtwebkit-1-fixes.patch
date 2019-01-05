@@ -240,3 +240,49 @@ index 09d7e2b47..320e06d13 100644
    endif()
    if(NOT EGPF_LIB_INSTALL_DIR)
        if(LIB_INSTALL_DIR)
+
+
+commit a38b2c49781471136aefa1e5b411b9f15d06a463
+Author: Boris Pek <tehnick-8@yandex.ru>
+Date:   Sat Jan 5 13:58:15 2019 +0300
+
+    Fix cross-compilation using MinGW
+    
+    with USE_MEDIA_FOUNDATION=ON.
+
+diff --git a/Source/WebCore/platform/graphics/win/MediaPlayerPrivateMediaFoundation.h b/Source/WebCore/platform/graphics/win/MediaPlayerPrivateMediaFoundation.h
+index 0fe07fa13..95b7fd863 100644
+--- a/Source/WebCore/platform/graphics/win/MediaPlayerPrivateMediaFoundation.h
++++ b/Source/WebCore/platform/graphics/win/MediaPlayerPrivateMediaFoundation.h
+@@ -31,12 +31,13 @@
+ #include "MediaPlayerPrivate.h"
+ #include "Win32Handle.h"
+ 
+-#include <D3D9.h>
+-#include <Dxva2api.h>
++#include <d3d9.h>
++#include <dxva2api.h>
+ 
+-#include <Mfapi.h>
+-#include <Mferror.h>
+-#include <Mfidl.h>
++#include <mfapi.h>
++#include <mferror.h>
++#include <mfidl.h>
++#include <mfobjects.h>
+ #include <evcode.h>
+ #include <evr.h>
+ 
+diff --git a/Source/WebCore/platform/win/HWndDC.h b/Source/WebCore/platform/win/HWndDC.h
+index c7586c3e5..6ed82117c 100644
+--- a/Source/WebCore/platform/win/HWndDC.h
++++ b/Source/WebCore/platform/win/HWndDC.h
+@@ -27,7 +27,7 @@
+ #define HWndDC_h
+ 
+ #include <windows.h>
+-#include <wtf/NonCopyable.h>
++#include <wtf/Noncopyable.h>
+ 
+ namespace WebCore {
+ 
