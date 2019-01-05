@@ -9,8 +9,8 @@ $(PKG)_CHECKSUM := 283b907ea324a2c734e3983c73fc27dbd8b33e2383c583de41842ee84d648
 $(PKG)_SUBDIR   := qtwebkit-everywhere-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := qtwebkit-everywhere-src-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://download.qt.io/snapshots/ci/qtwebkit/$($(PKG)_VERSION)/latest/src/submodules/$($(PKG)_FILE)
-$(PKG)_DEPS     := cc libxml2 libxslt qtbase qtmultimedia qtquickcontrols sqlite \
-                   qtsensors qtwebchannel libwebp
+$(PKG)_DEPS     := cc libxml2 libxslt libwebp qtbase qtmultimedia qtquickcontrols \
+                   qtsensors qtwebchannel sqlite
 
 define $(PKG)_BUILD_SHARED
     cd '$(BUILD_DIR)' && $(TARGET)-cmake '$(SOURCE_DIR)' \
@@ -18,8 +18,12 @@ define $(PKG)_BUILD_SHARED
         -DCMAKE_CXX_FLAGS='-fpermissive' \
         -DEGPF_DEPS='Qt5Core Qt5Gui Qt5Multimedia Qt5Widgets Qt5WebKit' \
         -DPORT=Qt \
-        -DENABLE_GEOLOCATION=OFF
-
+        -DENABLE_GEOLOCATION=OFF \
+        -DENABLE_MEDIA_SOURCE=ON \
+        -DENABLE_WEB_AUDIO=ON \
+        -DUSE_GSTREAMER=OFF \
+        -DUSE_MEDIA_FOUNDATION=ON \
+        -DUSE_QT_MULTIMEDIA=OFF
     $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)' VERBOSE=1
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 
