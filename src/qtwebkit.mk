@@ -22,8 +22,8 @@ define $(PKG)_BUILD_SHARED
         -DENABLE_MEDIA_SOURCE=ON \
         -DENABLE_WEB_AUDIO=ON \
         -DUSE_GSTREAMER=OFF \
-        -DUSE_MEDIA_FOUNDATION=ON \
-        -DUSE_QT_MULTIMEDIA=OFF
+        -DUSE_MEDIA_FOUNDATION=OFF \
+        -DUSE_QT_MULTIMEDIA=ON
     $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)' VERBOSE=1
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 
