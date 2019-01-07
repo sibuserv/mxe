@@ -50,7 +50,7 @@ define $(PKG)_BUILD
         threading=multi \
         variant=release \
         toolset=gcc-mxe \
-        cxxflags=$(if $(findstring posix,$(MXE_GCC_THREADS)),-std=gnu++11,-std=gnu++98) \
+        cxxflags=$(if $(findstring posix,$(MXE_GCC_THREADS)),-std=gnu++14,-std=gnu++98) \
         --layout=tagged \
         --disable-icu \
         --without-mpi \
@@ -68,6 +68,10 @@ define $(PKG)_BUILD
 
     # setup cmake toolchain
     echo 'set(Boost_THREADAPI "win32")' > '$(CMAKE_TOOLCHAIN_DIR)/$(PKG).cmake'
+
+    # Workaround for fixind of build with Boost from MXE packages
+    # See: https://github.com/mxe/mxe/issues/1104
+    sed -i 's/std::sprintf/sprintf/' '$(PREFIX)/$(TARGET)/include/boost/interprocess/detail/win32_api.hpp'
 
     '$(TARGET)-g++' \
         -W -Wall -Werror -ansi -U__STRICT_ANSI__ -pedantic \
