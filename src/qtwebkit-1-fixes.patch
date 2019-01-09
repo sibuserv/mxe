@@ -248,7 +248,7 @@ Date:   Sat Jan 5 13:58:15 2019 +0300
 
     Fix cross-compilation using MinGW
     
-    with USE_MEDIA_FOUNDATION=ON.
+    with USE_MEDIA_FOUNDATION=ON. (Part 1)
 
 diff --git a/Source/WebCore/platform/graphics/win/MediaPlayerPrivateMediaFoundation.h b/Source/WebCore/platform/graphics/win/MediaPlayerPrivateMediaFoundation.h
 index 0fe07fa13..95b7fd863 100644

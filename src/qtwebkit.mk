@@ -2,7 +2,7 @@
 
 PKG             := qtwebkit
 $(PKG)_WEBSITE  := https://github.com/annulen/webkit
-$(PKG)_DESCR    := Qt WebKit
+$(PKG)_DESCR    := QtWebKit
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := 5.212
 $(PKG)_CHECKSUM := 283b907ea324a2c734e3983c73fc27dbd8b33e2383c583de41842ee84d648a3e
@@ -20,6 +20,7 @@ define $(PKG)_BUILD_SHARED
         -DPORT=Qt \
         -DENABLE_GEOLOCATION=OFF \
         -DENABLE_MEDIA_SOURCE=ON \
+        -DENABLE_VIDEO=ON \
         -DENABLE_WEB_AUDIO=ON \
         -DUSE_GSTREAMER=OFF \
         -DUSE_MEDIA_FOUNDATION=OFF \
@@ -30,7 +31,7 @@ define $(PKG)_BUILD_SHARED
     # build test manually
     # add $(BUILD_TYPE_SUFFIX) for debug builds - see qtbase.mk
     $(TARGET)-g++ \
-        -W -Wall -std=c++14 \
+        -W -Wall -std=c++11 \
         '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
         `$(TARGET)-pkg-config Qt5WebKitWidgets --cflags --libs`
 
