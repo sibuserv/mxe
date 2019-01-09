@@ -15,7 +15,6 @@
 #MXE_TARGETS := i686-w64-mingw32.static i686-w64-mingw32.shared \
 #               x86_64-w64-mingw32.static x86_64-w64-mingw32.shared
 MXE_TARGETS := x86_64-w64-mingw32.static i686-w64-mingw32.static
-MXE_GCC_THREADS := posix
 
 # Special flags for compiler.
 CPPFLAGS := -D_FORTIFY_SOURCE=2
@@ -37,8 +36,8 @@ MXE_PLUGIN_DIRS += plugins/gcc8
 # The three lines below makes `make` build these "local
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
-LOCAL_PKG_LIST := freeglut sdl2 qtbase qtconnectivity qtscript qtserialport \
-                  qtsvg qttools qtwebsockets qwt protobuf boost ffmpeg \
+LOCAL_PKG_LIST := boost freeglut protobuf sdl2 qtbase qtconnectivity qtscript \
+                  qtserialport qtsvg qttools qtwebsockets qwt ffmpeg \
                   openscenegraph osgearth
 .DEFAULT_GOAL  := local-pkg-list
 local-pkg-list: $(LOCAL_PKG_LIST)
