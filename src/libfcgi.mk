@@ -22,5 +22,5 @@ define $(PKG)_BUILD
     '$(TARGET)-g++' \
         -W -Wall -Werror -std=c++0x -pedantic \
         '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
-        `'$(TARGET)-pkg-config' fcgi --cflags --libs`
+        `'$(TARGET)-pkg-config' fcgi --cflags --libs` -lws2_32
 endef
