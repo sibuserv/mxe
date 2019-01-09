@@ -4,8 +4,8 @@ PKG             := boost
 $(PKG)_WEBSITE  := https://www.boost.org/
 $(PKG)_DESCR    := Boost C++ Library
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.65.0
-$(PKG)_CHECKSUM := ea26712742e2fb079c2a566a31f3266973b76e38222b9f88b387e3c8b2f9902c
+$(PKG)_VERSION  := 1.67.0
+$(PKG)_CHECKSUM := 2684c972994ee57fc5632e03bf044746f6eb45d4920c343937a465fd67a5adba
 $(PKG)_SUBDIR   := boost_$(subst .,_,$($(PKG)_VERSION))
 $(PKG)_FILE     := boost_$(subst .,_,$($(PKG)_VERSION)).tar.bz2
 $(PKG)_URL      := https://$(SOURCEFORGE_MIRROR)/project/boost/boost/$($(PKG)_VERSION)/$($(PKG)_FILE)
@@ -75,7 +75,7 @@ define $(PKG)_BUILD
         '$(PWD)/src/$(PKG)-test.cpp' -o '$(PREFIX)/$(TARGET)/bin/test-boost.exe' \
         -DBOOST_THREAD_USE_LIB \
         -lboost_serialization-mt \
-        -lboost_thread_win32-mt \
+        -lboost_thread-mt \
         -lboost_system-mt \
         -lboost_chrono-mt \
         -lboost_context-mt
