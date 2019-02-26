@@ -37,8 +37,8 @@ MXE_PLUGIN_DIRS += plugins/gcc6
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
 LOCAL_PKG_LIST := boost freeglut protobuf sdl2 qtbase qtconnectivity qtscript \
-                  qtserialport qtsvg qttools qtwebsockets qwt ffmpeg \
-                  openscenegraph osgearth
+                  qtserialport qtsvg qttools qttranslations qtwebsockets qwt \
+                  ffmpeg openscenegraph osgearth
 .DEFAULT_GOAL  := local-pkg-list
 local-pkg-list: $(LOCAL_PKG_LIST)
 
