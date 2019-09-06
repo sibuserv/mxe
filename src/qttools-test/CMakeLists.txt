@@ -30,5 +30,4 @@ target_link_libraries(
     qtpcre2
     version
     z
-    zstd
 )
