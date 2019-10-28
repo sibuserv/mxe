@@ -3,8 +3,8 @@
 PKG             := libssh2
 $(PKG)_WEBSITE  := https://libssh2.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.8.2
-$(PKG)_CHECKSUM := 088307d9f6b6c4b8c13f34602e8ff65d21c2dc4d55284dfe15d502c4ee190d67
+$(PKG)_VERSION  := 1.9.0
+$(PKG)_CHECKSUM := d5fb8bd563305fd1074dda90bd053fb2d29fc4bce048d182f96eaa466dfadafd
 $(PKG)_SUBDIR   := libssh2-$($(PKG)_VERSION)
 $(PKG)_FILE     := libssh2-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://libssh2.org/download/$($(PKG)_FILE)
@@ -22,8 +22,7 @@ define $(PKG)_BUILD
     cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
         --disable-examples-build \
-        --without-openssl \
-        --with-libgcrypt \
+        --with-crypto=libgcrypt \
         LIBS="`$(PREFIX)/$(TARGET)/bin/libgcrypt-config --libs`" \
         PKG_CONFIG='$(TARGET)-pkg-config'
     $(MAKE) -C '$(1)' -j '$(JOBS)' install $(MXE_DISABLE_CRUFT)
