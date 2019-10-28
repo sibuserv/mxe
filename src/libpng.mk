@@ -3,8 +3,8 @@
 PKG             := libpng
 $(PKG)_WEBSITE  := http://www.libpng.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.6.34
-$(PKG)_CHECKSUM := 2f1e960d92ce3b3abd03d06dfec9637dfbd22febf107a536b44f7a47c60659f6
+$(PKG)_VERSION  := 1.6.37
+$(PKG)_CHECKSUM := 505e70834d35383537b6491e7ae8641f1a4bed1876dbfe361201fc80868d88ca
 $(PKG)_SUBDIR   := libpng-$($(PKG)_VERSION)
 $(PKG)_FILE     := libpng-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://$(SOURCEFORGE_MIRROR)/project/libpng/libpng16/$($(PKG)_VERSION)/$($(PKG)_FILE)
@@ -23,6 +23,7 @@ endef
 
 define $(PKG)_BUILD
     cd '$(1)' && ./configure \
+        CFLAGS='-fno-asynchronous-unwind-tables' \
         $(MXE_CONFIGURE_OPTS)
     $(MAKE) -C '$(1)' -j '$(JOBS)' install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
     ln -sf '$(PREFIX)/$(TARGET)/bin/libpng-config' '$(PREFIX)/bin/$(TARGET)-libpng-config'

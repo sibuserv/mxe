@@ -1,7 +1,7 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := cblas
-$(PKG)_WEBSITE  := http://www.netlib.org/blas/
+$(PKG)_WEBSITE  := https://www.netlib.org/blas/
 $(PKG)_DESCR    := C interface to Reference BLAS
 $(PKG)_IGNORE    = $(lapack_IGNORE)
 $(PKG)_VERSION   = $(lapack_VERSION)
@@ -28,8 +28,9 @@ define $(PKG)_BUILD
     '$(TARGET)-gfortran' \
         -W -Wall -Werror -ansi -pedantic \
         '$(SOURCE_DIR)/CBLAS/examples/cblas_example1.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
-        `'$(TARGET)-pkg-config' $(PKG) blas --cflags --libs`
+        `'$(TARGET)-pkg-config' $(PKG) --cflags --libs`
 
+    # if blas routines are used directly, add to pkg-config call
     '$(TARGET)-gfortran' \
         -W -Wall -Werror -ansi -pedantic \
         '$(SOURCE_DIR)/CBLAS/examples/cblas_example2.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)-F77.exe' \

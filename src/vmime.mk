@@ -4,8 +4,8 @@ PKG             := vmime
 $(PKG)_WEBSITE  := https://www.vmime.org/
 $(PKG)_DESCR    := VMime
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := ed825ba
-$(PKG)_CHECKSUM := 5faf9e00fc85b17ce5ac53a275353db64dcb3a7f9c7f72968c5459d741d14609
+$(PKG)_VERSION  := e2fc191
+$(PKG)_CHECKSUM := 1233f2019336677e7d6953e1382431c771a4aaf274741444bbd0e89a51795934
 $(PKG)_GH_CONF  := kisli/vmime/branches/master
 $(PKG)_DEPS     := cc gnutls libgsasl libiconv pthreads zlib
 
@@ -30,8 +30,6 @@ define $(PKG)_BUILD
         -DCMAKE_MODULE_PATH='$(1)/cmake' \
         -DVMIME_CHARSETCONV_LIB=iconv \
         -DVMIME_TLS_SUPPORT_LIB=$($(PKG)_TLS_LIB) \
-        -DVMIME_SHARED_PTR_USE_CXX=ON \
-        -DCXX11_COMPILER_FLAGS=ON \
         -C '$(PWD)/src/vmime-TryRunResults.cmake' \
         .
 

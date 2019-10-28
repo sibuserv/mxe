@@ -4,8 +4,8 @@ PKG             := lz4
 $(PKG)_WEBSITE  := https://github.com/$(PKG)/$(PKG)
 $(PKG)_DESCR    := lossless compression algorithm optimized for speed
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.8.0
-$(PKG)_CHECKSUM := 2ca482ea7a9bb103603108b5a7510b7592b90158c151ff50a28f1ca8389fccf6
+$(PKG)_VERSION  := 1.9.0
+$(PKG)_CHECKSUM := f8b6d5662fa534bd61227d313535721ae41a68c9d84058b7b7d86e143572dcfb
 $(PKG)_GH_CONF  := lz4/lz4/tags,v
 $(PKG)_DEPS     := cc
 

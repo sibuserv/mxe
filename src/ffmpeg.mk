@@ -3,13 +3,13 @@
 PKG             := ffmpeg
 $(PKG)_WEBSITE  := https://ffmpeg.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 3.4.2
-$(PKG)_CHECKSUM := eb0370bf223809b9ebb359fed5318f826ac038ce77933b3afd55ab1a0a21785a
+$(PKG)_VERSION  := 4.1.3
+$(PKG)_CHECKSUM := 29a679685bd7bc29158110f367edf67b31b451f2176f9d79d0f342b9e22d6a2a
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := https://ffmpeg.org/releases/$($(PKG)_FILE)
 $(PKG)_DEPS     := cc bzip2 gnutls lame libass libbluray libbs2b libcaca \
-                   libvpx opencore-amr opus sdl speex theora vidstab \
+                   libvpx opencore-amr opus sdl2 speex theora vidstab \
                    vo-amrwbenc vorbis x264 xvidcore yasm zlib
 
 # DO NOT ADD fdk-aac OR openssl SUPPORT.
@@ -26,7 +26,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && ./configure \
+    cd '$(BUILD_DIR)' && '$(SOURCE_DIR)/configure' \
         --cross-prefix='$(TARGET)'- \
         --enable-cross-compile \
         --arch=$(firstword $(subst -, ,$(TARGET))) \
@@ -61,7 +61,8 @@ define $(PKG)_BUILD
         --enable-libvorbis \
         --enable-libvpx \
         --enable-libx264 \
-        --enable-libxvid
-    $(MAKE) -C '$(1)' -j '$(JOBS)'
-    $(MAKE) -C '$(1)' -j 1 install
+        --enable-libxvid \
+        $($(PKG)_CONFIGURE_OPTS)
+    $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)'
+    $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 endef
