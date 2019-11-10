@@ -1,9 +1,9 @@
 This file is part of MXE. See LICENSE.md for licensing information.
 
-From c0c8cf4d8e554ac6f1a17dc8d2dce16897ae5cf3 Mon Sep 17 00:00:00 2001
+From bb59f5ad55cf935a20cb5406c020293a3ae91281 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 26 Aug 2015 12:45:43 +0100
-Subject: [PATCH 1/5] cmake: Rearrange STATIC vs INTERFACE targets
+Subject: [PATCH 1/4] cmake: Rearrange STATIC vs INTERFACE targets
 
 Otherwise we attempt to add_library(Qt5::UiPlugin STATIC IMPORTED)
 for header-only modules when building Qt5 statically.
@@ -12,10 +12,10 @@ Source: https://git.io/vzWJz
 See also: https://github.com/mxe/mxe/issues/1185
 
 diff --git a/mkspecs/features/data/cmake/Qt5BasicConfig.cmake.in b/mkspecs/features/data/cmake/Qt5BasicConfig.cmake.in
-index 3ed6dd5889..cc5bc9dc16 100644
+index f4a34d6e48..f9e2987564 100644
 --- a/mkspecs/features/data/cmake/Qt5BasicConfig.cmake.in
 +++ b/mkspecs/features/data/cmake/Qt5BasicConfig.cmake.in
-@@ -214,12 +214,12 @@ if (NOT TARGET Qt5::$${CMAKE_MODULE_NAME})
+@@ -327,6 +327,9 @@ if (NOT TARGET Qt5::$${CMAKE_MODULE_NAME})
      list(APPEND _Qt5$${CMAKE_MODULE_NAME}_LIB_DEPENDENCIES \"$${CMAKE_INTERFACE_QT5_MODULE_DEPS}\")
  !!ENDIF
  
@@ -23,6 +23,10 @@ index 3ed6dd5889..cc5bc9dc16 100644
 +    add_library(Qt5::$${CMAKE_MODULE_NAME} INTERFACE IMPORTED)
 +!!ELSE
  !!IF !isEmpty(CMAKE_STATIC_TYPE)
+     if(NOT Qt5_EXCLUDE_STATIC_DEPENDENCIES)
+ !!IF !isEmpty(CMAKE_DEBUG_TYPE)
+@@ -364,9 +367,6 @@ if (NOT TARGET Qt5::$${CMAKE_MODULE_NAME})
+ 
      add_library(Qt5::$${CMAKE_MODULE_NAME} STATIC IMPORTED)
      set_property(TARGET Qt5::$${CMAKE_MODULE_NAME} PROPERTY IMPORTED_LINK_INTERFACE_LANGUAGES "CXX")
 -!!ELSE
@@ -35,10 +39,10 @@ index 3ed6dd5889..cc5bc9dc16 100644
 2.20.1
 
 
-From b57baee4eee0a33338776498da7f216fb2a7fdc0 Mon Sep 17 00:00:00 2001
+From b3d2613f24be55ee494646a0b84074a3308de264 Mon Sep 17 00:00:00 2001
 From: Tony Theodore <tonyt@logyst.com>
 Date: Sat, 16 Jul 2016 20:31:07 +1000
-Subject: [PATCH 2/5] Fix pkgconfig file and library naming
+Subject: [PATCH 2/4] Fix pkgconfig file and library naming
 
 See: https://codereview.qt-project.org/#/c/165394/
      https://bugreports.qt.io/browse/QTBUG-30898
@@ -63,10 +67,10 @@ Task-number: 30898
 Change-Id: If75336ec7d21a7ec0cb6d245fe87c64afcb5a644
 
 diff --git a/mkspecs/features/qt_module.prf b/mkspecs/features/qt_module.prf
-index 51b5bde67a..faba17aedd 100644
+index 46687f262e..4b2980a1a8 100644
 --- a/mkspecs/features/qt_module.prf
 +++ b/mkspecs/features/qt_module.prf
-@@ -263,6 +263,10 @@ load(qt_installs)
+@@ -268,6 +268,10 @@ load(qt_installs)
  
  load(qt_targets)
  
@@ -77,7 +81,7 @@ index 51b5bde67a..faba17aedd 100644
  # this builds on top of qt_common
  !internal_module:if(unix|mingw) {
      CONFIG += create_pc
-@@ -278,12 +282,12 @@ load(qt_targets)
+@@ -283,12 +287,12 @@ load(qt_targets)
          QMAKE_PKGCONFIG_INCDIR = $$[QT_INSTALL_HEADERS/raw]
          QMAKE_PKGCONFIG_CFLAGS = -D$$MODULE_DEFINE -I${includedir}/$$MODULE_INCNAME
      }
@@ -91,10 +95,10 @@ index 51b5bde67a..faba17aedd 100644
      isEmpty(QMAKE_PKGCONFIG_DESCRIPTION): \
 -        QMAKE_PKGCONFIG_DESCRIPTION = $$replace(TARGET, ^Qt, "Qt ") module
 +        QMAKE_PKGCONFIG_DESCRIPTION = $$replace(TARGET, ^Qt$$QT_MAJOR_VERSION, "Qt ") module
-     pclib_replace.match = $$lib_replace.match
-     !isEmpty(lib_replace.replace): \
-         pclib_replace.replace = $$QMAKE_PKGCONFIG_LIBDIR
-@@ -317,5 +321,3 @@ win32 {
+     !isEmpty(lib_replace0.match) {
+         pclib_replace0.match = $$lib_replace0.match
+         pclib_replace0.replace = $$QMAKE_PKGCONFIG_LIBDIR/
+@@ -334,5 +338,3 @@ win32 {
      # On other platforms, Qt's own compilation goes needs to compile the Qt 5.0 API
      DEFINES *= QT_DISABLE_DEPRECATED_BEFORE=0x050000
  }
@@ -104,56 +108,15 @@ index 51b5bde67a..faba17aedd 100644
 2.20.1
 
 
-From 691b8c15f19116a881a6830cfbb344bf49c385e7 Mon Sep 17 00:00:00 2001
-From: Mark Brand <mabrand@mabrand.nl>
-Date: Sun, 29 Jan 2017 13:02:16 +0100
-Subject: [PATCH 3/5] reenable fontconfig for win32 (MXE-specific)
-
-Change-Id: I05b036366bd402e43309742412bcf8ca91fe125f
-
-diff --git a/src/gui/configure.json b/src/gui/configure.json
-index 6fdcd562a7..69f00bc71d 100644
---- a/src/gui/configure.json
-+++ b/src/gui/configure.json
-@@ -1213,7 +1213,7 @@
-         "fontconfig": {
-             "label": "Fontconfig",
-             "autoDetect": "!config.darwin",
--            "condition": "!config.win32 && features.system-freetype && libs.fontconfig",
-+            "condition": "features.system-freetype && libs.fontconfig",
-             "output": [ "privateFeature", "feature" ]
-         },
-         "gbm": {
-diff --git a/src/plugins/platforms/minimal/qminimalintegration.cpp b/src/plugins/platforms/minimal/qminimalintegration.cpp
-index f457f69f11..2b2aec0868 100644
---- a/src/plugins/platforms/minimal/qminimalintegration.cpp
-+++ b/src/plugins/platforms/minimal/qminimalintegration.cpp
-@@ -162,7 +162,11 @@ QPlatformFontDatabase *QMinimalIntegration::fontDatabase() const
- 
-         if (!m_fontDatabase) {
- #if QT_CONFIG(fontconfig)
--            m_fontDatabase = new QGenericUnixFontDatabase;
-+#ifdef Q_OS_WIN
-+        m_fontDatabase = new QFreeTypeFontDatabase;
-+#else
-+        m_fontDatabase = new QGenericUnixFontDatabase;
-+#endif
- #else
-             m_fontDatabase = QPlatformIntegration::fontDatabase();
- #endif
--- 
-2.20.1
-
-
-From a2eab53930f2891a15cd1aa1721a5e247851035c Mon Sep 17 00:00:00 2001
+From 109719a9699166747203bef1d2516c9ace183125 Mon Sep 17 00:00:00 2001
 From: Mark Brand <mabrand@mabrand.nl>
 Date: Sun, 11 Jun 2017 00:27:41 +0200
-Subject: [PATCH 4/5] use pkg-config for harfbuzz
+Subject: [PATCH 3/4] use pkg-config for harfbuzz
 
 Change-Id: Ia65cbb90fd180f1bc10ce077a9a8323a48e51421
 
 diff --git a/src/gui/configure.json b/src/gui/configure.json
-index 69f00bc71d..7d15695499 100644
+index 6280b4dfa2..e094ee12e6 100644
 --- a/src/gui/configure.json
 +++ b/src/gui/configure.json
 @@ -303,7 +303,8 @@
@@ -170,39 +133,33 @@ index 69f00bc71d..7d15695499 100644
 2.20.1
 
 
-From 25e2683c3f2ecc5143211a9c80a0f0f8b72b6bd5 Mon Sep 17 00:00:00 2001
+From 3e4cc37443c0269e0b0be655c670926e7198c135 Mon Sep 17 00:00:00 2001
 From: Mark Brand <mabrand@mabrand.nl>
-Date: Thu, 23 Nov 2017 11:28:47 +0200
-Subject: [PATCH 5/5] disable qt_random_cpu for i686-w64-mingw32
+Date: Thu, 31 Oct 2019 22:35:28 +0100
+Subject: [PATCH 4/4] Revert "configure: Do use pkg-config --libs for static
+ libs"
 
-Workaround for gcc internal error compiling for mingw32:
-    global/qrandom.cpp: In function 'qsizetype qt_random_cpu(void*, qsizetype)':
-    global/qrandom.cpp:123:1: internal compiler error: in
-    ix86_compute_frame_layout, at config/i386/i386.c:10145
+This change broke dbus detection in MXE. Smells fishy too.
+
+This reverts commit a1ea49878927dfe267416c795b50f3d5bdfa0b84.
+
+Change-Id: I66e4fe1e7a4d53c19f0d5dadf1e041565467f270
+
+diff --git a/mkspecs/features/qt_configure.prf b/mkspecs/features/qt_configure.prf
+index 81110e9f6d..9be4fb6f1f 100644
+--- a/mkspecs/features/qt_configure.prf
++++ b/mkspecs/features/qt_configure.prf
+@@ -825,7 +825,9 @@ defineTest(qtConfLibrary_pkgConfig) {
+     !qtConfResolveLibs($${1}.libs, $$libs): \
+         return(false)
+     contains($${1}.libs, ".*\\.$${QMAKE_EXTENSION_STATICLIB}$") {
+-        qtRunLoggedCommand("$$pkg_config --static --libs $$args", libs)|return(false)
++        qtRunLoggedCommand("$$pkg_config --static --libs-only-L $$args", libpaths)|return(false)
++        qtRunLoggedCommand("$$pkg_config --static --libs-only-l $$args", libs)|return(false)
++        eval(libs = $$libpaths $$libs)
+         !qtConfResolveLibs($${1}.libs, $$libs): \
+             return(false)
      }
-     ^
-
-    global/qrandom.cpp:123:1: internal compiler error: Segmentation fault
-    i686-w64-mingw32.static-g++: internal compiler error: Segmentation fault
-    (program cc1plus)
-
-Based on https://codereview.qt-project.org/#/c/212360/
-
-Change-Id: Ia1c902e7b147bdda2b8d7904b40a3b968b8d0369
-
-diff --git a/src/corelib/global/qrandom.cpp b/src/corelib/global/qrandom.cpp
-index 90df8653a7..0d7002f2e8 100644
---- a/src/corelib/global/qrandom.cpp
-+++ b/src/corelib/global/qrandom.cpp
-@@ -90,7 +90,7 @@ DECLSPEC_IMPORT BOOLEAN WINAPI SystemFunction036(PVOID RandomBuffer, ULONG Rando
- 
- QT_BEGIN_NAMESPACE
- 
--#if defined(Q_PROCESSOR_X86) && QT_COMPILER_SUPPORTS_HERE(RDRND)
-+#if defined(Q_PROCESSOR_X86) && !defined(Q_PROCESSOR_X86_32) && QT_COMPILER_SUPPORTS_HERE(RDRND)
- static qsizetype qt_random_cpu(void *buffer, qsizetype count) Q_DECL_NOTHROW;
- 
- #  ifdef Q_PROCESSOR_X86_64
 -- 
 2.20.1
 

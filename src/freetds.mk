@@ -1,19 +1,19 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := freetds
-$(PKG)_WEBSITE  := http://www.freetds.org/
+$(PKG)_WEBSITE  := https://www.freetds.org/
 $(PKG)_DESCR    := FreeTDS
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.1.6
-$(PKG)_CHECKSUM := c23e00359d747a5e4c654d9595f520f2534bff597150b0e4bf1dae6b53f139a3
+$(PKG)_VERSION  := 1.1.20
+$(PKG)_CHECKSUM := fc549b945208c42264f8e31ba6a8c94f8a9b441802f3b952d11445035daac41a
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.bz2
-$(PKG)_URL      := ftp://ftp.freetds.org/pub/$(PKG)/stable/$($(PKG)_FILE)
+$(PKG)_URL      := https://www.freetds.org/files/stable/$($(PKG)_FILE)
 $(PKG)_URL_2    := https://fossies.org/linux/privat/$($(PKG)_FILE)
 $(PKG)_DEPS     := cc openssl libiconv
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'ftp://ftp.freetds.org/pub/freetds/stable/' | \
+    $(WGET) -q -O- 'https://www.freetds.org/files/stable/' | \
     $(SED) -n 's,.*freetds-\([0-9.]*\)\.tar.*,\1,p' | \
     $(SORT) -V | \
     tail -1

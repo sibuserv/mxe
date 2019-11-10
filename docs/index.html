@@ -21,6 +21,7 @@
         <li><a href="#download"         >Download</a></li>
         <li><a href="https://lists.nongnu.org/mailman/listinfo/mingw-cross-env-list">Mailing List</a></li>
         <li><a href="https://github.com/mxe/mxe/issues">Issue Tracker</a></li>
+        <li><a href="https://mxe.zulipchat.com/">Async Chat (Trial)</a></li>
     </ul>
     <ul>
         <li><a href="#requirements"     >Requirements</a></li>
@@ -348,7 +349,8 @@ exit</pre>
     <h3 id="tutorial-4">Step 4: Environment Variables</h3>
 
     <p>
-    Edit your .bashrc script in order to change $PATH:
+    Edit the appropriate config script (.bashrc, .cshrc, .profile, .zshrc, etc.)
+    for your shell in order to change $PATH:
     </p>
     <pre>export PATH=/<em>where MXE is installed</em>/usr/bin:$PATH</pre>
 
@@ -449,9 +451,7 @@ make</pre>
     <a href="https://qt-project.org/doc/qt-4.8/plugins-howto.html#static-plugins">Qt documentation about static plugins</a>.
     </p>
     <p>
-    Note the sql drivers (-qt-sql-*)
-    and the image handlers for jpeg, tiff, gif and mng
-    are built-in, <em>not</em> plugins.
+    Qt 4 only: Sql drivers (-qt-sql-*) and image handlers for jpeg, tiff, gif and mng are built-in, <em>not</em> plugins.
     </p>
 
     <h3 id="tutorial-5d">Step 5d: Cross compile your Project (Makefile)</h3>
@@ -953,18 +953,14 @@ USE_OSGPLUGIN(&lt;plugin2&gt;)
     then run:
     </p>
     <!-- https://www.macports.org/ports.php -->
-    <pre>sudo port install \
-    autoconf \
-    automake \
+    <pre>sudo port -N install \
     coreutils \
     gdk-pixbuf2 \
     gnutar \
     gsed \
     intltool \
-    libtool \
     lzip \
     p7zip \
-    pkgconfig \
     wget \
     xz</pre>
 
@@ -1875,7 +1871,7 @@ endef</pre>
 </div>
 
 <div class="section">
-<h2 id="copyright">Copyright © <span class="years">2007–2015</span></h2>
+<h2 id="copyright">Copyright © <span class="years">2007–2019</span></h2>
 
     <ul id="authors-list" class="compact-list">
     <li>Volker Diels-Grabsch</li>
@@ -3071,6 +3067,9 @@ endef</pre>
         <a href="https://www.digikam.org/">digiKam</a>
     </li>
     <li>
+        <a href="https://github.com/juzzlin/DustRacing2D">Dust Racing 2D</a>
+    </li>
+    <li>
         <a href="https://github.com/eiskaltdcpp/eiskaltdcpp">EiskaltDC++</a>
     </li>
     <li>
@@ -3090,6 +3089,9 @@ endef</pre>
     </li>
     <li>
         <a href="https://www.gnu.org/software/freedink/">GNU FreeDink</a>
+    </li>
+    <li>
+        <a href="https://github.com/juzzlin/Heimer">Heimer</a>
     </li>
     <li>
         <a href="http://ifwiki.org/index.php/Hugor">Hugor</a>
@@ -3137,6 +3139,9 @@ endef</pre>
         <a href="https://qtads.sourceforge.io/">QTads</a>
     </li>
     <li>
+        <a href="https://github.com/scummvm/scummvm">ScummVM</a>
+    </li>
+    <li>
         <a href="https://github.com/sibuserv/sibuserv">Sibuserv</a>
     </li>
     <li>
@@ -3174,6 +3179,9 @@ endef</pre>
     </li>
     <li>
         <a href="https://ufoai.org/">UFO: Alien Invasion</a>
+    </li>
+    <li>
+        <a href="https://vcmi.eu/">VCMI Engine</a>
     </li>
     <li>
         <a href="https://violetland.github.io/">Violetland</a>

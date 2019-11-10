@@ -1,10 +1,10 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := libxml2
-$(PKG)_WEBSITE  := http://www.xmlsoft.org/
+$(PKG)_WEBSITE  := http://xmlsoft.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 2.9.4
-$(PKG)_CHECKSUM := ffb911191e509b966deb55de705387f14156e1a56b21824357cdf0053233633c
+$(PKG)_VERSION  := 2.9.10
+$(PKG)_CHECKSUM := aafee193ffb8fe0c82d4afef6ef91972cbaf5feea100edc2f262750611b4be1f
 $(PKG)_SUBDIR   := libxml2-$($(PKG)_VERSION)
 $(PKG)_FILE     := libxml2-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := http://xmlsoft.org/sources/$($(PKG)_FILE)
