@@ -30,7 +30,7 @@ MXE_PLUGIN_DIRS += plugins/gcc9
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
 LOCAL_PKG_LIST := boost aspell hunspell jsoncpp libidn lua minizip miniupnpc \
                   libfcgi libotr libsignal-protocol-c tidy-html5 qtbase \
-                  qttools qttranslations qtkeychain qca qtmultimedia qtwebkit \
+                  qttools qttranslations qca qtmultimedia qtwebkit \
                   gstreamer gst-plugins-bad gst-plugins-good
 
 .DEFAULT_GOAL  := local-pkg-list
