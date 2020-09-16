@@ -3,8 +3,8 @@
 PKG             := gnutls
 $(PKG)_WEBSITE  := https://www.gnu.org/software/gnutls/
 $(PKG)_DESCR    := GnuTLS
-$(PKG)_VERSION  := 3.6.11.1
-$(PKG)_CHECKSUM := fbba12f3db9a55dbf027e14111755817ec44b57eabec3e8089aac8ac6f533cf8
+$(PKG)_VERSION  := 3.6.15
+$(PKG)_CHECKSUM := 0ea8c3283de8d8335d7ae338ef27c53a916f15f382753b174c18b45ffd481558
 $(PKG)_SUBDIR   := gnutls-$($(PKG)_VERSION)
 $(PKG)_FILE     := gnutls-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://gnupg.org/ftp/gcrypt/gnutls/v3.6/$($(PKG)_FILE)
@@ -19,7 +19,8 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && autoreconf -fi && ./configure \
+    cd '$(SOURCE_DIR)' && autoreconf -fi
+    cd '$(BUILD_DIR)' && '$(SOURCE_DIR)'/configure \
         $(MXE_CONFIGURE_OPTS) \
         --disable-rpath \
         --disable-nls \
@@ -28,9 +29,10 @@ define $(PKG)_BUILD
         --disable-tests \
         --enable-local-libopts \
         --without-p11-kit \
-        --disable-silent-rules
-        ac_cv_prog_AR='$(TARGET)-ar'
-    $(MAKE) -C '$(1)' -j '$(JOBS)' install
+        --disable-silent-rules \
+        CFLAGS='-D_WIN32_WINNT=0x0600'
+    $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)'
+    $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 
     '$(TARGET)-gcc' \
         -W -Wall -Werror -ansi -pedantic \

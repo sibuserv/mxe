@@ -4,8 +4,8 @@ PKG             := qca
 $(PKG)_WEBSITE  := https://userbase.kde.org/QCA
 $(PKG)_DESCR    := Qt Cryptographic Architecture
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 2.2.1
-$(PKG)_CHECKSUM := c67fc0fa8ae6cb3d0ba0fbd8fca8ee8e4c5061b99f1fd685fd7d9800cef17f6b
+$(PKG)_VERSION  := 2.3.1
+$(PKG)_CHECKSUM := 4391a544521736986c7f7239168a2deced6a8b2445a8e114c6b47c49658e132d
 $(PKG)_GH_CONF  := KDE/qca/tags,v
 $(PKG)_DEPS     := cc openssl qtbase
 
@@ -26,7 +26,7 @@ define $(PKG)_BUILD
         'greaterThan(QT_GCC_MAJOR_VERSION, 8): QMAKE_CXXFLAGS_WARN_ON += -Wno-deprecated-copy' \
         '$(PWD)/src/qca-test.pro'
     $(MAKE) -C '$(BUILD_DIR).test-qmake' -j 1
-    $(INSTALL) -m755 '$(BUILD_DIR).test-qmake/test-qca-qmake.exe' '$(PREFIX)/$(TARGET)/bin/'
+    $(INSTALL) -m755 '$(BUILD_DIR).test-qmake/$(BUILD_TYPE)/test-qca-qmake.exe' '$(PREFIX)/$(TARGET)/bin/'
 
     # build test as cmake project
     mkdir '$(BUILD_DIR).test-cmake'
