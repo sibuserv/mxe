@@ -12,9 +12,9 @@
 #MXE_TMP := /tmp
 
 # This variable controls the targets that will build.
-#MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
-#               x86_64-w64-mingw32.static i686-w64-mingw32.static
-MXE_TARGETS := x86_64-w64-mingw32.static i686-w64-mingw32.static
+MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
+               x86_64-w64-mingw32.static i686-w64-mingw32.static
+#MXE_TARGETS := x86_64-w64-mingw32.static i686-w64-mingw32.static
 
 # Special flags for compiler.
 CPPFLAGS := -D_FORTIFY_SOURCE=2
@@ -27,7 +27,7 @@ LDFLAGS  := -Wl,--gc-sections -Wl,--strip-all -Wl,--as-needed
 # This variable controls which plugins are in use.
 # See plugins/README.md for further information.
 #override MXE_PLUGIN_DIRS += plugins/apps plugins/native
-MXE_PLUGIN_DIRS += plugins/gcc9
+MXE_PLUGIN_DIRS += plugins/gcc10
 
 # This variable controls the download mirror for SourceForge,
 # when it is used. Enabling the value below means auto.
