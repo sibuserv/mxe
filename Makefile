@@ -37,7 +37,7 @@ LIBTOOL    := $(shell glibtool --help >/dev/null 2>&1 && echo g)libtool
 LIBTOOLIZE := $(shell glibtoolize --help >/dev/null 2>&1 && echo g)libtoolize
 OPENSSL    := openssl
 PATCH      := $(shell gpatch --help >/dev/null 2>&1 && echo g)patch
-PYTHON2    := $(or $(shell ([ `python -c "import sys; print('{0[0]}'.format(sys.version_info))"` == 2 ] && echo python) 2>/dev/null || \
+PYTHON2    := $(or $(shell ([ `python2 -c "import sys; print('{0[0]}'.format(sys.version_info))"` == 2 ] && echo python) 2>/dev/null || \
                            which python2 2>/dev/null || \
                            which python2.7 2>/dev/null), \
                    $(warning Warning: python v2 not found (or default python changed to v3))\
@@ -50,7 +50,7 @@ WGET        = $(WGET_TOOL) --user-agent='$(or $($(1)_UA),$(DEFAULT_UA))' -t 2 --
 
 REQUIREMENTS := autoconf automake autopoint bash bison bzip2 flex \
                 $(BUILD_CC) $(BUILD_CXX) gperf intltoolize $(LIBTOOL) \
-                $(LIBTOOLIZE) lzip $(MAKE) $(OPENSSL) $(PATCH) $(PERL) python \
+                $(LIBTOOLIZE) lzip $(MAKE) $(OPENSSL) $(PATCH) $(PERL) python2 \
                 ruby $(SED) $(SORT) unzip wget xz 7za gdk-pixbuf-csource
 
 PREFIX     := $(PWD)/usr
@@ -787,7 +787,7 @@ build-only-$(1)_$(3):
 	    automake --version 2>/dev/null | head -1
 	    $(BUILD_CC) --version
 	    $(BUILD_CXX) --version
-	    python --version
+	    python2 --version
 	    perl --version 2>&1 | head -3
 	    rm -rf   '$(2)'
 	    mkdir -p '$(2)'
