@@ -17,7 +17,6 @@ endef
 
 define $(PKG)_BUILD
     cd '$(BUILD_DIR)' && '$(TARGET)-cmake' '$(SOURCE_DIR)' \
-        -DCMAKE_CXX_FLAGS='$(CXXFLAGS)' \
         -DDYNAMIC_OPENTHREADS=$(CMAKE_SHARED_BOOL) \
         -DOSG_DETERMINE_WIN_VERSION=OFF \
         -DCMAKE_VERBOSE_MAKEFILE=TRUE \
