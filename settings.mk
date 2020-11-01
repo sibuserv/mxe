@@ -27,8 +27,8 @@ MXE_PLUGIN_DIRS += plugins/gcc10
 
 # The three lines below makes `make` build these "local
 # packages" instead of all packages.
-#LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
-LOCAL_PKG_LIST := boost aspell hunspell jsoncpp libidn lua minizip miniupnpc \
+#LOCAL_PKG_LIST := curl file flac lzo pthreads vorbis wxwidgets
+LOCAL_PKG_LIST := aspell hunspell jsoncpp lua minizip miniupnpc \
                   libfcgi libotr libsignal-protocol-c tidy-html5 qtbase \
                   qttools qttranslations qca qtmultimedia qtwebkit \
                   gstreamer gst-plugins-bad gst-plugins-good
