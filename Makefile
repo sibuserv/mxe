@@ -39,7 +39,7 @@ LIBTOOL    := $(shell glibtool --help >/dev/null 2>&1 && echo g)libtool
 LIBTOOLIZE := $(shell glibtoolize --help >/dev/null 2>&1 && echo g)libtoolize
 OPENSSL    := openssl
 PATCH      := $(shell gpatch --help >/dev/null 2>&1 && echo g)patch
-PYTHON     := $(shell PATH="$(ORIG_PATH)" which python2)
+PYTHON     := $(shell PATH="$(ORIG_PATH)" which python)
 PY_XY_VER  := $(shell $(PYTHON) -c "import sys; print('{0[0]}.{0[1]}'.format(sys.version_info))")
 SED        := $(shell gsed --help >/dev/null 2>&1 && echo g)sed
 SORT       := $(shell gsort --help >/dev/null 2>&1 && echo g)sort
@@ -821,7 +821,7 @@ build-only-$(1)_$(3):
 	    automake --version 2>/dev/null | head -1
 	    $(BUILD_CC) --version
 	    $(BUILD_CXX) --version
-	    python2 --version
+	    python --version
 	    perl --version 2>&1 | head -3
 	    rm -rf   '$(2)'
 	    mkdir -p '$(2)'
