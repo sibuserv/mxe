@@ -12,7 +12,7 @@
 #MXE_TMP := /tmp
 
 # This variable controls the targets that will build.
-MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
+MXE_TARGETS := i686-w64-mingw32.shared x86_64-w64-mingw32.shared \
                x86_64-w64-mingw32.static i686-w64-mingw32.static
 #MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared
 
