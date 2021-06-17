@@ -11,6 +11,9 @@
 # default is the current directory
 #MXE_TMP := /tmp
 
+# Use ccache tool for speeding up re-builds.
+MXE_USE_CCACHE := yes
+
 # This variable controls the targets that will build.
 MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
                x86_64-w64-mingw32.static i686-w64-mingw32.static
@@ -19,7 +22,7 @@ MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
 # This variable controls which plugins are in use.
 # See plugins/README.md for further information.
 #override MXE_PLUGIN_DIRS += plugins/apps plugins/native
-MXE_PLUGIN_DIRS += plugins/gcc11
+MXE_PLUGIN_DIRS += plugins/gcc9
 
 # This variable controls the download mirror for SourceForge,
 # when it is used. Enabling the value below means auto.
@@ -30,7 +33,8 @@ MXE_PLUGIN_DIRS += plugins/gcc11
 #LOCAL_PKG_LIST := curl file flac lzo pthreads vorbis wxwidgets
 LOCAL_PKG_LIST := aspell hunspell jsoncpp lua minizip miniupnpc \
                   libfcgi libotr libsignal-protocol-c tidy-html5 \
-                  qtbase qttools qttranslations qtmultimedia qtwebkit \
+                  qtbase qttools qtwinextras qttranslations qtmultimedia \
+                  qtwebkit \
                   gstreamer gst-plugins-bad gst-plugins-good
 
 .DEFAULT_GOAL  := local-pkg-list
