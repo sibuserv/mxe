@@ -3,8 +3,8 @@
 PKG             := libwebp
 $(PKG)_WEBSITE  := https://developers.google.com/speed/webp/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.0.3
-$(PKG)_CHECKSUM := e20a07865c8697bba00aebccc6f54912d6bc333bb4d604e6b07491c1a226b34f
+$(PKG)_VERSION  := 1.2.1
+$(PKG)_CHECKSUM := 808b98d2f5b84e9b27fdef6c5372dac769c3bda4502febbfa5031bd3c4d7d018
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://storage.googleapis.com/downloads.webmproject.org/releases/webp/$($(PKG)_FILE)

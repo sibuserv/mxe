@@ -2,8 +2,8 @@
 
 PKG             := gdb
 $(PKG)_WEBSITE  := https://www.gnu.org/software/gdb/
-$(PKG)_VERSION  := 9.2
-$(PKG)_CHECKSUM := 360cd7ae79b776988e89d8f9a01c985d0b1fa21c767a4295e5f88cb49175c555
+$(PKG)_VERSION  := 11.1
+$(PKG)_CHECKSUM := cccfcc407b20d343fb320d4a9a2110776dd3165118ffd41f4b1b162340333f94
 $(PKG)_SUBDIR   := gdb-$($(PKG)_VERSION)
 $(PKG)_FILE     := gdb-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://ftp.gnu.org/gnu/$(PKG)/$($(PKG)_FILE)
@@ -20,6 +20,8 @@ endef
 define $(PKG)_BUILD
     cd '$(BUILD_DIR)' && '$(SOURCE_DIR)/configure' \
         $(MXE_CONFIGURE_OPTS) \
+        --enable-static \
+        --disable-shared \
         --with-system-readline \
         --disable-gdbtk \
         --disable-tui \
@@ -30,5 +32,5 @@ define $(PKG)_BUILD
 
     # executables are always static and we don't want the rest
      $(INSTALL) -m755 '$(BUILD_DIR)/gdb/gdb.exe'                 '$(PREFIX)/$(TARGET)/bin/'
-     $(INSTALL) -m755 '$(BUILD_DIR)/gdb/gdbserver/gdbserver.exe' '$(PREFIX)/$(TARGET)/bin/'
+     $(INSTALL) -m755 '$(BUILD_DIR)/gdbserver/gdbserver.exe' '$(PREFIX)/$(TARGET)/bin/'
 endef

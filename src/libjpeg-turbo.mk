@@ -3,8 +3,8 @@
 PKG             := libjpeg-turbo
 $(PKG)_WEBSITE  := https://libjpeg-turbo.virtualgl.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 2.0.5
-$(PKG)_CHECKSUM := 16f8f6f2715b3a38ab562a84357c793dd56ae9899ce130563c72cd93d8357b5d
+$(PKG)_VERSION  := 2.1.1
+$(PKG)_CHECKSUM := b76aaedefb71ba882cbad4e9275b30c2ae493e3195be0a099425b5c6b99bd510
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://$(SOURCEFORGE_MIRROR)/project/$(PKG)/$($(PKG)_VERSION)/$($(PKG)_FILE)
