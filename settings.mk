@@ -12,7 +12,7 @@
 #MXE_TMP := /tmp
 
 # Use ccache tool for speeding up re-builds.
-MXE_USE_CCACHE := yes
+#MXE_USE_CCACHE := 
 
 # This variable controls the targets that will build.
 MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
@@ -22,7 +22,7 @@ MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
 # This variable controls which plugins are in use.
 # See plugins/README.md for further information.
 #override MXE_PLUGIN_DIRS += plugins/apps plugins/native
-MXE_PLUGIN_DIRS += plugins/gcc9
+#override MXE_PLUGIN_DIRS += plugins/gcc9
 
 # This variable controls the download mirror for SourceForge,
 # when it is used. Enabling the value below means auto.
@@ -30,7 +30,7 @@ MXE_PLUGIN_DIRS += plugins/gcc9
 
 # The three lines below makes `make` build these "local
 # packages" instead of all packages.
-#LOCAL_PKG_LIST := curl file flac lzo pthreads vorbis wxwidgets
+#LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
 LOCAL_PKG_LIST := aspell hunspell jsoncpp lua minizip miniupnpc \
                   libfcgi libotr libsignal-protocol-c tidy-html5 \
                   qtbase qttools qtwinextras qttranslations qtmultimedia \
