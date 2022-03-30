@@ -4,12 +4,12 @@ PKG             := expat
 $(PKG)_WEBSITE  := https://github.com/libexpat/libexpat
 $(PKG)_DESCR    := Expat XML Parser
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 2.3.0
-$(PKG)_CHECKSUM := f122a20eada303f904d5e0513326c5b821248f2d4d2afbf5c6f1339e511c0586
+$(PKG)_VERSION  := 2.4.7
+$(PKG)_CHECKSUM := e149bdd8b90254c62b3d195da53a09bd531a4d63a963b0d8a5268d48dd2f6a65
 $(PKG)_SUBDIR   := expat-$($(PKG)_VERSION)
 $(PKG)_FILE     := expat-$($(PKG)_VERSION).tar.bz2
 $(PKG)_URL      := https://$(SOURCEFORGE_MIRROR)/project/expat/expat/$($(PKG)_VERSION)/$($(PKG)_FILE)
-$(PKG)_URL_2    := https://github.com/libexpat/libexpat/releases/download/R_2_2_10/$($(PKG)_FILE)
+$(PKG)_URL_2    := https://github.com/libexpat/libexpat/releases/download/R_$(subst .,_,$($(PKG)_VERSION))/$($(PKG)_FILE)
 $(PKG)_DEPS     := cc
 
 define $(PKG)_UPDATE

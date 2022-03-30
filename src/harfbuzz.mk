@@ -4,10 +4,10 @@ PKG             := harfbuzz
 $(PKG)_WEBSITE  := https://wiki.freedesktop.org/www/Software/HarfBuzz/
 $(PKG)_DESCR    := HarfBuzz
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 2.8.1
-$(PKG)_CHECKSUM := b3f17394c5bccee456172b2b30ddec0bb87e9c5df38b4559a973d14ccd04509d
+$(PKG)_VERSION  := 4.1.0
+$(PKG)_CHECKSUM := 0dad9332aa017d216981382cc07a9cf115740990c83b81ce3ea71ad88026d7f1
 $(PKG)_GH_CONF  := harfbuzz/harfbuzz/releases
-$(PKG)_DEPS     := cc cairo freetype-bootstrap glib icu4c
+$(PKG)_DEPS     := cc cairo freetype-bootstrap glib
 
 define $(PKG)_BUILD
     # mman-win32 is only a partial implementation
