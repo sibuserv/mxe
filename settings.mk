@@ -31,7 +31,7 @@ MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
 # The three lines below makes `make` build these "local
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
-LOCAL_PKG_LIST := aspell hunspell jsoncpp lua minizip miniupnpc \
+LOCAL_PKG_LIST := aspell hunspell libidn2 jsoncpp lua minizip miniupnpc \
                   libfcgi libotr libsignal-protocol-c tidy-html5 \
                   qtbase qttools qtwinextras qttranslations qtmultimedia \
                   qtwebkit \
