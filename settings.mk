@@ -34,7 +34,7 @@ MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
 LOCAL_PKG_LIST := aspell hunspell libidn2 jsoncpp lua minizip miniupnpc \
                   libfcgi libotr libsignal-protocol-c tidy-html5 \
                   qtbase qttools qtwinextras qttranslations qtmultimedia \
-                  qtwebkit \
+                  qtdeclarative qtkeychain qtwebkit \
                   gstreamer gst-plugins-bad gst-plugins-good
 
 .DEFAULT_GOAL  := local-pkg-list
