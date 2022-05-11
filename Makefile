@@ -66,7 +66,6 @@ REQUIREMENTS := \
     $(LIBTOOLIZE) \
     lzip \
     $(MAKE) \
-    mako-render \
     $(OPENSSL) \
     $(PATCH) \
     perl \
