@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 09d3c2cf5911f0bc7da6bf557a55251779243d3de216b6a26cc90c445b423
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://gstreamer.freedesktop.org/src/$(PKG)/$($(PKG)_FILE)
-$(PKG)_DEPS     := cc gst-plugins-base gstreamer libgcrypt openssl opus
+$(PKG)_DEPS     := cc gst-plugins-base gstreamer libgcrypt openssl
 
 $(PKG)_UPDATE = $(subst gstreamer/refs,gst-plugins-bad/refs,$(gstreamer_UPDATE))
 
