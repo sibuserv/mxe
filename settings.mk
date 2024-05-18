@@ -32,7 +32,7 @@ MXE_TARGETS := x86_64-w64-mingw32.shared i686-w64-mingw32.shared \
 # packages" instead of all packages.
 #LOCAL_PKG_LIST := boost curl file flac lzo pthreads vorbis wxwidgets
 LOCAL_PKG_LIST := aspell hunspell libidn2 jsoncpp lua minizip miniupnpc \
-                  libfcgi libotr tidy-html5 protobuf \
+                  libfcgi libomemo-c libotr protobuf tidy-html5 \
                   qtbase qttools qtwinextras qttranslations qtmultimedia \
                   qtdeclarative qtkeychain qtwebkit \
                   gstreamer gst-plugins-bad gst-plugins-good
